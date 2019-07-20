@@ -1,0 +1,47 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}Quotus{% endblock %}
+
+{% block script_additional %}
+	<script src="{{ asset('js/jquery-ui-1.11.0/jquery-ui.min.js') }}"></script>	
+	<script src="{{ asset('js/tag-it-master/js/tag-it.min.js') }}"></script>
+
+	<script type="text/javascript">
+		$(function()
+		{
+			$(".tagit").tagit({
+				allowSpaces: true
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block style_additional %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('js/jquery-ui-1.11.0/jquery-ui.min.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ minify_file('js/tag-it-master/css/jquery.tagit.css') }}" />
+{% endblock %}
+
+{% block main_content %}
+	<h2>{{ 'main.index.Search'|trans }}</h2>
+
+	<hr class="flare">
+	<h2>{{ 'main.index.Randomly'|trans }}{% if random is not null %} <a href="{{ path('read', {'id' : random.id, 'slug' : random.slug}) }}" class="btn btn-primary btn-sm"><i class="fa fa-info" aria-hidden="true"></i></a>{% endif %}</h2>
+	{% if random is not null %}
+		{% set ri = random_image(random) %}
+		{% if ri is not null %}
+			<div class="text-center">
+				<img src="{{ asset('photo/quote/'~ri) }}" class="text-center" alt="">
+			</div>
+		{% else %}
+			<div>
+				<blockquote>{{ random.text|raw }}</blockquote>
+			</div>
+		{% endif %}
+		<hr>
+		<p>
+		{#<a href="{{ path('country', {'id' : random.country.id, 'slug' : random.country.slug }) }}" alt=""><img class="flag" src="{{ asset('photo/country/'~random.country.flag) }}" alt="" height="8" /> Proverbe - {{ random.country.title }}</a>#}
+		</p>
+	{% else %}
+		<p>{{ 'main.index.NoProverb'|trans }}.</p>
+	{% endif %}
+{% endblock %}

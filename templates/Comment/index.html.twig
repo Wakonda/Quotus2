@@ -1,0 +1,96 @@
+<script type="text/javascript">
+	$(function()
+	{
+		$('body').on('submit', "#form_comment", function(event)
+		{
+			var DATA = $(this).serialize();
+
+			$.ajax(
+			{
+				type: "POST",
+				url: "{{ path('comment_create', { poemId: poemId }) }}?page=1",
+				data: DATA,
+				cache: false,
+				success: function(data)
+				{
+					loadComments();
+					tinyMCE.activeEditor.setContent('');
+				}
+			});
+			event.preventDefault();
+		});
+		
+		function loadComments()
+		{
+			$.ajax(
+			{
+				type: "GET",
+				url: "{{ path('comment_load', { poemId: poemId }) }}?page=1",
+				cache: false,
+				success: function(data)
+				{
+					$("#list_comments").html(data);
+				}
+			});
+		}
+		
+		$(document).on("click", ".page_action", function()
+		{
+			$.ajax(
+			{
+				type: "GET",
+				url: "{{ path('comment_load', { poemId: poemId }) }}?page=" + $(this).data("followpage"),
+				cache: false,
+				success: function(data)
+				{
+					$("#list_comments").html(data);
+				}
+			});
+
+			event.preventDefault();
+		});
+
+		loadComments();
+	});
+</script>
+
+<div class="hidden_print">
+	<hr>
+	<h2>{{ 'comment.index.Comments'|trans }}</h2>
+	<div>
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="nav-item"><a class="nav-link active" href="#facebook_comment" aria-controls="facebook_comment" role="tab" data-toggle="tab">Facebook</a></li>
+			<li role="presentation" class="nav-item"><a class="nav-link" href="#poeticus_comment" aria-controls="poeticus_comment" role="tab" data-toggle="tab">Poéticus</a></li>
+		</ul>
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<br>
+			<div role="tabpanel" class="tab-pane active" id="facebook_comment">
+				<div id="fb-root"></div>
+				<script>(function(d, s, id) {
+				  var js, fjs = d.getElementsByTagName(s)[0];
+				  if (d.getElementById(id)) return;
+				  js = d.createElement(s); js.id = id;
+				  js.src = "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.6&appId=278784339126616";
+				  fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'facebook-jssdk'));</script>
+				
+				<div class="fb-comments" data-href="{{ app.request.uri }}" data-numposts="5"></div>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="poeticus_comment">
+				{% if is_granted('IS_AUTHENTICATED_FULLY') == false and is_granted('IS_AUTHENTICATED_REMEMBERED') == false %}
+					<div class="alert alert-danger" role="alert">
+						<i class="fa fa-exclamation-triangle"></i> {{ 'comment.field.YouMustBeLoggedInToWriteAComment'|trans }}
+					</div>
+				{% endif %}
+				<div id="form_comment_container">
+					{% include "Comment/form.html.twig" with {'form' : form} %}
+				</div>
+				<br>
+				<div id="list_comments"></div>
+			</div>
+		</div>
+	</div>
+</div>

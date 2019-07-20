@@ -1,0 +1,15 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Tag'|trans }}{% endblock %}
+{% block main_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Tag'|trans }}{% endblock %}
+
+{% block main_content %}
+	<table class="table table-bordered admin_show">
+		<tr>
+			<th>Titre</th>
+			<td>{{ entity.title }}</td>
+		</tr>
+	</table>
+	<hr>
+	<a href="{{ path('tagadmin_index') }}"><i class="fa fa-list"></i> {{ 'admin.index.List'|trans }}</a> - <a href="{{ path('tagadmin_edit', { 'id' : entity.id }) }}"><i class="fa fa-edit"></i> {{ 'admin.index.Update'|trans }}</a> - <a href="{{ path('tagadmin_new') }}"><i class="fa fa-plus-square"></i> {{ 'admin.index.Create'|trans }}</a>
+{% endblock %}

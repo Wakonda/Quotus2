@@ -1,0 +1,40 @@
+{% import "Index/macro.html.twig" as macro %}
+<div class="form-group row">
+	{{ form_label(form.title, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.title) }}{{ form_widget(form.title, {'attr':{'class':'form-control'}}) }}
+	</div>
+</div>
+<div class="form-group row">
+	{{ form_label(form.text, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.text) }}{{ form_widget(form.text) }}
+	</div>
+</div>
+<div class="form-group row">
+	{{ form_label(form.language, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.language) }}{{ form_widget(form.language, {'attr':{'class':'form-control'}}) }}
+	</div>
+</div>
+<div class="form-group row">
+	{{ form_label(form.biography, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.biography) }}{{ form_widget(form.biography, {'attr':{'class':'combobox form-control'}}) }}
+	</div>
+</div>
+<div class="form-group row">
+	{{ form_label(form.amazonCode, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.amazonCode) }}{{ form_widget(form.amazonCode, {'attr':{'class':'form-control'}}) }}
+	</div>
+</div>
+<div id="photo_container" class="form-group row">
+	{{ form_label(form.photo, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.photo) }}{% if entity.photo is defined and entity.photo is not empty %}{{ macro.currentImage("photo/store/", entity.photo) }}{% endif %}{{ form_widget(form.photo) }}
+	</div>
+</div>
+<hr />
+{{ form_widget(form.save, {'icon': 'fa-save'}) }}
+{{ form_rest(form) }}

@@ -1,0 +1,30 @@
+<script type="text/javascript">
+	tinymce.init({
+		selector: '#{{ form.text.vars.id }}',
+		height: 150,
+		menubar: false,
+		language: "{{ code_by_language(app.request.locale) }}",
+		statusbar: false,
+		plugins: [
+			'lists link image charmap textcolor media'
+		],
+		toolbar: 'bold italic underline | forecolor backcolor | alignleft aligncenter alignright alignjustify | link image | undo redo |',
+		setup: function (editor) {
+			editor.on('change', function () {
+				tinymce.triggerSave();
+			});
+		}
+	});
+</script>
+
+{% form_theme form 'Form/fields.html.twig' %}
+
+{{ form_start(form, {'method' : 'post', 'action' : '', 'attr': {'id': 'form_comment', 'novalidate': 'novalidate'} }) }}
+	<div class="error_message"></div>
+	{{ form_label(form.text) }}
+	<div class="errors">{{ form_errors(form.text) }}</div>
+	{{ form_widget(form.text) }}
+	<br>
+	{{ form_widget(form.save, {'icon': 'fa-commenting'}) }}
+	{{ form_rest(form) }}
+{{ form_end(form) }}

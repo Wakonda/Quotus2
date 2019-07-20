@@ -1,0 +1,83 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'menu.left.Admin'|trans }}{% endblock %}
+{% block main_title %}{{ 'menu.left.Admin'|trans }}{% endblock %}
+
+{% block meta_tag %}
+	<meta name="robots" content="noindex,nofollow" />
+{% endblock %}
+
+{% block script_additional %}
+	<script src="{{ asset('js/DataTables/datatables.min.js') }}" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(function ()
+		{
+			oTable = $('table.index_admin').dataTable( {
+				"oLanguage": {
+					"sUrl": "{{ asset('js/DataTables/language/dataTables.'~app.request.locale) }}.txt"
+				},
+				"bFilter": false,
+				"bInfo": false,
+				"bSort": true,
+				"bPaginate": false,
+				"autoWidth": false,
+				"bLengthChange": false
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block main_content %}
+	<table class="index_admin table table-striped table-bordered dt-responsive">
+		<thead>
+			<tr>
+				<th>{{ 'admin.table.Title'|trans }}</th>
+				<th>{{ 'admin.table.Action'|trans }}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a href="{{ path('quoteadmin_index') }}" alt="">{{ 'admin.index.Quote'|trans }}</a></td>
+				<td><a href="{{ path('quoteadmin_new') }}" alt="">{{ 'admin.index.Create'|trans }}</a></td>
+			</tr>
+			<tr>
+				<td><a href="{{ path('sourceadmin_index') }}" alt="">{{ 'admin.index.Source'|trans }}</a></td>
+				<td><a href="{{ path('sourceadmin_new') }}" alt="">{{ 'admin.index.Create'|trans }}</a></td>
+			</tr>
+			<tr>
+				<td><a href="{{ path('countryadmin_index') }}" alt="">{{ 'admin.index.Country'|trans }}</a></td>
+				<td><a href="{{ path('countryadmin_new') }}" alt="">{{ 'admin.index.Create'|trans }}</a></td>
+			</tr>
+			<tr>
+				<td><a href="{{ path('biographyadmin_index') }}" alt="">{{ 'admin.index.Biography'|trans }}</a></td>
+				<td><a href="{{ path('biographyadmin_new') }}" alt="">{{ 'admin.index.Create'|trans }}</a></td>
+			</tr>
+			<tr>
+				<td><a href="{{ path('quoteimageadmin_index') }}" alt="">{{ 'admin.index.QuoteImage'|trans }}</a></td>
+				<td>-</td>
+			</tr>
+			<tr>
+				<td><a href="{{ path('pageadmin_index') }}" alt="">{{ 'admin.index.Page'|trans }}</a></td>
+				<td><a href="{{ path('pageadmin_new') }}" alt="">{{ 'admin.index.Create'|trans }}</a></td>
+			</tr>
+			<tr>
+				<td><a href="{{ path('storeadmin_index') }}" alt="">{{ 'admin.index.Store'|trans }}</a></td>
+				<td><a href="{{ path('storeadmin_new') }}" alt="">{{ 'admin.index.Create'|trans }}</a></td>
+			</tr>
+			<tr>
+				<td><a href="{{ path('contactadmin_index') }}" alt="">{{ 'admin.index.Contact'|trans }}</a></td>
+				<td><span class="badge badge-secondary">{{ count_unread_messages() }}</span> {{ 'admin.index.UnreadMessages'|trans }}</td>
+			</tr>
+			<tr>
+				<td><a href="{{ path('useradmin_index') }}" alt="">{{ 'admin.index.Member'|trans }}</a></td>
+				<td>-</td>
+			</tr>
+			<tr>
+				<td><a href="{{ path('backupadmin_index') }}" alt="">{{ 'admin.index.Backup'|trans }}</a></td>
+				<td><span class="badge badge-pill badge-info">{{ render(controller('App\\Controller\\BackupAdminController::countAction')) }}</span></td>
+			</tr>
+		</tbody>
+	</table>
+	<hr>
+	<a href="{{ path('generate_sitemap') }}" class="btn btn-info"><i class="fa fa-sitemap"></i> {{ 'admin.index.GenerateSitemap'|trans }}</a>
+{% endblock %}

@@ -1,0 +1,123 @@
+<?php
+
+namespace App\Repository;
+
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\Source;
+
+/**
+ * Source repository
+ */
+class SourceRepository extends ServiceEntityRepository implements iRepository
+{
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Source::class);
+    }
+	
+	public function getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $count = false)
+	{
+		$qb = $this->createQueryBuilder("pf");
+
+		$aColumns = array( 'pf.id', 'pf.title', 'la.title', 'pf.id');
+		
+		$qb->leftjoin("pf.language", "la");
+		
+		if(!empty($sortDirColumn))
+		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+		
+		if(!empty($sSearch))
+		{
+			$search = "%".$sSearch."%";
+			$qb->where('pf.title LIKE :search')
+			   ->setParameter('search', $search);
+		}
+		if($count)
+		{
+			$qb->select("COUNT(pf) AS count");
+			return $qb->getQuery()->getSingleScalarResult();
+		}
+		else
+			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
+
+		return $qb->getQuery()->getResult();
+	}
+	
+	public function getPoemByAuthors()
+	{
+		$qb = $this->createQueryBuilder("pf");
+	
+		$qb->groupBy("pf.biography_id");
+		   
+		return $qb->getQuery()->getResult();
+	}
+	
+	public function findAllForChoice($locale)
+	{
+		$qb = $this->createQueryBuilder("pf");
+		
+		$qb->select("pf.id AS id, pf.title AS title")
+		   ->leftjoin("pf.language", "la")
+		   ->where('la.abbreviation = :locale')
+		   ->setParameter('locale', $locale)
+		   ->orderBy("title", "ASC");
+
+		return $qb;
+	}
+	
+	public function findAllFictionalCharactersForChoice($locale)
+	{
+		$qb = $this->createQueryBuilder("pf");
+		
+		$qb
+		   ->leftjoin("pf.language", "la")
+		   ->where('la.abbreviation = :locale')
+		   ->setParameter('locale', $locale)
+		   ->andWhere("pf.type = :type")
+		   ->setParameter("type", Biography::FICTIONAL_CHARACTER)
+		   ->orderBy("pf.title", "ASC");
+
+		return $qb;
+	}
+	
+	public function checkForDoubloon($entity)
+	{
+		$qb = $this->createQueryBuilder("pf");
+
+		$qb->select("COUNT(pf) AS number")
+		   ->leftjoin("pf.language", "la")
+		   ->where("pf.slug = :slug")
+		   ->setParameter('slug', $entity->getSlug())
+		   ->andWhere("la.id = :idLanguage")
+		   ->setParameter("idLanguage", $entity->getLanguage());
+
+		if($entity->getId() != null)
+		{
+			$qb->andWhere("pf.id != :id")
+			   ->setParameter("id", $entity->getId());
+		}
+		return $qb->getQuery()->getSingleScalarResult();
+	}
+	
+	public function getDatasSelect($locale, $query)
+	{
+		$qb = $this->createQueryBuilder("pf");
+		
+		$qb
+		   ->leftjoin("pf.language", "la")
+		   ->where('la.id = :locale')
+		   ->setParameter('locale', $locale)
+		   ->orderBy("pf.title", "ASC")
+		   ->setMaxResults(15);
+		   
+		if(!empty($query))
+		{
+			$query = "%".$query."%";
+			$qb->andWhere("pf.title LIKE :query")
+			   ->setParameter("query", $query);
+		}
+
+		return $qb->getQuery()->getResult();
+	}
+}

@@ -1,0 +1,35 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ "error.index.Error"|trans }} {{ status_code }}{% endblock %}
+{% block main_title %}{{ "error.index.Error"|trans }} {{ status_code }}{% endblock %}
+
+{% block main_content %}
+	<p class="text-center"><img src="{{ asset('photo/error-page.jpg') }}" alt="" /></p>
+	<br>
+	{% if status_code == "404" %}
+		<p>{{ "error.index.PageNotFound"|trans }}</p>
+	{% else %}
+		{% trans with {'%code%': status_code, '%url%': url('contact')} %}
+			error.index.Message
+		{% endtrans %}
+	{% endif %}
+	<hr>
+
+	<div id="accordion">
+		<div class="card text-white bg-danger mb-3">
+			<div class="card-header" id="headingOne">
+				<h5 class="mb-0 pointer" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+					{{ status_code }} {{ status_text }}
+				</h5>
+			</div>
+
+			{% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted("ROLE_ADMIN") %}
+			<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+				<div class="card-body">
+					{{ exception.message }}
+				</div>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}

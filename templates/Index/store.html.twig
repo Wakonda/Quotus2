@@ -1,0 +1,58 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'store.index.Store'|trans }}{% endblock %}
+{% block main_title %}{{ 'store.index.Store'|trans }}{% endblock %}
+
+{% block meta_tag_description %}{% endblock %}
+
+{% block main_content %}
+	<form method="post" action="{{ path('store') }}" name="search_form">
+	<div class="row">
+		<div class="col-lg-6">
+			<div class="input-group">
+				<input type="text" class="form-control" name="query" value="{{ query }}" placeholder="{{ 'store.index.Search'|trans }} ...">
+				<div class="input-group-append">
+					<button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	</form>
+	<br>
+	<div class="row row_flex">
+		{% for entity in entities %}
+            <div class="col-lg-4 col-md-6 mb-4">
+              <div class="card h-100">
+			    {% if entity.photo is not empty %}<img src="{{ asset('photo/store/'~entity.photo) }}" class="card-img-top" alt="{{ entity.title }}">{% endif %}
+                <div class="card-body">
+                  <h4 class="card-title">
+                    <a href="{{ path('read_store', {'id': entity.id, 'slug': entity.slug}) }}">{{ entity.title }}</a>
+                  </h4>
+                  <h5>{% if entity.biography is not empty %}<i class="fa fa-chevron-circle-right"></i> <span class="font-weight-bold">{{ entity.biography.title }}</span>{% endif %}</h5>
+                </div>
+				<div class="card-footer">
+				    <a href="{{ path('read_store', {'id': entity.id, 'slug': entity.slug}) }}" class="btn btn-info"><i class="fa fa-plus" aria-hidden="true"></i></a>
+				    <a href="{{ entity.getExternalStoreLink() }}" class="btn btn-success" target="_blank"><i class="fa fa-shopping-basket" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </div>
+		{% endfor %}
+    </div>
+	
+	{% if links is defined and links is not empty %}
+	<nav aria-label="Page navigation">
+		<ul class="pagination justify-content-center">
+			<li class="page-item">
+				{% for link in links %}
+					{% if link.url is not null %}
+						<li class="page-item"><a class="page-link" href="{{ link.url }}">{{ link.text }}</a></li>
+					{% else %}
+						<li class="page-item {{ (link.class is defined) ? link.class }}"><span class="page-link">{{ link.text }}</span></li>
+					{% endif %}
+				{% endfor %}
+				</a>
+			</li>
+		</ul>
+	</nav>
+	{% endif %}
+{% endblock %}

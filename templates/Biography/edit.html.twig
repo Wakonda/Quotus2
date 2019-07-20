@@ -1,0 +1,38 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Biography'|trans }}{% endblock %}
+{% block main_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Biography'|trans }}{% endblock %}
+
+{% block script_additional %}
+	{% import "Index/macro.html.twig" as macro %}
+	{{ macro.redactor() }}
+	<script type="text/javascript">
+		$(function()
+		{
+			$("select#{{ form.language.vars.id }}").change(function() {
+				$.ajax({
+					type: "GET",
+					url: "{{ path('get_countries_by_language') }}",
+					data: { "locale" : $(this).val() },
+					success: function(data)
+					{
+						$("select#{{ form.country.vars.id }}").empty();
+						$("select#{{ form.country.vars.id }}").append('<option value="" selected="selected">{{ 'main.field.ChooseAnOption'|trans }}</option>');
+						
+						for (var i = 0; i < data.length; i++) {
+							$("select#{{ form.country.vars.id }}").append('<option value="'+ data[i].id +'">'+ data[i].name +'</option>');
+						}
+					}
+				});
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block main_content %}
+{% form_theme form 'Form/fields.html.twig' %}
+{{ form_start(form, {'method' : 'post', 'action' : path('biographyadmin_update', {'id' : entity.id }), 'attr': {'novalidate': 'novalidate'} }) }}
+	{% include "Biography/_form.html.twig" with {'form' : form} %}
+{{ form_end(form) }}
+
+{% endblock %}

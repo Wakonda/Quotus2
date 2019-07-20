@@ -1,0 +1,7 @@
+<ul>
+	{% for entity in entities %}
+		<li>
+			<a href="{{ path('read', {'id' : entity.id, 'slug' : entity.slug}) }}" >{{ entity.text|striptags|raw }}</a>
+		</li>
+	{% endfor %}
+</ul>

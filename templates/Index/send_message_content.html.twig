@@ -1,0 +1,20 @@
+{% set senderName = "send.index.Somebody"|trans %}
+
+{% if data.firstName is not null %}
+	{% set senderName = data.firstName %}
+	
+	{% if data.lastName is not null %}
+		{% set senderName = senderName ~ " " ~ data.lastName %}
+	{% endif %}
+{% endif %}
+
+<p>{{ senderName }} (<a href="mailto:{{ data.yourMail }}">{{ data.yourMail }}</a>) {{ "send.index.HeSentYouThisProverb"|trans }}.</p>
+
+{{ data.message|raw }}
+
+<hr>
+{{ entity.text|raw }}
+
+<hr>
+
+<p>{{ "send.index.ThisProverbHasBeenSentSince"|trans }} <a href="{{ url("index") }}" alt="Proverbius">Proverbius</a></p>

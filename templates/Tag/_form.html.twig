@@ -1,0 +1,10 @@
+{% import "Index/macro.html.twig" as macro %}
+<div class="form-group row">
+	{{ form_label(form.title, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.title) }}{{ form_widget(form.title, {'attr':{'class':'form-control'}}) }}
+	</div>
+</div>
+<hr />
+{{ form_widget(form.save, {'icon': 'fa-save'}) }}
+{{ form_rest(form) }}

@@ -1,0 +1,47 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Biography'|trans }}{% endblock %}
+{% block main_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Biography'|trans }}{% endblock %}
+
+{% block main_content %}
+	<table class="table table-bordered admin_show">
+		<tr>
+			<th>{{ 'admin.biography.Title'|trans }}</th>
+			<td>{{ entity.title }}</td>
+		</tr>
+		<tr>
+			<th>{{ 'admin.biography.Text'|trans }}</th>
+			<td>{{ entity.text|raw }}</td>
+		</tr>
+		<tr>
+			<th>{{ 'admin.biography.BirthDate'|trans }}</th>
+			<td>{{ entity.dayBirth }}/{{ entity.monthBirth }}/{{ entity.yearBirth }}</td>
+		</tr>
+		<tr>
+			<th>{{ 'admin.biography.DeathDate'|trans }}</th>
+			<td>{{ entity.dayDeath }}/{{ entity.monthDeath }}/{{ entity.yearDeath }}</td>
+		</tr>
+		<tr>
+			<th>{{ 'admin.biography.Image'|trans }}</th>
+			<td>{% if entity.photo is not empty %}<p class="text-center">{{ ("photo/biography/"~entity.photo)|max_size_image() }}</p>{% endif %}</td>
+		</tr>
+		<tr>
+			<th>{{ 'admin.biography.Type'|trans }}</th>
+			<td>{{ entity.typeCanonical }}</td>
+		</tr>
+		<tr>
+			<th>{{ 'admin.biography.Nationality'|trans }}</th>
+			<td>{% if entity.country is not empty %}{{ entity.country.title }}{% endif %}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.form.Language"|trans }}</th>
+			<td>{{ entity.language.title }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.form.Slug"|trans }}</th>
+			<td>{{ entity.slug }}</td>
+		</tr>
+	</table>
+	<hr>
+	<a href="{{ path('biographyadmin_index') }}"><i class="fa fa-list"></i> {{ 'admin.index.List'|trans }}</a> - <a href="{{ path('biographyadmin_edit', { 'id' : entity.id }) }}"><i class="fa fa-edit"></i> {{ 'admin.index.Update'|trans }}</a> - <a href="{{ path('biographyadmin_new') }}"><i class="fa fa-plus-square"></i> {{ 'admin.index.Create'|trans }}</a>
+{% endblock %}

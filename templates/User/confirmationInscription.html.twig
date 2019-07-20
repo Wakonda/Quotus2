@@ -1,0 +1,8 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'user.confirmation.Title'|trans }} - {{ entity.username }}{% endblock %}
+{% block main_title %}Confirmation - {{ entity.username }}{% endblock %}
+
+{% block main_content %}
+	<p>{{ 'user.confirmation.Text'|trans }}</p>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Member'|trans }}{% endblock %}
+{% block main_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Member'|trans }}{% endblock %}
+
+{% block main_content %}
+	<table class="table table-bordered admin_show">
+		<tr>
+			<th>{{ "admin.member.Pseudo"|trans }}</th>
+			<td>{{ entity.username }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.member.Roles"|trans }}</th>
+			<td>{{ entity.roles|join(", ") }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.member.Email"|trans }}</th>
+			<td>{{ entity.email }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.member.Activated"|trans }}</th>
+			<td>{{ entity.enabled == 1 ? '<span style="color: green;">&#x2713</span>' : '<span style="color: red;">&#x2718</span>' }}</td>
+		</tr>
+	</table>
+	<hr>
+	{% if entity.enabled == 1 %}
+		<a href="{{ path('useradmin_enabled', { 'id' : entity.id, 'state' : 0 }) }}" class="btn btn-danger">{{ "admin.member.Desactivate"|trans }}</a>
+	{% else %}
+		<a href="{{ path('useradmin_enabled', { 'id' : entity.id, 'state' : 1 }) }}" class="btn btn-success">{{ "admin.member.Activate"|trans }}</a>
+	{% endif %}
+{% endblock %}

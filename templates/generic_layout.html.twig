@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="google-site-verification" content="mVbu4CCtykAXHkuZC4oxd330guO7Ci4ZwsFdirIo9MQ" />
+		<title>{% block head_title %}{% endblock %}</title>
+		<meta name="description" content="{% block meta_tag_description %}Quotus est une encyclopédie regroupant les plus belles citations qui ont façonné l'univers féerique et passionnant de la littérature.{% endblock %}" />
+		<meta name="keywords" content="po&eacute;sie, po&egrave;me, litt&eacute;rature, vers, prose, po&egrave;te, recueil, ha&iuml;ku, art po&eacute;tique" />
+		{% block meta_tag %}
+		<meta name="robots" content="index,follow" />
+		{% endblock %}
+		<meta name="msvalidate.01" content="FB19BE8A55C1B235B4389DE2169412FA" />
+
+		<link rel="shortcut icon" href="{{ asset('photo/favicon.ico') }}">
+
+		<link rel="stylesheet" type="text/css" href="{{ asset(minify_file('css/style.css')) }}" media="screen" />
+		<link rel="stylesheet" type="text/css" href="{{ asset(minify_file('css/style_print.css')) }}" media="print" />
+		<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-4.2.1-dist/css/bootstrap.min.css') }}" media="screen" />
+		<link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome/css/font-awesome.min.css') }}" />
+		<link rel="stylesheet" type="text/css" href="{{ asset(minify_file('js/BackToTop/BackToTop.css')) }}" />
+		
+		{% block style_additional %}
+		{% endblock %}
+
+		{% block script_additional_sup %}
+		{% endblock %}
+		
+		<script src="{{ asset('js/jquery.js') }}"></script>
+	</head>
+	<body>
+		<div class="resize"></div>
+		<!-- Div Wrapper Element Starts Here -->
+		<div id="Wrapper">
+			<!-- Header Element Starts Here -->
+			<header id="header">
+				<!-- Hgroup Element Starts Here -->
+				<hgroup id="title">
+					<div id="logo">
+						<a href="{{ path('index') }}" alt="">
+							<img src="{{ asset('photo/logo.png') }}" alt="logo" />
+							<span>Quotus</span>
+						</a>
+					</div>
+					<h2 class="mt-2">{{ 'main.index.WonderfulWorldOfQuote'|trans|raw }}</h2>
+				</hgroup>
+				<!-- Hgroup Element Ends Here -->
+
+				<!-- Nav Element Starts Here -->
+				<nav class="navigation">
+					<a href="{{ path('index') }}"><i class="fa fa-home"></i> {{ 'menu.top.MainPage'|trans }}</a>
+				</nav>
+			</header>
+			<!-- Header Element Ends Here -->
+			<!-- Div wrapper2 starts here -->
+			<div id="Wrapper2">
+				<!-- Sidebar Element Starts Here -->
+				<aside id="sidebar-wrapper">
+					<nav class="sidebar">
+						<h1>{{ 'menu.left.RecentQuotes'|trans }}</h1>
+
+						<div class="social-media-icons">
+							<a class="facebook" href="https://www.facebook.com/Proverbius-1894996570590486" target="_blank"><i class="fa fa-facebook-square fa-3x"></i></a>
+							<a class="twitter" href="https://twitter.com/poeticus12" target="_blank"><i class="fa fa-twitter-square fa-3x" target="_blank"></i></a>
+							<a class="pinterest" href="http://pinterest.com/amatukamiproverbius/" target="_blank"><i class="fa fa-pinterest-square fa-3x" target="_blank"></i></a>
+							<a class="instagram" href="https://www.instagram.com/_proverbius/" target="_blank"><i class="fa fa-instagram fa-3x" target="_blank"></i></a> 
+						</div>
+						<h1>{{ 'menu.left.FollowUs'|trans }}</h1>
+						<span style="text-align: center" class="follow_on_twitter"><a href="https://twitter.com/poeticus12" class="twitter-follow-button" data-show-count="false" data-lang="fr" data-size="large" data-dnt="true">Suivre @poeticus12</a>
+						<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></span>
+					</nav>
+
+					<nav class="sidebar">
+						<h1>{{ 'menu.left.Publicity'|trans }}</h1>
+						<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+						<!-- Poeticus_right_menu -->
+						<ins class="adsbygoogle"
+							 style="display:inline-block;width:250px;height:250px"
+							 data-ad-client="ca-pub-1951906303386196"
+							 data-ad-slot="5545754940"></ins>
+						<script type="text/javascript">
+						(adsbygoogle = window.adsbygoogle || []).push({});
+						</script>
+					</nav>
+					
+					<nav class="sidebar">
+						<h1>{{ 'menu.left.HelpUs'|trans }}</h1>
+						{% if app.request.locale == "it" %}
+						<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" class="text-center">
+							<input type="hidden" name="cmd" value="_donations" />
+							<input type="hidden" name="business" value="5XXNV9Q7AGB2E" />
+							<input type="hidden" name="currency_code" value="EUR" />
+							<input type="image" src="https://www.paypalobjects.com/it_IT/IT/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+							<img alt="" border="0" src="https://www.paypal.com/it_IT/i/scr/pixel.gif" width="1" height="1" />
+						</form>
+						{% elseif app.request.locale == "pt" %}
+						<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" class="text-center">
+							<input type="hidden" name="cmd" value="_donations" />
+							<input type="hidden" name="business" value="5XXNV9Q7AGB2E" />
+							<input type="hidden" name="currency_code" value="EUR" />
+							<input type="image" src="https://www.paypalobjects.com/pt_PT/PT/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+							<img alt="" border="0" src="https://www.paypal.com/pt_PT/i/scr/pixel.gif" width="1" height="1" />
+						</form>
+						{% else %}
+						<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" class="text-center">
+							<input type="hidden" name="cmd" value="_donations" />
+							<input type="hidden" name="business" value="5XXNV9Q7AGB2E" />
+							<input type="hidden" name="currency_code" value="EUR" />
+							<input type="image" src="https://www.paypalobjects.com/fr_FR/FR/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+							<img alt="" border="0" src="https://www.paypal.com/fr_FR/i/scr/pixel.gif" width="1" height="1" />
+						</form>
+						{% endif %}
+					</nav>
+					
+					<nav class="sidebar">
+						<h1>{{ 'menu.left.Statistics'|trans }}</h1>
+					</nav>
+
+					<nav class="sidebar">
+						<h1>{{ 'menu.left.MemberArea'|trans }}</h1>
+						<ul>
+							{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+								{% if is_granted("ROLE_ADMIN") %}
+									<li><a href="{{ path('admin') }}">{{ 'menu.left.Admin'|trans }}</a></li>
+								{% endif %}
+								<li><a href="{{ path('user_show') }}">{{ 'menu.left.MyProfile'|trans }}</a></li>
+								<li><a href="{{ path('user_udpatepassword') }}">{{ 'menu.left.ChangeMyPassword'|trans }}</a></li>
+								<li><a href="{{ path('user_edit') }}">{{ 'menu.left.EditProfile'|trans }}</a></li>
+								<li><a href="{{ path('logout') }}">{{ 'menu.left.LogOut'|trans }}</a></li>
+							{% else %}
+								<li><a href="{{ path('login') }}" alt="">{{ 'menu.left.LogIn'|trans }}</a></li>
+								<li><a href="{{ path('user_new') }}" alt="">{{ 'menu.left.CreateAccount'|trans }}</a></li>
+							{% endif %}
+						</ul>
+					</nav>
+				</aside>
+				<!-- Another Sidebar Element Ends Here -->
+				<!-- Article Element Starts Here -->
+				<article id="contents">
+					<!-- Article's Header Element Starts Here -->
+					<header>
+						<h1>{% block main_title %}{{ 'main.index.WelcomeTo'|trans }}{% endblock %}</h1>
+					</header>
+					
+					{% for message in app.session.getFlashBag.get('message') %}
+						<div class="alert alert-success">{{ message }}</div>
+					{% endfor %}
+					
+					{% block main_content %}{% endblock %}
+					<div class="advert">
+					<p class="ad_title hidden_print">{{ 'menu.left.Publicity'|trans }}</p>
+					<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+					<!-- poeticus_down -->
+					<ins class="adsbygoogle"
+						 style="display:block"
+						 data-ad-client="ca-pub-1951906303386196"
+						 data-ad-slot="1788413344"
+						 data-ad-format="auto"></ins>
+					<script>
+					(adsbygoogle = window.adsbygoogle || []).push({});
+					</script></div>
+				</article>
+				<!-- Article Element Ends Here -->
+			</div>
+			<!-- Div wrapper2 ends here -->
+
+			<!-- Footer Element Starts Here -->
+			<footer id="copyrights">
+				<p>© {{ ("2019" == "now"|date("Y")) ? "2019" : "2019 - " ~ "now"|date("Y") }} <a href="{{ path('page_display', {'name' : 'copyright'}) }}">Quotus</a> by <a href="https://wakonda.guru">Wakonda.guru</a> - <a href="{{ path('page_display', {'name' : 'about'}) }}">{{ 'menu.footer.About'|trans }}</a> - <a href="{{ path('page_display', {'name' : 'privacyPolicy'}) }}">{{ 'menu.footer.PrivacyPolicy'|trans }}</a> - <a href="{{ path('contact') }}">{{ 'menu.footer.ContactUs'|trans }}</a></p>
+			</footer>
+			<!-- Footer Element Ends Here -->
+		</div>
+		<!-- Div Wrapper Element ends Here -->
+
+		<script src="{{ asset('css/bootstrap-4.2.1-dist/js/bootstrap.min.js') }}"></script>
+		<script src="{{ asset(minify_file('js/cookiechoices/cookiechoices.js')) }}"></script>
+		<script type="text/javascript">
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			ga('create', 'UA-12307735-4', 'auto');
+			ga('send', 'pageview');
+
+			$(function() {
+				cookieChoices.showCookieBar({
+					linkHref: '{{ path("page_display", {"name" : "cookie"}) }}',
+					language: 'fr'
+				});
+			});
+		</script>
+		
+		<script src="{{ asset(minify_file('js/BackToTop/BackToTop.js')) }}"></script>
+		<script>
+			// Resize "aside" and "article" tags
+			function resizeAsideArticle() {
+				var articleHeight = $("article#contents").height();
+				var asideHeight = $("aside#sidebar-wrapper").height();
+
+				if(asideHeight < articleHeight) {
+					$("article#contents").css("border-left", "1px solid #ccc");
+					$("aside").css("border-right", "none");
+				} else {
+					$("aside").css("border-right", "1px solid #ccc");
+					$("article#contents").css("border-left", "none");
+				}
+			}
+			
+			$(function() {
+				$(document).BackToTop();
+			});
+		</script>
+		{% block script_additional %}
+		{% endblock %}
+		
+		<script>
+			$(function() {
+				resizeAsideArticle();
+			});
+			
+			$( document ).ajaxComplete(function() {
+				resizeAsideArticle();
+			});
+
+			window.fbAsyncInit = function(){
+				FB.Event.subscribe("xfbml.render", function(){
+					resizeAsideArticle();
+				});
+			};
+		</script>
+	</body>
+</html>

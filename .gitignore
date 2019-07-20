@@ -1,0 +1,18 @@
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+/public/photo/biography/
+/public/photo/country/
+/public/photo/page/
+/public/photo/quote/
+/public/photo/source/
+/public/photo/user/
+/public/photo/store/
+/public/photo/version/

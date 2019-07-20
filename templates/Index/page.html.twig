@@ -1,0 +1,11 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ (entity is not null) ? entity.title : '' }}{% endblock %}
+{% block main_title %}{{ (entity is not null) ? entity.title : '' }}{% endblock %}
+
+{% block main_content %}
+	{% if entity is not null %}
+		<p class="text-center"><img src="{{ asset('photo/page/'~entity.photo) }}" alt="" /></p>
+		{{ entity.text|raw }}
+	{% endif %}
+{% endblock %}

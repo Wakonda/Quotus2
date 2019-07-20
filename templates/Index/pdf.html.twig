@@ -1,0 +1,76 @@
+<style type="text/css">
+<!--
+    table.page_footer {width: 100%; border: none; background-color: #ffffff; border-top: solid 0.3mm black; padding: 2mm}
+    h1, .image
+	{
+		color: #000033;
+		text-align: center;
+	}
+    h2 {color: #000055}
+    h3 {
+		color: #000077;
+		text-decoration: underline;
+		font-size: 17px;
+	}
+	
+	blockquote {
+		font-size: 37.5px;
+		font-style: italic;
+	}
+	
+	#header_title
+	{
+		font-family: "Script MT Bold", "Time New Roman", serif !important;
+	}
+
+	a {
+		color: black;
+		text-decoration: none;
+	}
+	
+	*
+	{
+		font-family: times;
+	}
+	
+	.quote {
+		vertical-align: middle;
+	}
+	
+	.s-left {
+		margin-right: 15px;
+	}	
+	.s-right {
+		margin-left: 15px;
+	}
+-->
+</style>
+
+<page backtop="14mm" backbottom="14mm" backleft="10mm" backright="10mm" style="font-size: 12pt">
+
+    <page_footer>
+        <table class="page_footer">
+            <tr>
+                <td style="width: 33%; text-align: left;">
+                    Proverbius
+                </td>
+                <td style="width: 34%; text-align: center">
+                    [[page_cu]]/[[page_nb]]
+                </td>
+                <td style="width: 33%; text-align: right">
+                    © Proverbius {{ ("2017" == "now"|date("Y")) ? "2017" : "2017 - " ~ "now"|date("Y") }}
+                </td>
+            </tr>
+        </table>
+    </page_footer>
+</page>
+
+<blockquote>
+{{ ("photo/left-quotes-sign.png")|max_size_image([], true) }}
+{{ entity.text|raw }}
+{{ ("photo/right-quotes-symbol.png")|max_size_image([], true) }}
+</blockquote>
+<hr>
+<p>
+<a href="{{ path('country', {'id' : entity.country.id, 'slug' : entity.country.slug }) }}" alt=""><img class="flag" src="photo/country/{{ entity.country.flag }}" alt="" height="8" /> Proverbe - {{ entity.country.title }}</a>
+</p>

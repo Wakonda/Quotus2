@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="jquery.tweetHighlighted.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                $('p').tweetHighlighted({
+                             // html node to use as the 'Tweet' button
+                             node: '<a href="#"><img src="tweet.png" width="90px" height="30px" alt="tweet icon"></a>',
+                             // class attribute to attach to the node
+                             cssClass: 'btn btn-primary',
+                             // minimum length of selected text needed to show the 'Tweet' button
+                             minLength: 6,
+                             // maximum length of selected text after which the 'Tweet' button is not shown
+                             maxLength: 144 * 2,
+                             // any extra string to attach to every tweet (mostly used to attach urls)
+                             extra: '-- http://gitub.com/aterkik/jquery-tweet-highlighted',
+                             // twitter 'via' handle (basically appends 'via @twitterhandle' to the tweet)
+                             via: 'twitterhandle',
+                             // arguments to pass to the window.open() function
+                             popupArgs: 'width=600,height=600,toolbar=0,location=0'
+                });
+          });
+        </script>
+    </head>
+    <body>
+        <h3>Test Blurb</h3>
+        <p>Here is some really nice text people might like to tweet.
+           Select some part of the text to tweet this.</p>
+    </body>
+</html>

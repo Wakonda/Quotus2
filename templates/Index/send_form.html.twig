@@ -1,0 +1,69 @@
+{% form_theme form 'Form/fields.html.twig' %}
+
+<script type="text/javascript">
+	tinymce.init({
+		selector:'#{{ form.message.vars.id }}',
+		height: 150,
+		menubar: false,
+		language: "{{ code_by_language(app.request.locale) }}",
+		statusbar: false,
+		plugins: [
+			'lists link image charmap textcolor media'
+		],
+		toolbar: 'bold italic underline | forecolor backcolor | alignleft aligncenter alignright alignjustify | link image | undo redo |',
+		setup: function (editor) {
+			editor.on('change', function () {
+				tinymce.triggerSave();
+			});
+		}
+	});
+</script>
+
+{{ form_start(form, {'method' : 'post', 'action' : '' , 'attr': {'novalidate': 'novalidate', 'id': 'send_form'} }) }}
+	<div class="modal-body">
+		<div class="alert alert-info" role="alert">
+			<strong><i class="fa fa-info-circle" aria-hidden="true"></i> Infos</strong> - {{ "send.index.AutomaticallyAddedPost"|trans }}
+		</div>
+		<div class="form-group row">
+			{{ form_label(form.firstName, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+			<div class="col-sm-10">
+				{{ form_errors(form.firstName) }}{{ form_widget(form.firstName, {'attr':{'class':'form-control'}}) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			{{ form_label(form.lastName, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+			<div class="col-sm-10">
+				{{ form_errors(form.lastName) }}{{ form_widget(form.lastName, {'attr':{'class':'form-control'}}) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			{{ form_label(form.yourMail, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+			<div class="col-sm-10">
+				{{ form_errors(form.yourMail) }}{{ form_widget(form.yourMail, {'attr':{'class':'form-control'}}) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			{{ form_label(form.recipientMail, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+			<div class="col-sm-10">
+				{{ form_errors(form.recipientMail) }}{{ form_widget(form.recipientMail, {'attr':{'class':'form-control'}}) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			{{ form_label(form.subject, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+			<div class="col-sm-10">
+				{{ form_errors(form.subject) }}{{ form_widget(form.subject, {'attr':{'class':'form-control'}}) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			{{ form_label(form.message, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+			<div class="col-sm-10">
+				{{ form_errors(form.message) }}{{ form_widget(form.message, {'attr':{'class':'text form-control'}}) }}
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> {{ 'send.field.Close'|trans }}</button>
+		{{ form_widget(form.send, {'icon': 'fa-send'}) }}
+	</div>
+	{{ form_rest(form) }}
+{{ form_end(form) }}

@@ -1,0 +1,3 @@
+{% trans with {'%username%': entity.username, '%urlLogin%': url('login')~"?t="~entity.token, "%expiredAt%": entity.expiredAt|date('d/m/Y à H:i'), "%urlIndex%": url('index') } %}
+	user.confirmation.Email
+{% endtrans %}

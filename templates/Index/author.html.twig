@@ -1,0 +1,97 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ entity.title }}{% endblock %}
+{% block main_title %}{{ entity.title }}{% endblock %}
+
+{% block style_additional %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('js/DataTables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css') }}" media="screen" />
+	<link rel="stylesheet" type="text/css" href="{{ asset('js/DataTables/Responsive-2.2.2/css/responsive.bootstrap.min.css') }}" media="screen" />
+{% endblock %}
+{% block script_additional %}
+	<script src="{{ asset('js/DataTables/datatables.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('js/DataTables/DataTables-1.10.18/js/dataTables.bootstrap4.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('js/DataTables/Responsive-2.2.2/js/dataTables.responsive.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('js/DataTables/Responsive-2.2.2/js/responsive.bootstrap.min.js') }}"></script>
+	
+	<script type="text/javascript">
+		$(function ()
+		{
+			$('table.index_author_store').dataTable( {
+				{% if app.request.locale != 'en' %}
+				"oLanguage": {
+					"sUrl": "{{ asset('js/DataTables/language/dataTables.'~app.request.locale) }}.txt"
+				},
+				{% endif %}
+				"bFilter": false,
+				"bInfo": false,
+				"bSort": true,
+				"bPaginate": false,
+				"autoWidth": false,
+				"bLengthChange": false
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block main_content %}
+	<p class="text-center">{{ ("photo/biography/"~entity.photo)|max_size_image() }}</p>
+	<br>
+	{{ entity.text|raw }}
+	<table class="show">
+		{% if entity.dayBirth is not null or entity.monthBirth is not null or entity.yearBirth is not null %}
+			<tr>
+			<th><span class="font-weight-bold">{{ 'biography.field.BirthDate'|trans }} : </span></th>
+			<td>
+			{% if entity.dayBirth is not null and entity.monthBirth is not null and entity.yearBirth is not null %}
+				{{ (entity.yearBirth~"-"~entity.monthBirth~"-"~entity.dayBirth)|date_letter(app.request.locale) }}
+			{% elseif entity.monthBirth is not null and entity.yearBirth is not null %}
+				{{ entity.monthBirth|text_month(entity.yearBirth) }}
+			{% else %}
+				{{ entity.yearBirth }}
+			{% endif %}
+			</td>
+			</tr>
+		{% endif %}
+		{% if entity.dayDeath is not null or entity.monthDeath is not null or entity.yearDeath is not null %}
+			<tr>
+			<th><span class="font-weight-bold">{{ 'biography.field.DeathDate'|trans }} : </span></th>
+			<td>
+			{% if entity.dayDeath is not null and entity.monthDeath is not null and entity.yearDeath is not null %}
+				{{ (entity.dayDeath~"-"~entity.monthDeath~"-"~entity.yearDeath)|date_letter(app.request.locale) }}
+			{% elseif entity.monthDeath is not null and entity.yearDeath is not null %}
+				{{ entity.monthDeath|text_month(entity.yearDeath) }}
+			{% else %}
+				{{ entity.yearDeath }}
+			{% endif %}
+			</td>
+			</tr>
+		{% endif %}
+		
+		{% if entity.country is not empty %}
+			<tr><th><span class="font-weight-bold">{{ 'biography.field.Nationality'|trans }} : </span></th><td><img class="flag" src="{{ asset('photo/country/'~entity.country.flag) }}" /> {{ entity.country.title }}</td></tr>
+		{% endif %}
+	</table>
+	
+	{% if stores is not empty %}
+	<h2>{{ 'store.index.Store'|trans }}</h2>
+	<table class="index_author_store table table-striped table-bordered dt-responsive">
+		<thead>
+			<tr>
+				<th>{{ 'store.author.Title'|trans }}</th>
+				<th>{{ 'store.author.Action'|trans }}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for store in stores %}
+			<tr>
+				<td><p class="text-center font-weight-bold">{{ store.title }}</p>{% if store.photo is not empty %}<p class="text-center">{{ ("photo/store/"~store.photo)|max_size_image() }}</p>{% endif %}</td>
+				<td>
+				    <a href="{{ path('read_store', {'id': store.id, 'slug': store.slug}) }}" class="btn btn-info"><i class="fa fa-plus" aria-hidden="true"></i></a>
+				    <a href="{{ store.getExternalStoreLink() }}" class="btn btn-success" target="_blank"><i class="fa fa-shopping-basket" aria-hidden="true"></i></a>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% endif %}
+{% endblock %}

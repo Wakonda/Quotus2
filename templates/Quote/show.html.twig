@@ -1,0 +1,200 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Quote'|trans }}{% endblock %}
+{% block main_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Quote'|trans }}{% endblock %}
+
+{% block main_content %}
+	<table class="table table-bordered admin_show">
+		<tr>
+			<th>{{ "admin.quote.Text"|trans }}</th>
+			<td>{{ entity.text }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.form.Language"|trans }}</th>
+			<td>{{ entity.language.title }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.quote.Biography"|trans }}</th>
+			<td>{{ entity.biography }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.quote.Source"|trans }}</th>
+			<td>{{ entity.source }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.form.Slug"|trans }}</th>
+			<td>{{ entity.slug }}</td>
+		</tr>
+		<tr>
+			<th>{{ 'admin.imageGenerator.Image'|trans }}</th>
+			<td>
+				{% if entity.quoteImages is not empty %}
+					{% for quoteImage in entity.quoteImages %}
+						<div>
+							{{ ("photo/quote/"~quoteImage.image)|max_size_image() }}
+							&nbsp;
+							<a class="btn btn-danger" href="{{ path('quoteadmin_remove_image', {'id' : entity.id, 'quoteImageId': quoteImage.id}) }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+						</div>
+						<div class="input-group mt-3">
+							<input class="form-control" id="url_image_{{ quoteImage.id }}" value="{{ url('read', {id: quoteImage.quote.id, slug: quoteImage.quote.slug, idImage: quoteImage.id}) }}">
+							<div class="input-group-append">
+								<button class="btn btn-outline-secondary copy" type="button" data-clipboard-target="#url_image_{{ quoteImage.id }}">
+								<i class="fa fa-clipboard" aria-hidden="true"></i>
+								</button>
+							</div>
+						</div>
+						<hr>
+					{% endfor %}
+				{% endif %}
+			</td>
+		</tr>
+	</table>
+	<hr>
+	<div class="card">
+		<div class="card-header" role="tab" id="headingImageGenerator">
+			<a href="#" role="button" data-toggle="collapse" data-target="#collapseImageGenerator" aria-expanded="true" aria-controls="collapseOne">
+			<i class="fa fa-picture-o" aria-hidden="true"></i> {{ 'admin.imageGenerator.GenerateAnImage'|trans }}
+			</a>
+		</div>
+		<div id="collapseImageGenerator" class="collapse" aria-labelledby="headingImageGenerator" aria-expanded="true">
+			<div class="card-body">
+				{{ form_start(imageGeneratorForm, {'action': path('quoteadmin_save_image', {'id': entity.id})}) }}
+					<div class="form-group row">
+						{{ form_label(imageGeneratorForm.version, null, {'label_attr': {'class': "col-sm-2 col-form-label"}}) }}
+						<div class="col-sm-10">
+							{{ form_widget(imageGeneratorForm.version, {'attr': {'class': 'form-control'}}) }}
+						</div>
+					</div>
+					<div class="form-group row">
+						{{ form_label(imageGeneratorForm.image, null, {'label_attr': {'class': "col-sm-2 col-form-label"}}) }}
+						<div class="col-sm-10">
+							{{ form_widget(imageGeneratorForm.image, {'attr': {'class': 'form-control'}}) }}
+						</div>
+					</div>
+					<div class="form-group row">
+						{{ form_label(imageGeneratorForm.font_size, null, {'label_attr': {'class': "col-sm-2 col-form-label"}}) }}
+						<div class="col-sm-10">
+							{{ form_widget(imageGeneratorForm.font_size, {'attr': {'class': 'form-control'}}) }}
+						</div>
+					</div>
+					<div class="form-group row">
+						{{ form_label(imageGeneratorForm.invert_colors, null, {'label_attr': {'class': "col-sm-2 col-form-label"}}) }}
+						<div class="col-sm-10">
+							{{ form_widget(imageGeneratorForm.invert_colors) }}
+						</div>
+					</div>
+					<div class="text-right">
+					{{ form_row(imageGeneratorForm.save) }}
+					</div>
+				{{ form_end(imageGeneratorForm) }}
+			</div>
+		</div>
+	</div>
+	
+	<div class="card mt-2">
+		<div class="card-header" role="tab" id="headingTwitter">
+			<a href="#" role="button" data-toggle="collapse" data-target="#collapseTwitter" aria-expanded="true" aria-controls="collapseOne">
+			<i class="fa fa-twitter-square" aria-hidden="true"></i> Twitter
+			</a>
+		</div>
+		<div id="collapseTwitter" class="collapse" aria-labelledby="headingTwitter" aria-expanded="true">
+			<div class="card-body">
+				<form action="{{ path('quoteadmin_twitter', {'id': entity.id}) }}" method="post">
+					<label for="addImage"> <input type="checkbox" id="addImage"> {{ 'admin.socialNetwork.AddAnImage'|trans }}</label>
+					<div class="row d-none mb-3" id="image_container">
+						{% for quoteImage in entity.quoteImages %}
+							<div class="col-md-4 mb-10"><div class="thumbnail" role="button"><img src="{{ absolute_url(asset('photo/quote/'~quoteImage.image)) }}" data-id="{{ quoteImage.id }}"></div></div>
+						{% endfor %}
+					</div>
+					<input type="hidden" name="image_id_tweet" id="image_tweet">
+					<textarea id="twitter_area" name="twitter_area" rows="3" cols="70" class="form-control">{{ entity.text|raw }} #{{ ('admin.index.Quote'|trans)|lower }}</textarea>
+					<br>
+					<input value="{{ 'admin.socialNetwork.Send'|trans }}" id="tweet" type="submit" class="btn btn-outline-secondary">
+				</form>
+			</div>
+		</div>
+	</div>
+
+	{% if entity.quoteImages is not empty %}
+	<div class="card mt-2">
+		<div class="card-header" role="tab" id="headingPinterest">
+			<a href="#" role="button" data-toggle="collapse" data-target="#collapsePinterest" aria-expanded="true" aria-controls="collapseOne">
+			<i class="fa fa-pinterest" aria-hidden="true"></i> Pinterest
+			</a>
+		</div>
+		<div id="collapsePinterest" class="collapse" aria-labelledby="headingTwitter" aria-expanded="true">
+			<div class="card-body">
+				<form action="{{ path('quoteadmin_pinterest', {'id': entity.id}) }}" method="post">
+					<div class="row mb-3">
+						{% for quoteImage in entity.quoteImages %}
+							<div class="col-md-4 mb-10"><div class="thumbnail" role="button"><img src="{{ absolute_url(asset('photo/quote/'~quoteImage.image)) }}" data-id="{{ quoteImage.id }}"></div></div>
+						{% endfor %}
+					</div>
+					<input type="hidden" name="image_id_pinterest" id="image_pinterest">
+					<textarea id="pinterest_area" name="pinterest_area" rows="3" cols="70" class="form-control">{{ entity.text|raw }}</textarea>
+					<br>
+					<input value="{{ 'admin.socialNetwork.Send'|trans }}" id="tweet" type="submit" class="btn btn-outline-secondary">
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="card mt-2">
+		<div class="card-header role="tab" id="headingFacebook">
+			<a href="#" role="button" data-toggle="collapse" data-target="#collapseFacebook" aria-expanded="true" aria-controls="collapseOne">
+			<i class="fa fa-facebook-square" aria-hidden="true"></i> Facebook
+			</a>
+		</div>
+		<div id="collapseFacebook" class="collapse" aria-labelledby="headingFacebook" aria-expanded="true">
+			<div class="card-body">
+				<form action="{{ path('quoteadmin_facebook', {'id': entity.id}) }}" method="post">
+					<div class="row mb-3">
+						{% for quoteImage in entity.quoteImages %}
+							<div class="col-md-4 mb-10"><div class="thumbnail" role="button"><img src="{{ absolute_url(asset('photo/quote/'~quoteImage.image)) }}" data-id="{{ quoteImage.id }}"></div></div>
+						{% endfor %}
+					</div>
+					<input type="hidden" name="image_id_facebook" id="image_facebook">
+					<textarea id="twitter_area" name="facebook_area" rows="3" cols="70" class="form-control">{{ entity.text|raw }} #quotee</textarea>
+					<br>
+					<input value="{{ 'admin.socialNetwork.Send'|trans }}" id="tweet" type="submit" class="btn btn-outline-secondary">
+				</form>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+	<hr>
+	<a href="{{ path('quoteadmin_index') }}"><i class="fa fa-list"></i> {{ 'admin.index.List'|trans }}</a> - <a href="{{ path('quoteadmin_edit', { 'id' : entity.id }) }}"><i class="fa fa-edit"></i> {{ 'admin.index.Update'|trans }}</a> - <a href="{{ path('quoteadmin_new') }}"><i class="fa fa-plus-square"></i> {{ 'admin.index.Create'|trans }}</a>
+{% endblock %}
+
+{% block script_additional %}
+	<script src="{{ asset('js/clipboard.js/clipboard.min.js') }}"></script>
+	<script type="text/javascript">
+		new ClipboardJS('.copy');
+		$(function() {
+			// Twitter
+			$("div#collapseTwitter input#addImage").click(function() {
+				$("div#collapseTwitter #image_container").toggleClass('d-none');
+			});
+		
+			$("div#collapseTwitter div#image_container .thumbnail img").click(function() {
+				$("div#collapseTwitter div#image_container .thumbnail img").removeAttr("style");
+				$(this).css({"border-color": "#eca7a7"});
+				$("#image_tweet").val($(this).data("id"));
+			});
+			
+			// Pinterest
+			$("div#collapsePinterest .thumbnail img").click(function() {
+				$("div#collapsePinterest .thumbnail img").removeAttr("style");
+				$(this).css({"border-color": "#eca7a7"});
+				$("#image_pinterest").val($(this).data("id"));
+			});
+			
+			// Facebook
+			$("div#collapseFacebook .thumbnail img").click(function() {
+				$("div#collapseFacebook .thumbnail img").removeAttr("style");
+				$(this).css({"border-color": "#eca7a7"});
+				$("#image_facebook").val($(this).data("id"));
+			});
+		});
+	</script>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Source'|trans }}{% endblock %}
+{% block main_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Source'|trans }}{% endblock %}
+
+{% block main_content %}
+	<table class="table table-bordered admin_show">
+		<tr>
+			<th>{{ "admin.source.Title"|trans }}</th>
+			<td>{{ entity.title }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.source.Text"|trans }}</th>
+			<td>{{ entity.text }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.source.Type"|trans }}</th>
+			<td>{{ ("source.type."~(entity.type|capitalize))|trans }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.source.Photo"|trans }}</th>
+			<td><img src="{{ asset('photo/source/'~entity.photo) }}" alt="" /></td>
+		</tr>
+		<tr>
+			<th>{{ "admin.source.FictionalCharacters"|trans }}</th>
+			<td>
+			{% if entity.fictionalCharacters is not empty %}
+				<ul>
+				{% for fictionalCharacter in entity.fictionalCharacters %}
+					<li>{{ fictionalCharacter.title }}</li>
+				{% endfor %}
+				</ul>
+			{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.source.Authors"|trans }}</th>
+			<td>
+			{% if entity.authors is not empty %}
+				<ul>
+				{% for author in entity.authors %}
+					<li>{{ author.title }}</li>
+				{% endfor %}
+				</ul>
+			{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.form.Language"|trans }}</th>
+			<td>{{ entity.language.title }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.form.Slug"|trans }}</th>
+			<td>{{ entity.slug }}</td>
+		</tr>
+	</table>
+	<hr>
+	<a href="{{ path('sourceadmin_index') }}"><i class="fa fa-list"></i> {{ 'admin.index.List'|trans }}</a> - <a href="{{ path('sourceadmin_edit', { 'id' : entity.id }) }}"><i class="fa fa-edit"></i> {{ 'admin.index.Update'|trans }}</a> - <a href="{{ path('sourceadmin_new') }}"><i class="fa fa-plus-square"></i> {{ 'admin.index.Create'|trans }}</a>
+{% endblock %}

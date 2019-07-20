@@ -1,0 +1,42 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}Widget{% endblock %}
+
+{% block script_additional %}
+	<script src="{{ asset('js/clipboard.js/clipboard.min.js') }}"></script>
+	<script type="text/javascript">
+		$(function()
+		{
+			var clipboard = new ClipboardJS('.clip_button');
+
+			clipboard.on('success', function(e) {
+				$("#success_copy").addClass("alert alert-success");
+				$("#success_copy span").text("{{ 'widget.random.TheCodeHasBeenCopiedSuccessfully'|trans }}");
+				setTimeout(fade_out, 5000);
+			});
+
+			var fade_out = function() {
+				$("#success_copy").removeClass("alert alert-success");
+				$("#success_copy span").empty();
+			}
+		});
+	</script>
+{% endblock %}
+
+{% block main_title %}{{ 'widget.random.IncorporateProverbsIntoYourWebsite'|trans }}{% endblock %}
+
+{% block style_additional %}
+{% endblock %}
+
+{% block main_content %}
+	<h3>{{ 'widget.random.AProverbAtRandom'|trans }}</h3>
+	<div id="success_copy"><span></span></div>
+	<textarea class="form-control" id="embedded_document" cols="65" rows="4"><iframe src="{{ url('widget', {'locale': app.request.locale}) }}" frameborder=0 style="width: 100%;" onload="this.style.height=this.contentDocument.body.scrollHeight +'px';"></iframe></textarea>
+	<br>
+	<button type="button" id="copy-button" class="btn btn-success vertical submitcomment clip_button" data-clipboard-action="copy"data-clipboard-target="#embedded_document" title="Click to copy me."><i class="fa fa-clipboard" aria-hidden="true"></i> {{ 'widget.random.Copy'|trans }}</button>
+
+	<h4 class="mt-4">{{ 'widget.random.Preview'|trans }}</h4>
+	<div>
+	<iframe src="{{ url('widget') }}" frameborder=0 style="width: 100%;" onload="this.style.height=this.contentDocument.body.scrollHeight +'px';"></iframe>
+	</div>
+{% endblock %}

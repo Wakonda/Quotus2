@@ -1,0 +1,393 @@
+index:
+    path: /
+    controller: App\Controller\IndexController::indexAction
+
+read:
+    path: /read/{id}/{slug}/{idImage}
+    controller: App\Controller\IndexController::readAction
+    defaults:
+        slug: null
+        idImage: null
+
+page_display:
+    path: /page/{name}
+    controller: App\Controller\IndexController::pageAction
+
+admin:
+    path: /admin
+    controller: App\Controller\AdminController::indexAction
+
+get_countries_by_language:
+    path: /get_countries_by_language
+    controller: App\Controller\CountryAdminController::getCountriesByLanguageAction
+
+# CAPTCHA
+captcha:
+    path: /captcha
+    controller: App\Controller\IndexController::reloadCaptchaAction
+
+# GRAVATAR
+gravatar:
+    path: /gravatar
+    controller: App\Controller\IndexController::reloadGravatarAction
+
+# USER
+login:
+    path: /user/login
+    controller: App\Controller\UserController::loginAction
+
+logout:
+    path: /logout
+
+list:
+    path: /user/list
+    controller: App\Controller\UserController::listAction
+
+user_show:
+    path: /user/show/{username}
+    controller: App\Controller\UserController::showAction
+    defaults:
+        username: null
+
+user_new:
+    path: /user/new
+    controller: App\Controller\UserController::newAction
+
+user_create:
+    path: /user/create
+    controller: App\Controller\UserController::createAction
+
+user_edit:
+    path: /user/edit/{id}
+    controller: App\Controller\UserController::editAction
+    defaults:
+        id: false
+
+user_update:
+    path: /user/update/{id}
+    controller: App\Controller\UserController::updateAction
+    defaults:
+        id: false
+
+user_udpatepassword:
+    path: /user/updatepassword
+    controller: App\Controller\UserController::updatePasswordAction
+
+user_updatepasswordsave:
+    path: /user/updatepasswordsave
+    controller: App\Controller\UserController::updatePasswordSaveAction
+
+user_forgottenpassword:
+    path: /user/forgottenpassword
+    controller: App\Controller\UserController::forgottenPasswordAction
+
+user_forgottenpasswordsend:
+    path: /user/forgottenpasswordsend
+    controller: App\Controller\UserController::forgottenPasswordSendAction
+
+# ADMIN AJAX
+vote_datatables:
+    path: /user/vote_datatables/{username}
+    controller: App\Controller\UserController::votesUserDatatablesAction
+
+comment_datatables:
+    path: /user/comment_datatables/{username}
+    controller: App\Controller\UserController::commentsUserDatatablesAction
+
+# SITEMAP
+sitemap:
+    path: /sitemap.xml
+    controller: App\Controller\SiteMapController::sitemapAction
+
+generate_sitemap:
+    path: /generate_sitemap
+    controller: App\Controller\SiteMapController::generateAction
+
+# CONTACT
+contact:
+    path: /contact
+    controller: App\Controller\ContactController::indexAction
+
+contact_send:
+    path: /contact_send
+    controller: App\Controller\ContactController::sendAction
+
+# ADMIN QUOTEIMAGE
+quoteimageadmin_index:
+    path: /admin/quote_image/index
+    controller: App\Controller\QuoteImageAdminController::indexAction
+
+poemimageadmin_indexdatatables:
+    path: /admin/poem_image/indexdatatables
+    controller: App\Controller\PoemImageAdminController::indexDatatablesAction
+
+# ADMIN COUNTRY
+countryadmin_index:
+    path: /admin/country/index
+    controller: App\Controller\CountryAdminController::indexAction
+
+countryadmin_indexdatatables:
+    path: /admin/country/indexdatatables
+    controller: App\Controller\CountryAdminController::indexDatatablesAction
+
+countryadmin_new:
+    path: /admin/country/new
+    controller: App\Controller\CountryAdminController::newAction
+
+countryadmin_create:
+    path: /admin/country/create
+    controller: App\Controller\CountryAdminController::createAction
+
+countryadmin_show:
+    path: /admin/country/show/{id}
+    controller: App\Controller\CountryAdminController::showAction
+
+countryadmin_edit:
+    path: /admin/country/edit/{id}
+    controller: App\Controller\CountryAdminController::editAction
+
+countryadmin_update:
+    path: /admin/country/upate/{id}
+    controller: App\Controller\CountryAdminController::updateAction
+    
+# ADMIN BIOGRAPHY
+biographyadmin_index:
+    path: /admin/biography/index
+    controller: App\Controller\BiographyAdminController::indexAction
+
+biographyadmin_indexdatatables:
+    path: /admin/biography/indexdatatables
+    controller: App\Controller\BiographyAdminController::indexDatatablesAction
+
+biographyadmin_new:
+    path: /admin/biography/new
+    controller: App\Controller\BiographyAdminController::newAction
+
+biographyadmin_create:
+    path: /admin/biography/create
+    controller: App\Controller\BiographyAdminController::createAction
+
+biographyadmin_show:
+    path: /admin/biography/show/{id}
+    controller: App\Controller\BiographyAdminController::showAction
+
+biographyadmin_edit:
+    path: /admin/biography/edit/{id}
+    controller: App\Controller\BiographyAdminController::editAction
+
+biographyadmin_update:
+    path: /admin/biography/upate/{id}
+    controller: App\Controller\BiographyAdminController::updateAction
+
+# ADMIN PAGE
+pageadmin_index:
+    path: /admin/page/index
+    controller: App\Controller\PageAdminController::indexAction
+
+pageadmin_indexdatatables:
+    path: /admin/page/indexdatatables
+    controller: App\Controller\PageAdminController:indexDatatablesAction
+
+pageadmin_new:
+    path: /admin/page/new
+    controller: App\Controller\PageAdminController::newAction
+
+pageadmin_create:
+    path: /admin/page/create
+    controller: App\Controller\PageAdminController::createAction
+
+pageadmin_show:
+    path: /admin/page/show/{id}
+    controller: App\Controller\PageAdminController::showAction
+
+pageadmin_edit:
+    path: /admin/page/edit/{id}
+    controller: App\Controller\PageAdminController::editAction
+
+pageadmin_update:
+    path: /admin/page/upate/{id}
+    controller: App\Controller\PageAdminController::updateAction
+
+pageadmin_upload_image_mce:
+    path: /admin/page/upload_image_mce
+    controller: App\Controller\PageAdminController::uploadImageMCEAction
+
+# ADMIN STORE
+storeadmin_index:
+    path: /admin/store/index
+    controller: App\Controller\StoreAdminController::indexAction
+
+storeadmin_indexdatatables:
+    path: /admin/store/indexdatatables
+    controller: App\Controller\StoreAdminController::indexDatatablesAction
+
+storeadmin_new:
+    path: /admin/store/new
+    controller: App\Controller\StoreAdminController::newAction
+
+storeadmin_create:
+    path: /admin/store/create
+    controller: App\Controller\StoreAdminController::createAction
+
+storeadmin_show:
+    path: /admin/store/show/{id}
+    controller: App\Controller\StoreAdminController::showAction
+
+storeadmin_edit:
+    path: /admin/store/edit/{id}
+    controller: App\Controller\StoreAdminController::editAction
+
+storeadmin_update:
+    path: /admin/store/upate/{id}
+    controller: App\Controller\StoreAdminController::updateAction
+
+# ADMIN CONTACT FORM
+contactadmin_index:
+    path: /admin/contact/index
+    controller: App\Controller\ContactAdminController::indexAction
+
+contactadmin_indexdatatables:
+    path: /admin/contact/indexdatatables
+    controller: App\Controller\ContactAdminController::indexDatatablesAction
+
+contactadmin_show:
+    path: /admin/contact/show/{id}
+    controller: App\Controller\ContactAdminController::showAction
+    
+# ADMIN USER
+useradmin_index:
+    path: /admin/user/index
+    controller: App\Controller\UserAdminController::indexAction
+
+useradmin_indexdatatables:
+    path: /admin/user/indexdatatables
+    controller: App\Controller\UserAdminController::indexDatatablesAction
+
+useradmin_show:
+    path: /admin/user/show/{id}
+    controller: App\Controller\UserAdminController::showAction
+
+useradmin_enabled:
+    path: /admin/user/enabled/{id}/{state}
+    controller: App\Controller\UserControlleradmin:enabledAction
+
+# ADMIN BACKUP
+backupadmin_index:
+    path: /admin/backup/index
+    controller: App\Controller\BackupAdminController::indexAction
+
+backupadmin_download:
+    path: /admin/backup/download/{filename}
+    controller: App\Controller\BackupAdminController::downloadAction
+
+backupadmin_delete:
+    path: /admin/backup/delete/{filename}
+    controller: App\Controller\BackupAdminController::deleteAction
+
+backupadmin_generate:
+    path: /admin/backup/generate
+    controller: App\Controller\BackupAdminController::generateAction
+
+# ADMIN QUOTE
+quoteadmin_index:
+    path: /admin/quote/index
+    controller: App\Controller\QuoteAdminController::indexAction
+
+quoteadmin_indexdatatables:
+    path: /admin/quote/indexdatatables
+    controller: App\Controller\QuoteAdminController::indexDatatablesAction
+
+quoteadmin_new:
+    path: /admin/quote/new/{biographyId}/{collectionId}
+    controller: App\Controller\QuoteAdminController::newAction
+    requirements:
+        biographyId: \d+
+        collectionId: \d+
+    defaults:
+        biographyId: null
+        collectionId: null
+
+quoteadmin_create:
+    path: /admin/quote/create
+    controller: App\Controller\QuoteAdminController::createAction
+
+quoteadmin_show:
+    path: /admin/quote/show/{id}
+    controller: App\Controller\QuoteAdminController::showAction
+
+quoteadmin_edit:
+    path: /admin/quote/edit/{id}
+    controller: App\Controller\QuoteAdminController::editAction
+
+quoteadmin_update:
+    path: /admin/quote/upate/{id}
+    controller: App\Controller\QuoteAdminController::updateAction
+
+quoteadmin_newfastmultiple:
+    path: /admin/quote/newfastmultiple
+    controller: App\Controller\QuoteAdminController::newFastMultipleAction
+
+quoteadmin_addfastmultiple:
+    path: /admin/quote/addfastmultiple
+    controller: App\Controller\QuoteAdminController::addFastMultipleAction
+
+quoteadmin_getbiographiesbyajax:
+    path: /admin/quote/get_biographies
+    controller: App\Controller\QuoteAdminController::getBiographiesByAjaxAction
+
+quoteadmin_getsourcesbyajax:
+    path: /admin/quote/get_sources
+    controller: App\Controller\QuoteAdminController::getSourcesByAjaxAction
+
+quoteadmin_twitter:
+    path: /admin/quote/twitter/{id}
+    controller: App\Controller\QuoteAdminController::twitterAction
+
+quoteadmin_pinterest:
+    path: /admin/quote/pinterest/{id}
+    controller: App\Controller\QuoteAdminController::pinterestAction
+
+quoteadmin_facebook:
+    path: /admin/proverb/facebook/{id}
+    controller: App\Controller\QuoteAdminController::facebookAction
+
+quoteadmin_save_image:
+    path: /admin/quote/saveimage/{id}
+    controller: App\Controller\QuoteAdminController:saveImageAction
+
+quoteadmin_remove_image:
+    path: /admin/quote/removeimage/{id}/{quoteImageId}
+    controller: App\Controller\QuoteAdminController:removeImageAction
+
+# ADMIN SOURCE
+sourceadmin_index:
+    path: /admin/source/index
+    controller: App\Controller\SourceAdminController::indexAction
+
+sourceadmin_indexdatatables:
+    path: /admin/source/indexdatatables
+    controller: App\Controller\SourceAdminController::indexDatatablesAction
+
+sourceadmin_new:
+    path: /admin/source/new
+    controller: App\Controller\SourceAdminController::newAction
+
+sourceadmin_create:
+    path: /admin/source/create
+    controller: App\Controller\SourceAdminController::createAction
+
+sourceadmin_show:
+    path: /admin/source/show/{id}
+    controller: App\Controller\SourceAdminController::showAction
+
+sourceadmin_edit:
+    path: /admin/source/edit/{id}
+    controller: App\Controller\SourceAdminController::editAction
+
+sourceadmin_update:
+    path: /admin/source/upate/{id}
+    controller: App\Controller\SourceAdminController::updateAction
+
+sourceadmin_getbiographiesbyajax:
+    path: /admin/source/get_biographies
+    controller: App\Controller\SourceAdminController::getBiographiesByAjaxAction

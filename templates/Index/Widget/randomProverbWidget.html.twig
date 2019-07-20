@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<style>
+		body {
+			overflow: hidden;
+			cursor: pointer;
+		}
+		
+		blockquote::before {
+			content: "\201C";
+			font-family: Georgia,serif;
+			font-size: 60px;
+			font-weight: 700;
+			color: #999;
+			position: absolute;
+			left: 10px;
+			top: 5px;
+		}
+		
+		blockquote {
+			font-size: 17.5px;
+			border-left: 5px solid #eee;
+			display: block;
+			background: #fff;
+			padding: 15px 20px 15px 45px!important;
+			margin: 0 0 20px;
+			position: relative;
+			font-family: Georgia,serif;
+			line-height: 1.2;
+			color: #666;
+			text-align: justify;
+			-moz-box-shadow: 2px 2px 15px #ccc;
+			-webkit-box-shadow: 2px 2px 15px #ccc;
+			box-shadow: 2px 2px 15px #ccc;
+		}
+		
+		.country {
+			text-align: right;
+			font-style: italic;
+			font-size: 12px;
+		}
+		
+		.country img {
+			vertical-align: text-top;
+		}
+		</style>
+	</head>
+	<body onclick="parent.location='https://proverbius.wakonda.guru/';">
+		<blockquote>
+		{{ proverb.text|raw }}
+		<p class="country"><img id="flag_title" class="flag" src="{{ asset('photo/country/'~proverb.country.flag) }}" width="20" /> {{ "widget.random.Proverb"|trans }} - {{ proverb.country.title }}</p>
+		</blockquote>
+	</body>
+</html>

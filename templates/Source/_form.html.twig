@@ -1,0 +1,54 @@
+{% import "Index/macro.html.twig" as macro %}
+
+<div class="form-group row">
+	{{ form_label(form.title, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.title) }}{{ form_widget(form.title, {'attr':{'class':'form-control'}}) }}
+	</div>
+</div>
+
+<div class="form-group row">
+	{{ form_label(form.text, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.text) }}{{ form_widget(form.text, {'attr':{'class':'form-control redactor'}}) }}
+	</div>
+</div>
+
+<div class="form-group row">
+	{{ form_label(form.type, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.type) }}{{ form_widget(form.type, {'attr':{'class':'form-control'}}) }}
+	</div>
+</div>
+
+<div class="form-group row">
+	{{ form_label(form.language, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.language) }}{{ form_widget(form.language, {'attr':{'class':'form-control'}}) }}
+	</div>
+</div>
+
+<div class="form-group row">
+	{{ form_label(form.photo, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.photo) }}{% if entity.photo is defined and entity.photo is not empty %}{{ macro.currentImage("photo/biography/", entity.photo) }}{% endif %}{{ form_widget(form.photo) }}
+	</div>
+</div>
+
+<div class="form-group row">
+	{{ form_label(form.fictionalCharacters, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.fictionalCharacters) }}{{ form_widget(form.fictionalCharacters, {'attr':{'class':'form-control'}}) }}
+	</div>
+</div>
+
+<div class="form-group row">
+	{{ form_label(form.authors, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.authors) }}{{ form_widget(form.authors, {'attr':{'class':'form-control'}}) }}
+	</div>
+</div>
+
+<hr />
+{{ form_widget(form.save, {'icon': 'fa-save'}) }}
+{{ form_rest(form) }}

@@ -1,0 +1,35 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Backup'|trans }}{% endblock %}
+{% block main_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Backup'|trans }}{% endblock %}
+
+{% block style_additional %}
+{% endblock %}
+{% block script_additional %}
+{% endblock %}
+
+{% block main_content %}
+	<table class="index_directories table table-striped table-bordered dt-responsive">
+		<thead>
+			<th>{{ 'backup.index.File'|trans }}</th>
+			<th>{{ 'backup.index.Actions'|trans }}</th>
+		</thead>
+		<tbody>
+			{% for file in files %}
+				<tr>
+					<td>{{ file }}</td>
+					<td>
+						<a href="{{ path('backupadmin_download', {'filename': file}) }}" class="btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
+						<a href="{{ path('backupadmin_delete', {'filename': file}) }}" class="btn btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i></a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td class="text-center" colspan="2">{{ 'backup.index.No'|trans }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<hr>
+	<a href="{{ path('backupadmin_generate') }}"><i class="fa fa-plus-square"></i> {{ 'admin.index.Create'|trans }}</a>
+{% endblock %}

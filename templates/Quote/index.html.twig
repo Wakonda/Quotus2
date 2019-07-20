@@ -1,0 +1,50 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Quote'|trans }}{% endblock %}
+{% block main_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Quote'|trans }}{% endblock %}
+
+{% block style_additional %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('js/DataTables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css') }}" media="screen" />
+	<link rel="stylesheet" type="text/css" href="{{ asset('js/DataTables/Responsive-2.2.2/css/responsive.bootstrap.min.css') }}" media="screen" />
+{% endblock %}
+{% block script_additional %}
+	<script src="{{ asset('js/DataTables/datatables.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('js/DataTables/DataTables-1.10.18/js/dataTables.bootstrap4.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('js/DataTables/Responsive-2.2.2/js/dataTables.responsive.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('js/DataTables/Responsive-2.2.2/js/responsive.bootstrap.min.js') }}"></script>
+
+	<script type="text/javascript">
+		$(function ()
+		{
+			$('table.index_directories').DataTable({
+				"oLanguage": {
+					"sUrl": "{{ asset('js/DataTables/language/dataTables.'~app.request.locale) }}.txt"
+				}, 
+				"bFilter": true,
+				"bInfo": true,
+				"bSort": true,
+				"bLengthChange": true,
+				"iDisplayLength": 15,
+				"bProcessing": true,
+				"bServerSide": true,
+				"sAjaxSource": "{{ path('quoteadmin_indexdatatables') }}",
+				"autoWidth": false
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block main_content %}
+	<table class="index_directories table table-striped table-bordered dt-responsive">
+		<thead>
+			<th>Id</th>
+			<th>{{ 'admin.table.Text'|trans }}</th>
+			<th>{{ 'admin.form.Language'|trans }}</th>
+			<th>{{ 'admin.table.Action'|trans }}</th>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	<hr>
+	<a href="{{ path('quoteadmin_new') }}"><i class="fa fa-plus-square"></i> {{ 'admin.index.Create'|trans }}</a>
+{% endblock %}

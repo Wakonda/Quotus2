@@ -1,0 +1,12 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Country'|trans }}{% endblock %}
+{% block main_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Country'|trans }}{% endblock %}
+
+{% block main_content %}
+{% form_theme form 'Form/fields.html.twig' %}
+{{ form_start(form, {'method' : 'post', 'action' : path('countryadmin_update', {'id' : entity.id }), 'attr': {'novalidate': 'novalidate'} }) }}
+	{% include "Country/_form.html.twig" with {'form' : form} %}
+{{ form_end(form) }}
+
+{% endblock %}

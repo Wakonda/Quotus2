@@ -1,0 +1,27 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ entity.title }}{% endblock %}
+{% block main_title %}{{ entity.title }}{% endblock %}
+
+{% block meta_tag_description %}{% endblock %}
+
+{% block main_content %}
+	<p class="text-center">{{ ("photo/store/"~entity.photo)|max_size_image() }}</p>
+	<br>
+	<div class="text-center">
+		<a href="{{ entity.getExternalStoreLink() }}" class="btn btn-success" target="_blank"><i class="fa fa-shopping-basket" aria-hidden="true"></i></a>
+	</div>
+	<br>
+	<div id="main_poem_text" class="text-justify">
+		<h3>{{ "store.read.Abstract"|trans }}</h3>
+		{{ entity.text|raw }}
+	</div>
+	<hr>
+	<p>
+	<a href="{{ path('author', {'id' : entity.biography.id, 'slug' : entity.biography.slug }) }}" alt="">{{ entity.biography.title }}</a>
+	{% if entity.biography.country is not empty %}
+	-
+	<a href="{{ path('country', {'id' : entity.biography.country.id, 'slug' : entity.biography.country.slug }) }}" alt=""><img class="flag" src="{{ asset('photo/country/'~entity.biography.country.flag) }}" alt="" height="8" /></a>
+	{% endif %}
+	</p>
+{% endblock %}

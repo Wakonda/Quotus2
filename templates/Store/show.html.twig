@@ -1,0 +1,39 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Store'|trans }}{% endblock %}
+{% block main_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Store'|trans }}{% endblock %}
+
+{% block main_content %}
+	<table class="table table-bordered admin_show">
+		<tr>
+			<th>{{ "admin.store.Title"|trans }}</th>
+			<td>{{ entity.title }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.store.Text"|trans }}</th>
+			<td>{{ entity.text|raw }}</td>
+		</tr>
+		<tr>
+			<th>{{ 'admin.store.Image'|trans }}</th>
+			<td><p class="text-center">{{ ("photo/store/"~entity.photo)|max_size_image() }}</p></td>
+		</tr>
+		<tr>
+			<th>{{ "admin.store.Biography"|trans }}</th>
+			<td><a href="{{ path('biographyadmin_show', {'id': entity.biography.id}) }}">{{ entity.biography.title }}</a> {% if entity.biography.text is empty %}<a href="{{ path('biographyadmin_edit', {'id': entity.biography.id}) }}" class="btn btn-info"><i class="fa fa-edit fa-lg"></i></a>{% endif %}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.store.ProductCode"|trans }}</th>
+			<td>{{ entity.amazonCode|raw }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.form.Language"|trans }}</th>
+			<td>{{ entity.language.title }}</td>
+		</tr>
+		<tr>
+			<th>{{ 'admin.form.Slug'|trans }}</th>
+			<td>{{ entity.slug }}</td>
+		</tr>
+	</table>
+	<hr>
+	<a href="{{ path('storeadmin_index') }}"><i class="fa fa-list"></i> {{ 'admin.index.List'|trans }}</a> - <a href="{{ path('storeadmin_edit', { 'id' : entity.id }) }}"><i class="fa fa-edit"></i> {{ 'admin.index.Update'|trans }}</a> - <a href="{{ path('storeadmin_new') }}"><i class="fa fa-plus-square"></i> {{ 'admin.index.Create'|trans }}</a>
+{% endblock %}

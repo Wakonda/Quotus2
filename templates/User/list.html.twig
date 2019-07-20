@@ -1,0 +1,21 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'user.listUsers.ListUsers'|trans }}{% endblock %}
+{% block main_title %}{{ 'user.listUsers.ListUsers'|trans }}{% endblock %}
+
+{% block main_content %}
+<table>
+	<thead>
+		<th>{{ 'user.listUsers.Pseudo'|trans }}</th>
+		<th>{{ 'user.listUsers.Action'|trans }}</th>
+	</thead>
+	<tbody>
+		{% for entity in entities %}
+			<tr>
+				<td>{{ entity.username }}</td>
+				<td><a href="{{ path('user_show', {'id' : entity.id }) }}">Lire</a></td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

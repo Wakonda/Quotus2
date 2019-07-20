@@ -1,0 +1,26 @@
+{% for entity in entities %}
+	<div class="comment_header"><b>{{entity.user }}</b> - <i>le {{ entity.createdAt|date("d/m/Y à H:i:s") }}</i></div>
+	<div class="comment"><p>{{entity.text|raw }}</p></div>
+{% endfor %}
+
+{% if number_pages > 1 %}
+	<div id="nav_previous">
+	{% if page <= 1 %}
+		Page précédente
+	{% else %}
+		<a href="#" alt="previous page" data-followpage="{{ page - 1 }}" class="page_action">{{ 'comment.list.PreviousPage'|trans }}</a>
+	{% endif %}
+	</div>
+	
+	<div id="nav_next">
+	{% if page >= number_pages %}
+		Page suivante
+	{% else %}
+		<a href="#" alt="next page" data-followpage="{{ page + 1 }}" class="page_action">{{ 'comment.list.NextPage'|trans }}</a>
+	{% endif %}
+	</div>
+	
+	<div id="nav_current" class="text-center">
+	<span>{{ page }}</span>
+	</div>
+{% endif %}

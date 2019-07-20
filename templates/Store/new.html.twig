@@ -1,0 +1,42 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Store'|trans }}{% endblock %}
+{% block main_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Store'|trans }}{% endblock %}
+
+{% block style_additional %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('js/jquery.ajax-combobox-master/dist/jquery.ajax-combobox.css') }}" media="screen" />
+{% endblock %}
+{% block script_additional %}
+	<script src="{{ asset('js/jquery.ajax-combobox-master/dist/jquery.ajax-combobox.js') }}"></script>
+	<script src="{{ asset('js/combobox.js') }}"></script>
+	{% import "Index/macro.html.twig" as macro %}
+	{{ macro.redactor() }}
+	<script type="text/javascript">
+		$(function()
+		{
+			var cb = null;
+			$("select#{{ form.language.vars.id }}").change(function() {
+				var input = $(".container_{{ form.vars['id'] }}_biography > .input-group > input[type='hidden']");
+				$(input[0]).addClass('combobox full_width form-control').attr("type", "text").val("");
+				$(".container_{{ form.vars['id'] }}_biography").parent().append(input[0]);
+				$(".container_{{ form.vars['id'] }}_biography").remove();
+				cb = setComboboxNew('{{ path("poemadmin_getbiographiesbyajax") }}?locale=' + $(this).val(), 'biography', "#{{ form.vars['id'] }}_biography");
+			});
+			
+			$("#{{ form.vars.id }}").submit(function() {
+				$("#{{ form.newBiography.vars.id }}").val(cb.val());
+			});
+			
+			$("select#{{ form.language.vars.id }}").change();
+		});
+	</script>
+{% endblock %}
+
+{% block main_content %}
+{% form_theme form 'Form/fields.html.twig' %}
+
+{{ form_start(form, {'method' : 'post', 'action' : path('storeadmin_create'), 'attr': {'id': form.vars.id, 'novalidate': 'novalidate'} }) }}
+	{% include "Store/_form.html.twig" with {'form' : form} %}
+{{ form_end(form) }}
+
+{% endblock %}
