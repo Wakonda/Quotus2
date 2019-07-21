@@ -2,6 +2,10 @@ index:
     path: /
     controller: App\Controller\IndexController::indexAction
 
+change_language:
+    path: /change_language/{locale}
+    controller: App\Controller\IndexController::changeLanguageAction
+
 read:
     path: /read/{id}/{slug}/{idImage}
     controller: App\Controller\IndexController::readAction
@@ -77,7 +81,7 @@ fictionalcharacter:
 
 fictionalcharacter_datatables:
     path: /fictionalcharacter_datatables/{biographyId}
-    controller: App\Controller\IndexController::fictionalcharacterDatatablesAction
+    controller: App\Controller\IndexController::fictionalCharacterDatatablesAction
 
 byusers:
     path: /byusers

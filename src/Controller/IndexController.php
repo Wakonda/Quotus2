@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Form\Type\IndexSearchType;
 use App\Service\Captcha;
@@ -31,13 +31,19 @@ use MatthiasMullie\Minify;
 
 class IndexController extends Controller
 {
-    public function indexAction(Request $request, \Swift_Mailer $mailer)
+    public function indexAction(Request $request, \Swift_Mailer $mailer, $oo)
     {
 		$entityManager = $this->getDoctrine()->getManager();
 		$random = $entityManager->getRepository(Quote::class)->getRandom($request->getLocale());
 
         return $this->render('Index/index.html.twig', ['random' => $random]);
     }
+
+	public function changeLanguageAction(Request $request, $locale)
+	{
+		$request->getSession()->set('_locale', $locale);
+		return $this->redirect($this->generateUrl('index'));
+	}
 
 	public function readAction(Request $request, $id, $idImage)
 	{
@@ -130,7 +136,7 @@ class IndexController extends Controller
 		return $this->render('Index/source.html.twig', array('entity' => $entity));
 	}
 
-	public function sourceDatatablesAction(Request $request, $sourceId)
+	public function sourceDatatablesAction(Request $request, TranslatorInterface $translator, $sourceId)
 	{
 		$iDisplayStart = $request->query->get('iDisplayStart');
 		$iDisplayLength = $request->query->get('iDisplayLength');
@@ -164,7 +170,7 @@ class IndexController extends Controller
 			$row = array();
 			$row[] = $entity["quote_text"];
 			$show = $this->generateUrl('read', array('id' => $entity["quote_id"], 'slug' => $entity["quote_slug"]));
-			$row[] = '<a href="'.$show.'" alt="Show">Lire</a>';
+			$row[] = '<a href="'.$show.'" alt="Show">'.$translator->trans("source.table.Read").'</a>';
 
 			$output['aaData'][] = $row;
 		}
@@ -239,7 +245,7 @@ class IndexController extends Controller
 		return $this->render('Index/author.html.twig', array('entity' => $entity, 'stores' => $stores));
 	}
 
-	public function authorDatatablesAction(Request $request, $biographyId)
+	public function authorDatatablesAction(Request $request, TranslatorInterface $translator, $biographyId)
 	{
 		$iDisplayStart = $request->query->get('iDisplayStart');
 		$iDisplayLength = $request->query->get('iDisplayLength');
@@ -272,9 +278,9 @@ class IndexController extends Controller
 		{
 			$row = array();
 			$row[] = $entity["quote_text"];
-			$row[] = !empty($entity["source_id"]) ? '<a href="'.$this->generateUrl("source", ['id' => $entity["source_id"], 'slug' => $entity["source_slug"]]).'">'.$entity["source_text"].'</a>' : "-";
+			$row[] = !empty($entity["source_id"]) ? '<u><a href="'.$this->generateUrl("source", ['id' => $entity["source_id"], 'slug' => $entity["source_slug"]]).'">'.$entity["source_text"].'</a></u>' : "-";
 			$show = $this->generateUrl('read', array('id' => $entity["quote_id"], 'slug' => $entity["quote_slug"]));
-			$row[] = '<a href="'.$show.'" alt="Show">Lire</a>';
+			$row[] = '<a href="'.$show.'" alt="Show">'.$translator->trans("biography.table.Read").'</a>';
 
 			$output['aaData'][] = $row;
 		}
@@ -348,12 +354,11 @@ class IndexController extends Controller
 		return $this->render('Index/fictionalCharacter.html.twig', array('entity' => $entity));
 	}
 
-	public function fictionalCharacterDatatablesAction(Request $request, $biographyId)
+	public function fictionalCharacterDatatablesAction(Request $request, TranslatorInterface $translator, $biographyId)
 	{
 		$iDisplayStart = $request->query->get('iDisplayStart');
 		$iDisplayLength = $request->query->get('iDisplayLength');
 		$sSearch = $request->query->get('sSearch');
-
 		$sortByColumn = array();
 		$sortDirColumn = array();
 
@@ -381,9 +386,9 @@ class IndexController extends Controller
 		{
 			$row = array();
 			$row[] = $entity["quote_text"];
-			$row[] = !empty($entity["source_id"]) ? '<a href="'.$this->generateUrl("source", ['id' => $entity["source_id"], 'slug' => $entity["source_slug"]]).'">'.$entity["source_text"].'</a>' : "-";
+			$row[] = !empty($entity["source_id"]) ? '<u><a href="'.$this->generateUrl("source", ['id' => $entity["source_id"], 'slug' => $entity["source_slug"]]).'">'.$entity["source_text"].'</a></u>' : "-";
 			$show = $this->generateUrl('read', array('id' => $entity["quote_id"], 'slug' => $entity["quote_slug"]));
-			$row[] = '<a href="'.$show.'" alt="Show">Lire</a>';
+			$row[] = '<a href="'.$show.'" alt="Show">'.$translator->trans("fictionalCharacter.table.Read").'</a>';
 
 			$output['aaData'][] = $row;
 		}
@@ -488,6 +493,22 @@ class IndexController extends Controller
 		
 		return $this->render('Index/page.html.twig', array("entity" => $entity));
 	}
+
+	public function lastAction(Request $request)
+    {
+		$entityManager = $this->getDoctrine()->getManager();
+		$entities = $entityManager->getRepository(Quote::class)->getLastEntries($request->getLocale());
+
+		return $this->render('Index/last.html.twig', array('entities' => $entities));
+    }
+
+	public function statAction(Request $request)
+    {
+		$entityManager = $this->getDoctrine()->getManager();
+		$statistics = $entityManager->getRepository(Quote::class)->getStat($request->getLocale());
+
+		return $this->render('Index/stat.html.twig', array('statistics' => $statistics));
+    }
 
 	public function reloadCaptchaAction(Request $request)
 	{

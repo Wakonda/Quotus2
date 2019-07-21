@@ -16,7 +16,7 @@ menu:
         Languages: "Autres langues"
         LogIn: "Se connecter"
         CreateAccount: "Créer un compte utilisateur"
-        NumberOfPublishedPoems: "Nombre de poésies publiées"
+        NumberOfPublished: "Nombre de citations publiées"
         TotalAuthors: "Nombre d'auteurs"
         NumberOfBooks: "Nombre de recueils"
         MyProfile: "Mon profil"

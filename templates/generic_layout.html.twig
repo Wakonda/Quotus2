@@ -64,6 +64,7 @@
 				<aside id="sidebar-wrapper">
 					<nav class="sidebar">
 						<h1>{{ 'menu.left.RecentQuotes'|trans }}</h1>
+						{{ render(controller('App\\Controller\\IndexController::lastAction')) }}
 
 						<div class="social-media-icons">
 							<a class="facebook" href="https://www.facebook.com/Proverbius-1894996570590486" target="_blank"><i class="fa fa-facebook-square fa-3x"></i></a>
@@ -120,6 +121,7 @@
 					
 					<nav class="sidebar">
 						<h1>{{ 'menu.left.Statistics'|trans }}</h1>
+						{{ render(controller('App\\Controller\\IndexController::statAction')) }}
 					</nav>
 
 					<nav class="sidebar">
@@ -137,6 +139,12 @@
 								<li><a href="{{ path('login') }}" alt="">{{ 'menu.left.LogIn'|trans }}</a></li>
 								<li><a href="{{ path('user_new') }}" alt="">{{ 'menu.left.CreateAccount'|trans }}</a></li>
 							{% endif %}
+						</ul>
+					</nav>
+					
+					<nav class="sidebar">
+						<h1>{{ 'menu.left.Languages'|trans }}</h1>
+							<a href="{{ path('change_language', {'locale':'fr'}) }}" title="Français"><img src="{{ asset('photo/language/fr.png') }}" alt="Fr" width="42" {{ app.request.locale == "fr" ? 'class="selected_language rounded"' : 'class="rounded"' }}></a>
 						</ul>
 					</nav>
 				</aside>
