@@ -19,9 +19,9 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 
 	public function getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $count = false)
 	{
-		$qb = $this->createQueryBuilder("pf");
+		$qb = $this->createQueryBuilder("pa");
 
-		$aColumns = array( 'pf.id', 'pf.text', 'pf.id');
+		$aColumns = array( 'pa.id', 'pa.text', 'pa.id');
 
 		if(!empty($sortDirColumn))
 		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
@@ -29,12 +29,14 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 		if(!empty($sSearch))
 		{
 			$search = "%".$sSearch."%";
-			$qb->where('pf.text LIKE :search')
-			   ->setParameter('search', $search);
+			$qb->where('pa.text LIKE :search')
+			   ->setParameter('search', $search)
+			   ->andWhere("pa.state = :state")
+		       ->setParameter("state", Quote::PUBLISHED_STATE);
 		}
 		if($count)
 		{
-			$qb->select("COUNT(pf) AS count");
+			$qb->select("COUNT(pa) AS count");
 			return $qb->getQuery()->getSingleScalarResult();
 		}
 		else
@@ -45,59 +47,65 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 
 	public function getRandom($locale)
 	{
-		$qb = $this->createQueryBuilder("pt");
+		$qb = $this->createQueryBuilder("pa");
 
-		$qb->select("COUNT(pt) AS countRow");
+		$qb->select("COUNT(pa) AS countRow");
 		
-		$this->whereLanguage($qb, "pt", $locale);
+		$this->whereLanguage($qb, "pa", $locale);
 		
 		$max = max($qb->getQuery()->getSingleScalarResult() - 1, 0);
 		$offset = rand(0, $max);
 
-		$qb = $this->createQueryBuilder("pt");
+		$qb = $this->createQueryBuilder("pa");
 
 		$qb->setFirstResult($offset)
-		   ->setMaxResults(1);
+		   ->setMaxResults(1)
+		   ->andWhere("pa.state = :state")
+		   ->setParameter("state", Quote::PUBLISHED_STATE);
 		 
-		$this->whereLanguage($qb, "pt", $locale);
+		$this->whereLanguage($qb, "pa", $locale);
 
 		return $qb->getQuery()->getOneOrNullResult();
 	}
 
 	public function getLastEntries($locale)
 	{
-		$qb = $this->createQueryBuilder("pt");
+		$qb = $this->createQueryBuilder("pa");
 
 		$qb->setMaxResults(7)
-		   ->orderBy("pt.id", "DESC");
+		   ->orderBy("pa.id", "DESC")
+		   ->andWhere("pa.state = :state")
+		   ->setParameter("state", Quote::PUBLISHED_STATE);
 		   
-		$this->whereLanguage($qb, "pt", $locale, true);
+		$this->whereLanguage($qb, "pa", $locale, true);
 		   
 		return $qb->getQuery()->getResult();
 	}
 	
 	public function getStat($locale)
 	{
-		$qb = $this->createQueryBuilder("pt");
+		$qb = $this->createQueryBuilder("pa");
 		
-		$this->whereLanguage($qb, "pt", $locale);
+		$this->whereLanguage($qb, "pa", $locale);
 
-		$qb->select("COUNT(pt)");
+		$qb->select("COUNT(pa)")
+		   ->andWhere("pa.state = :state")
+		   ->setParameter("state", Quote::PUBLISHED_STATE);
 		
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 
 	public function checkForDoubloon($entity)
 	{
-		$qb = $this->createQueryBuilder("pf");
+		$qb = $this->createQueryBuilder("pa");
 
-		$qb->select("COUNT(pf) AS count")
-		   ->where("pf.slug = :slug")
+		$qb->select("COUNT(pa) AS count")
+		   ->where("pa.slug = :slug")
 		   ->setParameter('slug', $entity->getSlug());
 
 		if($entity->getId() != null)
 		{
-			$qb->andWhere("pf.id != :id")
+			$qb->andWhere("pa.id != :id")
 			   ->setParameter("id", $entity->getId());
 		}
 
@@ -107,14 +115,14 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 	public function browsingShow($id)
 	{
 		// Previous
-		$subqueryPrevious = 'p.id = (SELECT MAX(p2.id) FROM App\Entity\Quote p2 WHERE p2.id < '.$id.')';
+		$subqueryPrevious = 'p.id = (SELECT MAX(p2.id) FROM App\Entity\Quote p2 WHERE p2.id < '.$id.' AND p2.state = '.Quote::PUBLISHED_STATE.')';
 		$qb_previous = $this->createQueryBuilder('p');
 		
 		$qb_previous->select("p.id, p.text, p.slug AS slug")
 		   ->andWhere($subqueryPrevious);
 		   
 		// Next
-		$subqueryNext = 'p.id = (SELECT MIN(p2.id) FROM App\Entity\Quote p2 WHERE p2.id > '.$id.')';
+		$subqueryNext = 'p.id = (SELECT MIN(p2.id) FROM App\Entity\Quote p2 WHERE p2.id > '.$id.' AND p2.state = '.Quote::PUBLISHED_STATE.')';
 		$qb_next = $this->createQueryBuilder('p');
 		
 		$qb_next->select("p.id, p.text, p.slug AS slug")
@@ -127,6 +135,210 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 
 		return $res;
 	}
+
+    public function findQuoteBySource($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $locale, $count = false)
+    {
+		$qb = $this->createQueryBuilder("pa");
+
+		$aColumns = array( 'co.title', 'COUNT(pa.id)');
+		
+		$qb->select("co.id AS source_id, co.title AS source_title, COUNT(pa.id) AS number_by_source, co.slug AS source_slug, co.photo AS source_photo")
+		   ->leftjoin("pa.source", "co")
+		   ->groupBy("co.id, co.title")
+		   ->andWhere("pa.authorType = :biography")
+		   ->setParameter("biography", Quote::BIOGRAPHY_AUTHORTYPE)
+		   ->andWhere("pa.state = :state")
+		   ->setParameter("state", Quote::PUBLISHED_STATE)
+		   ;
+		
+		$this->whereLanguage($qb, 'pa', $locale);
+		
+		if(!empty($sortDirColumn))
+		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+
+		if(!empty($sSearch))
+		{
+			$search = "%".$sSearch."%";
+			$qb->andWhere('co.title LIKE :search')
+               ->setParameter("search", $search);
+		}
+		if($count)
+		{
+			$params = [];
+			
+			foreach($qb->getParameters()->getIterator() as $i => $item)
+				$params[] = $item->getValue();
+
+			$res = $this->_em->getConnection()->executeQuery("SELECT COUNT(*) AS count FROM (".$qb->getQuery()->getSql().") AS SQ", $params);
+
+			return $res->fetch()["count"];
+		}
+		else
+			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
+
+		return $qb->getQuery()->getResult();
+    }
+
+	public function getQuoteBySourceDatatables($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $sourceId, $count = false)
+	{
+		$qb = $this->createQueryBuilder("pa");
+
+		$aColumns = array('pa.text', 'pa.id');
+		
+		$qb->select("pa.text AS quote_text, pa.id AS quote_id, pa.slug AS quote_slug")
+		   ->leftjoin("pa.source", "co")
+		   ->where("co.id = :id")
+		   ->setParameter("id", $sourceId)
+		   ->andWhere("pa.state = :state")
+		   ->setParameter("state", Quote::PUBLISHED_STATE)
+		   ->andWhere("pa.authorType = :biography")
+		   ->setParameter("biography", Quote::BIOGRAPHY_AUTHORTYPE);
+		
+		if(!empty($sortDirColumn))
+		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+
+		if(!empty($sSearch))
+		{
+			$search = "%".$sSearch."%";
+			$qb->andWhere('pa.text LIKE :search')
+			   ->setParameter('search', $search);
+		}
+		if($count)
+		{
+			$qb->select("COUNT(pa) AS count");
+			return $qb->getQuery()->getSingleScalarResult();
+		}
+		else
+			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
+
+		return $qb->getQuery()->getResult();
+	}
+
+    public function findQuoteByBiography($type, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $locale, $count = false)
+    {
+		$qb = $this->createQueryBuilder("pa");
+
+		$aColumns = array( 'co.title', 'COUNT(pa.id)');
+		
+		$qb->select("co.id AS biography_id, co.title AS biography_title, COUNT(pa.id) AS number_by_biography, co.slug AS biography_slug, co.photo AS biography_photo")
+		   ->leftjoin("pa.biography", "co")
+		   ->groupBy("co.id, co.title")
+		   ->andWhere("co.type = :type")
+		   ->setParameter("type", $type)
+		   ->andWhere("pa.state = :state")
+		   ->setParameter("state", Quote::PUBLISHED_STATE)
+		   ->andWhere("pa.authorType = :biography")
+		   ->setParameter("biography", Quote::BIOGRAPHY_AUTHORTYPE)
+		   ;
+		
+		$this->whereLanguage($qb, 'pa', $locale);
+		
+		if(!empty($sortDirColumn))
+		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+
+		if(!empty($sSearch))
+		{
+			$search = "%".$sSearch."%";
+			$qb->andWhere('co.title LIKE :search')
+               ->setParameter("search", $search);
+		}
+		if($count)
+		{
+			$params = [];
+			
+			foreach($qb->getParameters()->getIterator() as $i => $item)
+				$params[] = $item->getValue();
+
+			$res = $this->_em->getConnection()->executeQuery("SELECT COUNT(*) AS count FROM (".$qb->getQuery()->getSql().") AS SQ", $params);
+
+			return $res->fetch()["count"];
+		}
+		else
+			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
+
+		return $qb->getQuery()->getResult();
+    }
+
+	public function getQuoteByBiographyDatatables($type, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $biographyId, $count = false)
+	{
+		$qb = $this->createQueryBuilder("pa");
+
+		$aColumns = array('pa.text', 'pa.id');
+		
+		$qb->select("pa.text AS quote_text, so.id AS source_id, so.slug AS source_slug, so.title AS source_text, pa.id AS quote_id, pa.slug AS quote_slug")
+		   ->leftjoin("pa.biography", "co")
+		   ->leftjoin("pa.source", "so")
+		   ->where("co.id = :id")
+		   ->setParameter("id", $biographyId)
+		   ->andWhere("co.type = :type")
+		   ->setParameter("type", $type)
+		   ->andWhere("pa.state = :state")
+		   ->setParameter("state", Quote::PUBLISHED_STATE)
+		   ->andWhere("pa.authorType = :biography")
+		   ->setParameter("biography", Quote::BIOGRAPHY_AUTHORTYPE);
+		
+		if(!empty($sortDirColumn))
+		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+
+		if(!empty($sSearch))
+		{
+			$search = "%".$sSearch."%";
+			$qb->andWhere('pa.text LIKE :search')
+			   ->setParameter('search', $search);
+		}
+		if($count)
+		{
+			$qb->select("COUNT(pa) AS count");
+			return $qb->getQuery()->getSingleScalarResult();
+		}
+		else
+			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
+
+		return $qb->getQuery()->getResult();
+	}
+
+    public function findQuoteByUser($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $locale, $count = false)
+    {
+		$qb = $this->createQueryBuilder("pa");
+
+		$aColumns = array( 'co.username', 'COUNT(pa.id)');
+		
+		$qb->select("co.username AS username, COUNT(pa.id) AS number_by_biography, co.avatar AS avatar, co.gravatar as gravatar")
+		   ->leftjoin("pa.user", "co")
+		   ->groupBy("co.id, co.username")
+		   ->andWhere("pa.state = :state")
+		   ->setParameter("state", Quote::PUBLISHED_STATE)
+		   ->andWhere("pa.authorType = :biography")
+		   ->setParameter("biography", Quote::USER_AUTHORTYPE)
+		   ;
+		
+		$this->whereLanguage($qb, 'pa', $locale);
+		
+		if(!empty($sortDirColumn))
+		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+
+		if(!empty($sSearch))
+		{
+			$search = "%".$sSearch."%";
+			$qb->andWhere('co.username LIKE :search')
+               ->setParameter("search", $search);
+		}
+		if($count)
+		{
+			$params = [];
+			
+			foreach($qb->getParameters()->getIterator() as $i => $item)
+				$params[] = $item->getValue();
+
+			$res = $this->_em->getConnection()->executeQuery("SELECT COUNT(*) AS count FROM (".$qb->getQuery()->getSql().") AS SQ", $params);
+
+			return $res->fetch()["count"];
+		}
+		else
+			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
+
+		return $qb->getQuery()->getResult();
+    }
 
 	public function whereLanguage($qb, $alias, $locale, $join = true)
 	{

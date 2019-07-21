@@ -13,8 +13,8 @@ class Biography
 	const AUTHOR = "author";
 	const FICTIONAL_CHARACTER = "fictionalCharacter";
 	
-	const AUTHOR_CANONICAL = "Auteur";
-	const FICTIONAL_CHARACTER_CANONICAL = "Personnage de fiction";
+	const AUTHOR_CANONICAL = "biography.type.Author";
+	const FICTIONAL_CHARACTER_CANONICAL = "biography.type.FictionalCharacter";
 
     /**
      * @ORM\Id
@@ -109,6 +109,16 @@ class Biography
 		}
 		
 		return null;
+	}
+	
+	public function isFictionalCharacter()
+	{
+		return $this->type == self::FICTIONAL_CHARACTER;
+	}
+	
+	public function isAuthor()
+	{
+		return $this->type == self::AUTHOR;
 	}
 
 	public function __toString()

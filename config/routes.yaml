@@ -9,6 +9,84 @@ read:
         slug: null
         idImage: null
 
+store:
+    path: /store/{page}
+    controller: App\Controller\IndexController::storeAction
+    defaults:
+        page: 1
+
+read_store:
+    path: /read_store/{id}/{slug}
+    controller: App\Controller\IndexController::readStoreAction
+    defaults:
+        slug: null
+
+byimages:
+    path: /byimages
+    controller: App\Controller\IndexController::byImagesAction
+
+bysources:
+    path: /bysources
+    controller: App\Controller\IndexController::bySourcesAction
+
+bysources_datatables:
+    path: /bysources_datatables
+    controller: App\Controller\IndexController::bySourcesDatatablesAction
+
+source:
+    path: /source/{id}/{slug}
+    controller: App\Controller\IndexController::sourceAction
+    defaults:
+        slug: null
+
+source_datatables:
+    path: /source_datatables/{sourceId}
+    controller: App\Controller\IndexController::sourceDatatablesAction
+
+byauthors:
+    path: /byauthors
+    controller: App\Controller\IndexController::byAuthorsAction
+
+byauthors_datatables:
+    path: /byauthors_datatables
+    controller: App\Controller\IndexController::byAuthorsDatatablesAction
+
+author:
+    path: /author/{id}/{slug}
+    controller: App\Controller\IndexController::authorAction
+    defaults:
+        slug: null
+
+author_datatables:
+    path: /author_datatables/{biographyId}
+    controller: App\Controller\IndexController::authorDatatablesAction
+
+byfictionalcharacters:
+    path: /byfictionalcharacters
+    controller: App\Controller\IndexController::byFictionalCharactersAction
+
+byfictionalcharacters_datatables:
+    path: /byfictionalcharacters_datatables
+    controller: App\Controller\IndexController::byFictionalCharactersDatatablesAction
+
+fictionalcharacter:
+    path: /fictionalcharacter/{id}/{slug}
+    controller: App\Controller\IndexController::fictionalCharacterAction
+    defaults:
+        slug: null
+
+fictionalcharacter_datatables:
+    path: /fictionalcharacter_datatables/{biographyId}
+    controller: App\Controller\IndexController::fictionalcharacterDatatablesAction
+
+byusers:
+    path: /byusers
+    controller: App\Controller\IndexController::byUsersAction
+
+byusers_datatables:
+    path: /byusers_datatables
+    controller: App\Controller\IndexController::byUsersDatatablesAction
+
 page_display:
     path: /page/{name}
     controller: App\Controller\IndexController::pageAction

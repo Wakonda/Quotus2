@@ -1,10 +1,12 @@
 menu:
     top:
         MainPage: "Accueil"
-        Authors: "Auteurs"
-        Countries: "Pays"
         Store: "Boutique"
         Images: "Images"
+        FictionalCharacters: "Personnages de fiction"
+        FamousAuthors: "Auteurs célèbres"
+        Works: "Œuvres"
+        YourQuotes: "Vos citations"
     left:
         RecentQuotes: "Dernières citations"
         FollowUs: "Suivez-nous"
@@ -44,7 +46,7 @@ main:
 biography:
     index:
         ByAuthors: "Par auteurs"
-        HisPoems: "Ses poésies"
+        HisQuotes: "Ses citations"
     field:
         BirthDate: "Date de naissance"
         DeathDate: "Date de décès"
@@ -53,16 +55,33 @@ biography:
         Number: "Nombre"
         Author: "Auteur"
         Title: "Titre"
-        Collection: "Recueil"
         Photo: "Photo"
-country:
+        Source: "Source"
+        Read: "Lire"
+    type:
+        Author: "Auteur"
+        FictionalCharacter: "Personnage de fiction"
+fictionalCharacter:
     index:
-        ByCountries: "Par pays"
+        ByFictionalCharacters: "Par personnages de fiction"
+        HisQuotes: "Ses citations"
+    field:
+        BirthDate: "Date de naissance"
+        DeathDate: "Date de décès"
+        Nationality: "Nationalité"
     table:
         Number: "Nombre"
-        Author: "Auteur"
-        Country: "Pays"
+        Character: "Personnage"
         Title: "Titre"
+        Photo: "Photo"
+        Source: "Source"
+        Read: "Lire"
+yourQuotes:
+    index:
+        YourQoutes: "Vos citations"
+    table:
+        Text: "Texte"
+        Author: "Auteur"
 store:
     index:
         Store: "Boutique"
@@ -80,10 +99,21 @@ backup:
         FileDeleted: "Fichier supprimé"
         FileGenerated: "Fichier généré"
 source:
+    index:
+        BySources: "Par œuvres"
+        Quotes: "Citations"
+        Characters: "Personnages"
+        Authors: "Auteurs"
     type:
         Book: "Livre"
         Movie: "Film"
         Tvseries: "Série TV"
+    table:
+        Title: "Titre"
+        Photo: "Photo"
+        Number: "Nombre"
+        Text: "Texte"
+        Read: "Lire"
 user:
     login:
         Pseudo: "Pseudo"
@@ -300,15 +330,12 @@ admin:
     biography:
         Title: "Titre"
         Text: "Texte"
+        Type: "Type"
         BirthDate: "Date de naissance"
         DeathDate: "Date de décès"
         Image: "Image"
         Nationality: "Nationalité"
         Country: "Pays"
-    country:
-        Title: "Titre"
-        InternationalName: "Nom international"
-        Flag: "Drapeau"
     contact:
         Message: "Message"
         Email: "Email"

@@ -20,6 +20,8 @@ use App\Entity\Country;
 use App\Entity\Page;
 use App\Entity\Store;
 use App\Entity\Quote;
+use App\Entity\Source;
+use App\Entity\QuoteImage;
 use App\Entity\Language;
 use App\Entity\Biography;
 
@@ -46,6 +48,436 @@ class IndexController extends Controller
 		$browsing = $entityManager->getRepository(Quote::class)->browsingShow($id);
 
 		return $this->render('Index/read.html.twig', array('entity' => $entity, 'browsing' => $browsing, 'image' => $image));
+	}
+
+	public function byImagesAction(Request $request)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$query = $entityManager->getRepository(QuoteImage::class)->getPaginator($request->getLocale());
+		
+		$paginator  = $this->get('knp_paginator');
+		$pagination = $paginator->paginate(
+			$query, /* query NOT result */
+			$request->query->getInt('page', 1), /*page number*/
+			10 /*limit per page*/
+		);
+		
+		$pagination->setCustomParameters(['align' => 'center']);
+		
+		return $this->render('Index/byimage.html.twig', ['pagination' => $pagination]);
+	}
+
+	// BY SOURCES
+	public function bySourcesAction(Request $request)
+    {
+        return $this->render('Index/bysource.html.twig');
+    }
+	
+	public function bySourcesDatatablesAction(Request $request)
+	{
+		$iDisplayStart = $request->query->get('iDisplayStart');
+		$iDisplayLength = $request->query->get('iDisplayLength');
+		$sSearch = $request->query->get('sSearch');
+
+		$sortByColumn = array();
+		$sortDirColumn = array();
+			
+		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+		{
+			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
+			{
+				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
+				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
+			}
+		}
+
+		$entityManager = $this->getDoctrine()->getManager();
+		$entities = $entityManager->getRepository(Quote::class)->findQuoteBySource($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $request->getLocale());
+		$iTotal = $entityManager->getRepository(Quote::class)->findQuoteBySource($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $request->getLocale(), true);
+
+		$output = array(
+			"sEcho" => $request->query->get('sEcho'),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iTotal,
+			"aaData" => array()
+		);
+
+		foreach($entities as $entity)
+		{
+			$row = array();
+
+			$show = $this->generateUrl('source', array('id' => $entity['source_id'], 'slug' => $entity['source_slug']));
+			$row[] = '<img src="'.$request->getBaseUrl().'/photo/source/'.$entity['source_photo'].'"/>';
+			$row[] = '<a href="'.$show.'" alt="Show">'.$entity['source_title'].'</a>';
+
+			$row[] = '<span class="badge badge-secondary">'.$entity['number_by_source'].'</span>';
+
+			$output['aaData'][] = $row;
+		}
+
+		$response = new Response(json_encode($output));
+		$response->headers->set('Content-Type', 'application/json');
+
+		return $response;
+	}
+	
+	// SOURCE
+	public function sourceAction(Request $request, $id)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$entity = $entityManager->getRepository(Source::class)->find($id);
+
+		return $this->render('Index/source.html.twig', array('entity' => $entity));
+	}
+
+	public function sourceDatatablesAction(Request $request, $sourceId)
+	{
+		$iDisplayStart = $request->query->get('iDisplayStart');
+		$iDisplayLength = $request->query->get('iDisplayLength');
+		$sSearch = $request->query->get('sSearch');
+
+		$sortByColumn = array();
+		$sortDirColumn = array();
+
+		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+		{
+			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
+			{
+				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
+				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
+			}
+		}
+
+		$entityManager = $this->getDoctrine()->getManager();
+		$entities = $entityManager->getRepository(Quote::class)->getQuoteBySourceDatatables($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $sourceId);
+		$iTotal = $entityManager->getRepository(Quote::class)->getQuoteBySourceDatatables($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $sourceId, true);
+
+		$output = array(
+			"sEcho" => $request->query->get('sEcho'),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iTotal,
+			"aaData" => array()
+		);
+
+		foreach($entities as $entity)
+		{
+			$row = array();
+			$row[] = $entity["quote_text"];
+			$show = $this->generateUrl('read', array('id' => $entity["quote_id"], 'slug' => $entity["quote_slug"]));
+			$row[] = '<a href="'.$show.'" alt="Show">Lire</a>';
+
+			$output['aaData'][] = $row;
+		}
+
+		$response = new Response(json_encode($output));
+		$response->headers->set('Content-Type', 'application/json');
+		return $response;
+	}
+	
+	////////////////////
+	// BY AUTHORS
+	public function byAuthorsAction(Request $request)
+    {
+        return $this->render('Index/byauthor.html.twig');
+    }
+	
+	public function byAuthorsDatatablesAction(Request $request)
+	{
+		$iDisplayStart = $request->query->get('iDisplayStart');
+		$iDisplayLength = $request->query->get('iDisplayLength');
+		$sSearch = $request->query->get('sSearch');
+
+		$sortByColumn = array();
+		$sortDirColumn = array();
+			
+		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+		{
+			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
+			{
+				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
+				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
+			}
+		}
+
+		$entityManager = $this->getDoctrine()->getManager();
+		$entities = $entityManager->getRepository(Quote::class)->findQuoteByBiography(Biography::AUTHOR, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $request->getLocale());
+		$iTotal = $entityManager->getRepository(Quote::class)->findQuoteByBiography(Biography::AUTHOR, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $request->getLocale(), true);
+
+		$output = array(
+			"sEcho" => $request->query->get('sEcho'),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iTotal,
+			"aaData" => array()
+		);
+
+		foreach($entities as $entity)
+		{
+			$row = array();
+
+			$show = $this->generateUrl('author', array('id' => $entity['biography_id'], 'slug' => $entity['biography_slug']));
+			$row[] = '<img src="'.$request->getBaseUrl().'/photo/biography/'.$entity['source_photo'].'"/>';
+			$row[] = '<a href="'.$show.'" alt="Show">'.$entity['biography_title'].'</a>';
+
+			$row[] = '<span class="badge badge-secondary">'.$entity['number_by_biography'].'</span>';
+
+			$output['aaData'][] = $row;
+		}
+
+		$response = new Response(json_encode($output));
+		$response->headers->set('Content-Type', 'application/json');
+
+		return $response;
+	}
+	
+	// AUTHOR
+	public function authorAction(Request $request, $id)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$entity = $entityManager->getRepository(Biography::class)->find($id);
+		$stores = $entityManager->getRepository(Store::class)->findBy(["biography" => $entity]);
+
+		return $this->render('Index/author.html.twig', array('entity' => $entity, 'stores' => $stores));
+	}
+
+	public function authorDatatablesAction(Request $request, $biographyId)
+	{
+		$iDisplayStart = $request->query->get('iDisplayStart');
+		$iDisplayLength = $request->query->get('iDisplayLength');
+		$sSearch = $request->query->get('sSearch');
+
+		$sortByColumn = array();
+		$sortDirColumn = array();
+
+		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+		{
+			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
+			{
+				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
+				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
+			}
+		}
+
+		$entityManager = $this->getDoctrine()->getManager();
+		$entities = $entityManager->getRepository(Quote::class)->getQuoteByBiographyDatatables(Biography::AUTHOR, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $biographyId);
+		$iTotal = $entityManager->getRepository(Quote::class)->getQuoteByBiographyDatatables(Biography::AUTHOR, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $biographyId, true);
+
+		$output = array(
+			"sEcho" => $request->query->get('sEcho'),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iTotal,
+			"aaData" => array()
+		);
+
+		foreach($entities as $entity)
+		{
+			$row = array();
+			$row[] = $entity["quote_text"];
+			$row[] = !empty($entity["source_id"]) ? '<a href="'.$this->generateUrl("source", ['id' => $entity["source_id"], 'slug' => $entity["source_slug"]]).'">'.$entity["source_text"].'</a>' : "-";
+			$show = $this->generateUrl('read', array('id' => $entity["quote_id"], 'slug' => $entity["quote_slug"]));
+			$row[] = '<a href="'.$show.'" alt="Show">Lire</a>';
+
+			$output['aaData'][] = $row;
+		}
+
+		$response = new Response(json_encode($output));
+		$response->headers->set('Content-Type', 'application/json');
+		return $response;
+	}
+	
+	////////////////////
+	// BY FICTIONALCHARACTERS
+	public function byFictionalCharactersAction(Request $request)
+    {
+        return $this->render('Index/byfictionalcharacter.html.twig');
+    }
+	
+	public function byFictionalCharactersDatatablesAction(Request $request)
+	{
+		$iDisplayStart = $request->query->get('iDisplayStart');
+		$iDisplayLength = $request->query->get('iDisplayLength');
+		$sSearch = $request->query->get('sSearch');
+
+		$sortByColumn = array();
+		$sortDirColumn = array();
+			
+		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+		{
+			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
+			{
+				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
+				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
+			}
+		}
+
+		$entityManager = $this->getDoctrine()->getManager();
+		$entities = $entityManager->getRepository(Quote::class)->findQuoteByBiography(Biography::FICTIONAL_CHARACTER, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $request->getLocale());
+		$iTotal = $entityManager->getRepository(Quote::class)->findQuoteByBiography(Biography::FICTIONAL_CHARACTER, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $request->getLocale(), true);
+
+		$output = array(
+			"sEcho" => $request->query->get('sEcho'),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iTotal,
+			"aaData" => array()
+		);
+
+		foreach($entities as $entity)
+		{
+			$row = array();
+
+			$show = $this->generateUrl('fictionalcharacter', array('id' => $entity['biography_id'], 'slug' => $entity['biography_slug']));
+			$row[] = '<img src="'.$request->getBaseUrl().'/photo/biography/'.$entity['biography_photo'].'"/>';
+			$row[] = '<a href="'.$show.'" alt="Show">'.$entity['biography_title'].'</a>';
+
+			$row[] = '<span class="badge badge-secondary">'.$entity['number_by_biography'].'</span>';
+
+			$output['aaData'][] = $row;
+		}
+
+		$response = new Response(json_encode($output));
+		$response->headers->set('Content-Type', 'application/json');
+
+		return $response;
+	}
+	
+	// FICTIONALCHARACTER
+	public function fictionalCharacterAction(Request $request, $id)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$entity = $entityManager->getRepository(Biography::class)->find($id);
+
+		return $this->render('Index/fictionalCharacter.html.twig', array('entity' => $entity));
+	}
+
+	public function fictionalCharacterDatatablesAction(Request $request, $biographyId)
+	{
+		$iDisplayStart = $request->query->get('iDisplayStart');
+		$iDisplayLength = $request->query->get('iDisplayLength');
+		$sSearch = $request->query->get('sSearch');
+
+		$sortByColumn = array();
+		$sortDirColumn = array();
+
+		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+		{
+			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
+			{
+				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
+				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
+			}
+		}
+
+		$entityManager = $this->getDoctrine()->getManager();
+		$entities = $entityManager->getRepository(Quote::class)->getQuoteByBiographyDatatables(Biography::FICTIONAL_CHARACTER, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $biographyId);
+		$iTotal = $entityManager->getRepository(Quote::class)->getQuoteByBiographyDatatables(Biography::FICTIONAL_CHARACTER, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $biographyId, true);
+
+		$output = array(
+			"sEcho" => $request->query->get('sEcho'),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iTotal,
+			"aaData" => array()
+		);
+
+		foreach($entities as $entity)
+		{
+			$row = array();
+			$row[] = $entity["quote_text"];
+			$row[] = !empty($entity["source_id"]) ? '<a href="'.$this->generateUrl("source", ['id' => $entity["source_id"], 'slug' => $entity["source_slug"]]).'">'.$entity["source_text"].'</a>' : "-";
+			$show = $this->generateUrl('read', array('id' => $entity["quote_id"], 'slug' => $entity["quote_slug"]));
+			$row[] = '<a href="'.$show.'" alt="Show">Lire</a>';
+
+			$output['aaData'][] = $row;
+		}
+
+		$response = new Response(json_encode($output));
+		$response->headers->set('Content-Type', 'application/json');
+		return $response;
+	}
+	
+	public function byUsersAction(Request $request)
+    {
+        return $this->render('Index/byuser.html.twig');
+    }
+
+	public function byUsersDatatablesAction(Request $request)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$iDisplayStart = $request->query->get('iDisplayStart');
+		$iDisplayLength = $request->query->get('iDisplayLength');
+		$sSearch = $request->query->get('sSearch');
+
+		$sortByColumn = array();
+		$sortDirColumn = array();
+			
+		for($i=0 ; $i < intval($request->query->get('iSortingCols')); $i++)
+		{
+			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
+			{
+				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
+				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
+			}
+		}
+
+		$entities = $entityManager->getRepository(Quote::class)->findQuoteByUser($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $request->getLocale());
+		$iTotal = $entityManager->getRepository(Quote::class)->findQuoteByUser($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $request->getLocale(), true);
+
+		$output = array(
+			"sEcho" => $request->query->get('sEcho'),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iTotal,
+			"aaData" => array()
+		);
+
+		foreach($entities as $entity)
+		{
+			if(!empty($entity['id']))
+			{
+				$row = array();
+
+				$show = $this->generateUrl('read', array('id' => $entity['quote_id'], 'slug' => $entity['slug']));
+				$row[] = '<a href="'.$show.'" alt="Show">'.$entity['quote_title'].'</a>';
+
+				$show = $this->generateUrl('user_show', array('username' => $entity['username']));
+				$row[] = '<a href="'.$show.'" alt="Show">'.$entity['username'].'</a>';
+
+				$output['aaData'][] = $row;
+			}
+		}
+
+		$response = new Response(json_encode($output));
+		$response->headers->set('Content-Type', 'application/json');
+
+		return $response;
+	}
+
+    public function storeAction(Request $request, Pagination $pagination, $page)
+    {
+		$em = $this->getDoctrine()->getManager();
+
+		$query = $request->request->get("query", null);
+		$page = (empty(intval($page))) ? 1 : $page;
+		$nbMessageByPage = 12;
+		
+		$entities = $em->getRepository(Store::class)->getProducts($nbMessageByPage, $page, $query, $request->getLocale());
+		$totalEntities = $em->getRepository(Store::class)->getProducts(0, 0, $query, $request->getLocale(), true);
+		
+		$links = $pagination->setPagination(['url' => 'store'], $page, $totalEntities, $nbMessageByPage);
+
+		return $this->render('Index/store.html.twig', array(
+			'entities' => $entities,
+			'page' => $page,
+			'query' => $query,
+			'links' => $links
+		));
+    }
+
+	public function readStoreAction($id)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$entity = $em->getRepository(Store::class)->find($id);
+		
+		return $this->render('Index/readStore.html.twig', [
+			'entity' => $entity
+		]);
 	}
 
 	public function pageAction(Request $request, $name)

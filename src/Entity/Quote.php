@@ -15,6 +15,9 @@ class Quote
 	const BIOGRAPHY_AUTHORTYPE = "biography";
 	const USER_AUTHORTYPE = "user";
 
+	const PUBLISHED_STATE = 0;
+	const DRAFT_STATE = 1;
+	const DELETE_STATE = 2;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -124,12 +127,12 @@ class Quote
 	
 	public function isBiography()
 	{
-		return $this->authorType == "biography";
+		return $this->authorType == self::BIOGRAPHY_AUTHORTYPE;
 	}
 
 	public function isUser()
 	{
-		return $this->authorType == "user";
+		return $this->authorType == self::USER_AUTHORTYPE;
 	}
 	
 	public function getAuthor()

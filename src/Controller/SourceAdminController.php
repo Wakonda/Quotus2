@@ -61,7 +61,7 @@ class SourceAdminController extends Controller
 		{
 			$row = array();
 			$row[] = $entity->getId();
-			$row[] = $entity->getText();
+			$row[] = $entity->getTitle();
 			$row[] = $entity->getLanguage()->getTitle();
 			
 			$show = $this->generateUrl('sourceadmin_show', array('id' => $entity->getId()));
