@@ -40,7 +40,9 @@ main:
         Title: "Titre"
         Keywords: "Mots-clés"
         Author: "Auteur"
-        Country: "Pays"
+        YourQuotations: "Vos citations"
+        Type: "Type"
+        Source: "Source"
         ChooseAnOption: "Choisissez une option"
         Search: "Rechercher"
 biography:
@@ -252,8 +254,7 @@ search:
         Search: "Recherche"
         SearchResults: "Résultat de votre recherche"
         Criteria: "Critères :"
-        Title: "Titre"
-        Country: "Pays"
+        Text: "Texte"
         Author: "Auteur"
         None: "Aucun"
 quote:

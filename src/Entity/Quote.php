@@ -74,6 +74,16 @@ class Quote
      * @ORM\Column(type="string", length=255)
      */
     protected $authorType;
+	
+	public function isBiographyAuthorType()
+	{
+		return $this->authorType == self::BIOGRAPHY_AUTHORTYPE;
+	}
+	
+	public function isUserAuthorType()
+	{
+		return $this->authorType == self::USER_AUTHORTYPE;
+	}
 
 	public function getStateString()
 	{

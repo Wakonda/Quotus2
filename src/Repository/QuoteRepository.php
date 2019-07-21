@@ -45,6 +45,61 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 		return $qb->getQuery()->getResult();
 	}
 
+	public function findIndexSearch($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $datasObject, $locale, $count = false)
+	{
+		$aColumns = array( 'pf.id', 'pf.id', 'pf.id');
+		$qb = $this->createQueryBuilder("pf");
+
+		$this->whereLanguage($qb, 'pf', $locale);
+		
+		if(!empty($datasObject->source))
+		{
+			$qb->leftjoin("pf.source", "so")
+			   ->andWhere("so.title LIKE :title")
+			   ->setParameter("title", "%".$datasObject->title."%");
+		}
+		
+		if(!empty($datasObject->biography))
+		{
+			$qb->leftjoin("pf.biography", "bi")
+			   ->leftjoin("pf.user", "ur")
+			   ->andWhere("bi.title LIKE :biography OR ur.username LIKE :biography")
+			   ->setParameter("title", "%".$datasObject->biography."%");
+		}
+
+		if(!empty($datasObject->type))
+		{
+			$qb->andWhere("pf.authorType = :type")
+			   ->setParameter("type", $datasObject->type);
+		}
+
+		if(!empty($datasObject->text))
+		{
+			$keywords = explode(",", $datasObject->text);
+			$i = 0;
+			foreach($keywords as $keyword)
+			{
+				$keyword = "%".$keyword."%";
+				$qb->andWhere("pf.text LIKE :keyword".$i)
+			       ->setParameter("keyword".$i, $keyword);
+				$i++;
+			}
+		}
+
+		if(!empty($sortDirColumn))
+		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+		
+		if($count)
+		{
+			$qb->select("COUNT(pf) AS count");
+			return $qb->getQuery()->getSingleScalarResult();
+		}
+		else
+			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
+
+		return $qb->getQuery()->getResult();
+	}
+
 	public function getRandom($locale)
 	{
 		$qb = $this->createQueryBuilder("pa");

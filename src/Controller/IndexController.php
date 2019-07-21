@@ -31,18 +31,87 @@ use MatthiasMullie\Minify;
 
 class IndexController extends Controller
 {
-    public function indexAction(Request $request, \Swift_Mailer $mailer, $oo)
+    public function indexAction(Request $request, \Swift_Mailer $mailer)
     {
 		$entityManager = $this->getDoctrine()->getManager();
+
+		$form = $this->createFormIndexSearch($request->getLocale(), null);
 		$random = $entityManager->getRepository(Quote::class)->getRandom($request->getLocale());
 
-        return $this->render('Index/index.html.twig', ['random' => $random]);
+        return $this->render('Index/index.html.twig', ['form' => $form->createView(), 'random' => $random]);
     }
 
 	public function changeLanguageAction(Request $request, $locale)
 	{
 		$request->getSession()->set('_locale', $locale);
 		return $this->redirect($this->generateUrl('index'));
+	}
+
+	public function indexSearchAction(Request $request, TranslatorInterface $translator)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$search = $request->request->get("index_search");
+		
+		unset($search["_token"]);
+
+		$criteria = $search;
+		
+		if($search['type'] == Biography::AUTHOR)
+			$criteria['type'] = $translator->trans(Biography::AUTHOR_CANONICAL);
+		elseif($search['type'] == Biography::FICTIONAL_CHARACTER)
+			$criteria['type'] = $translator->trans(Biography::FICTIONAL_CHARACTER_CANONICAL);
+		else
+			$criteria['type'] = $translator->trans("main.field.YourQuotations");
+		
+		// $criteria['country'] = (empty($search['country'])) ? null : $entityManager->getRepository(Country::class)->find($search['country'])->getTitle();
+		$criteria = array_filter(array_values($criteria));
+		$criteria = empty($criteria) ? $translator->trans("search.result.None") : $criteria;
+
+		return $this->render('Index/resultIndexSearch.html.twig', ['search' => base64_encode(json_encode($search)), 'criteria' => $criteria]);
+	}
+
+	public function indexSearchDatatablesAction(Request $request, $search)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$iDisplayStart = $request->query->get('iDisplayStart');
+		$iDisplayLength = $request->query->get('iDisplayLength');
+
+		$sortByColumn = array();
+		$sortDirColumn = array();
+			
+		for($i=0 ; $i < intval($request->query->get('iSortingCols')); $i++)
+		{
+			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
+			{
+				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
+				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
+			}
+		}
+		$sSearch = json_decode(base64_decode($search));
+		$entities = $entityManager->getRepository(Quote::class)->findIndexSearch($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $request->getLocale());
+		$iTotal = $entityManager->getRepository(Quote::class)->findIndexSearch($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $request->getLocale(), true);
+
+		$output = array(
+			"sEcho" => $request->query->get('sEcho'),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iTotal,
+			"aaData" => array()
+		);
+		
+		foreach($entities as $entity)
+		{
+			$row = array();
+			$show = $this->generateUrl('read', array('id' => $entity->getId(), 'slug' => $entity->getSlug()));
+			$row[] = '<a href="'.$show.'" alt="Show">'.$entity->getText().'</a>';
+			$row[] = $entity->isBiographyAuthorType() ? $entity->getBiography()->getTitle() : $entity->getUser()->getUsername();
+
+			$output['aaData'][] = $row;
+		}
+
+		$response = new Response(json_encode($output));
+		$response->headers->set('Content-Type', 'application/json');
+
+		return $response;
 	}
 
 	public function readAction(Request $request, $id, $idImage)
@@ -536,5 +605,10 @@ class IndexController extends Controller
 		$response->headers->set('Content-Type', 'application/json');
 
 		return $response;
+	}
+
+	private function createFormIndexSearch($locale, $entity)
+	{
+		return $this->createForm(IndexSearchType::class, null, ["locale" => $locale]);
 	}
 }

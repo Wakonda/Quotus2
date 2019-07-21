@@ -13,7 +13,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Repository\CountryRepository;
 
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
+
+use App\Entity\Biography;
 use App\Entity\Country;
+use App\Entity\Source;
 
 class IndexSearchType extends AbstractType
 {
@@ -23,18 +27,18 @@ class IndexSearchType extends AbstractType
 
         $builder
 			->add('text', TextType::class, array("label" => "main.field.Keywords", "required" => false, "attr" => array("class" => "tagit full_width")))
-			->add('country', EntityType::class, array(
-				'label' => 'main.field.Country',
-				'class' => Country::class,
-				'query_builder' => function (CountryRepository $er) use ($locale) {
-					return $er->findAllForChoice($locale);
-				},
-				'multiple' => false, 
-				'expanded' => false,
+			->add('type', ChoiceType::class, [
+				"label" => "main.field.Type",
 				'required' => false,
-				'constraints' => array(new Assert\NotBlank()),
-				'placeholder' => 'main.field.ChooseAnOption'
-			))
+				'choices'  => [
+					Biography::AUTHOR_CANONICAL => Biography::AUTHOR,
+					Biography::FICTIONAL_CHARACTER_CANONICAL => Biography::FICTIONAL_CHARACTER,
+					"main.field.YourQuotations" => "yourQuotations"
+				],
+			])
+			
+			->add('source', TextType::class, array("label" => "main.field.Source", "required" => false))
+			->add('biography', TextType::class, array("label" => "main.field.Author", "required" => false))
             ->add('search', SubmitType::class, array('label' => 'main.field.Search', "attr" => array("class" => "btn btn-primary")))
 			;
     }

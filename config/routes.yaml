@@ -6,6 +6,14 @@ change_language:
     path: /change_language/{locale}
     controller: App\Controller\IndexController::changeLanguageAction
 
+index_search:
+    path: /search
+    controller: App\Controller\IndexController::indexSearchAction
+
+index_search_datatables:
+    path: /result_search/{search}
+    controller: App\Controller\IndexController::indexSearchDatatablesAction
+
 read:
     path: /read/{id}/{slug}/{idImage}
     controller: App\Controller\IndexController::readAction
