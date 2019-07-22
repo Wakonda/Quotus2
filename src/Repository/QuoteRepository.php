@@ -49,6 +49,11 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 	{
 		$aColumns = array( 'pf.id', 'pf.id', 'pf.id');
 		$qb = $this->createQueryBuilder("pf");
+		
+		$qb
+		   ->andWhere("pf.state = :state")
+		   ->setParameter("state", Quote::PUBLISHED_STATE)
+		   ->leftjoin("pf.biography", "bi");
 
 		$this->whereLanguage($qb, 'pf', $locale);
 		
@@ -56,20 +61,18 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 		{
 			$qb->leftjoin("pf.source", "so")
 			   ->andWhere("so.title LIKE :title")
-			   ->setParameter("title", "%".$datasObject->title."%");
+			   ->setParameter("title", "%".$datasObject->source."%");
 		}
 		
 		if(!empty($datasObject->biography))
 		{
-			$qb->leftjoin("pf.biography", "bi")
-			   ->leftjoin("pf.user", "ur")
-			   ->andWhere("bi.title LIKE :biography OR ur.username LIKE :biography")
-			   ->setParameter("title", "%".$datasObject->biography."%");
+			$qb->andWhere("bi.title LIKE :biography")
+			   ->setParameter("biography", "%".$datasObject->biography."%");
 		}
 
 		if(!empty($datasObject->type))
 		{
-			$qb->andWhere("pf.authorType = :type")
+			$qb->andWhere("bi.type = :type")
 			   ->setParameter("type", $datasObject->type);
 		}
 

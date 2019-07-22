@@ -32,8 +32,7 @@ class IndexSearchType extends AbstractType
 				'required' => false,
 				'choices'  => [
 					Biography::AUTHOR_CANONICAL => Biography::AUTHOR,
-					Biography::FICTIONAL_CHARACTER_CANONICAL => Biography::FICTIONAL_CHARACTER,
-					"main.field.YourQuotations" => "yourQuotations"
+					Biography::FICTIONAL_CHARACTER_CANONICAL => Biography::FICTIONAL_CHARACTER
 				],
 			])
 			

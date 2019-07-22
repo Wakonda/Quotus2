@@ -60,8 +60,6 @@ class IndexController extends Controller
 			$criteria['type'] = $translator->trans(Biography::AUTHOR_CANONICAL);
 		elseif($search['type'] == Biography::FICTIONAL_CHARACTER)
 			$criteria['type'] = $translator->trans(Biography::FICTIONAL_CHARACTER_CANONICAL);
-		else
-			$criteria['type'] = $translator->trans("main.field.YourQuotations");
 		
 		// $criteria['country'] = (empty($search['country'])) ? null : $entityManager->getRepository(Country::class)->find($search['country'])->getTitle();
 		$criteria = array_filter(array_values($criteria));
