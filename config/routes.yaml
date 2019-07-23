@@ -14,12 +14,22 @@ index_search_datatables:
     path: /result_search/{search}
     controller: App\Controller\IndexController::indexSearchDatatablesAction
 
+download_image:
+    path: /download_image/{fileName}
+    controller: App\Controller\IndexController::downloadImageAction
+
 read:
     path: /read/{id}/{slug}/{idImage}
     controller: App\Controller\IndexController::readAction
     defaults:
         slug: null
         idImage: null
+
+read_pdf:
+    path: /read_pdf/{id}/{slug}
+    controller: App\Controller\IndexController::readPDFAction
+    defaults:
+        slug: null
 
 store:
     path: /store/{page}
@@ -121,6 +131,30 @@ gravatar:
     path: /gravatar
     controller: App\Controller\IndexController::reloadGravatarAction
 
+# COMMENT
+comment:
+    path: /comment/{id}
+    controller: App\Controller\CommentController::indexAction
+    requirements:
+        id: \d+
+
+comment_create:
+    path: comment/create/{id}
+    controller: App\Controller\CommentController::createAction
+    requirements:
+        id: \d+
+
+comment_load:
+    path: comment/load/{id}
+    controller: App\Controller\CommentController::loadCommentAction
+    requirements:
+        id: \d+
+
+# VOTE
+vote:
+    path: /vote/{id}
+    controller: App\Controller\VoteController::voteAction
+
 # USER
 login:
     path: /user/login
@@ -201,6 +235,19 @@ contact:
 contact_send:
     path: /contact_send
     controller: App\Controller\ContactController::sendAction
+
+# SEND
+send:
+    path: send/index/{id}
+    controller: App\Controller\SendController::indexAction
+    requirements:
+        id: \d+
+
+send_go:
+    path: send/send/{id}
+    controller: App\Controller\SendController::sendAction
+    requirements:
+        id: \d+
 
 # ADMIN QUOTEIMAGE
 quoteimageadmin_index:

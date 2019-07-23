@@ -12,7 +12,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 use App\Entity\Comment;
 use App\Entity\User;
-use App\Entity\Proverb;
+use App\Entity\Quote;
 use App\Form\Type\CommentType;
 
 class CommentController extends Controller
@@ -44,7 +44,7 @@ class CommentController extends Controller
 		if($form->isValid())
 		{
 			$entity->setUser($user);
-			$entity->setProverb($entityManager->getRepository(Proverb::class)->find($id));
+			$entity->setQuote($entityManager->getRepository(Quote::class)->find($id));
 
 			$entityManager->persist($entity);
 			$entityManager->flush();

@@ -8,7 +8,7 @@
 			$.ajax(
 			{
 				type: "POST",
-				url: "{{ path('comment_create', { poemId: poemId }) }}?page=1",
+				url: "{{ path('comment_create', { id: id }) }}?page=1",
 				data: DATA,
 				cache: false,
 				success: function(data)
@@ -25,7 +25,7 @@
 			$.ajax(
 			{
 				type: "GET",
-				url: "{{ path('comment_load', { poemId: poemId }) }}?page=1",
+				url: "{{ path('comment_load', { id: id }) }}?page=1",
 				cache: false,
 				success: function(data)
 				{
@@ -39,7 +39,7 @@
 			$.ajax(
 			{
 				type: "GET",
-				url: "{{ path('comment_load', { poemId: poemId }) }}?page=" + $(this).data("followpage"),
+				url: "{{ path('comment_load', { id: id }) }}?page=" + $(this).data("followpage"),
 				cache: false,
 				success: function(data)
 				{
@@ -61,7 +61,7 @@
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" role="tablist">
 			<li role="presentation" class="nav-item"><a class="nav-link active" href="#facebook_comment" aria-controls="facebook_comment" role="tab" data-toggle="tab">Facebook</a></li>
-			<li role="presentation" class="nav-item"><a class="nav-link" href="#poeticus_comment" aria-controls="poeticus_comment" role="tab" data-toggle="tab">Poéticus</a></li>
+			<li role="presentation" class="nav-item"><a class="nav-link" href="#quotus_comment" aria-controls="quotus_comment" role="tab" data-toggle="tab">Quotus</a></li>
 		</ul>
 
 		<!-- Tab panes -->
@@ -79,7 +79,7 @@
 				
 				<div class="fb-comments" data-href="{{ app.request.uri }}" data-numposts="5"></div>
 			</div>
-			<div role="tabpanel" class="tab-pane" id="poeticus_comment">
+			<div role="tabpanel" class="tab-pane" id="quotus_comment">
 				{% if is_granted('IS_AUTHENTICATED_FULLY') == false and is_granted('IS_AUTHENTICATED_REMEMBERED') == false %}
 					<div class="alert alert-danger" role="alert">
 						<i class="fa fa-exclamation-triangle"></i> {{ 'comment.field.YouMustBeLoggedInToWriteAComment'|trans }}

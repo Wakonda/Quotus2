@@ -1,7 +1,7 @@
 {% extends 'generic_layout.html.twig' %}
 
-{% block head_title %}{{ "proverb.read.Proverb"|trans }} - {{ entity.country.title }}{% endblock %}
-{% block main_title %}{{ "proverb.read.Proverb"|trans }} - {{ entity.country.title }}{% endblock %}
+{% block head_title %}{{ "quote.read.Quote"|trans }}{% endblock %}
+{% block main_title %}{{ "quote.read.Quote"|trans }}{% endblock %}
 
 {% block meta_tag_description %}{{ entity.text|striptags }}{% endblock %}
 
@@ -13,7 +13,7 @@
 		<meta name="twitter:card" content="summary_large_image">
 		<meta name="twitter:title" content="{{ entity.text }}">
 		<meta property="og:type" content="website">
-		<meta property="og:image" content="{{ absolute_url(asset('photo/proverb/'~image.image)) }}" />
+		<meta property="og:image" content="{{ absolute_url(asset('photo/quote/'~image.image)) }}" />
 	{% endif %}
 {% endblock %}
 
@@ -114,12 +114,12 @@
 		</blockquote>
 	</div>
 	
-	{% if entity.proverbImages is not empty %}
-	<h3>{{ "proverb.read.InPictures"|trans }}</h3>
+	{% if entity.quoteImages is not empty %}
+	<h3>{{ "quote.read.InPictures"|trans }}</h3>
 	<div id="myCarousel" class="carousel slide" data-ride="carousel">
 		<!-- Indicators -->
 		<ol class="carousel-indicators hidden_print">
-			{% for i in 0..entity.proverbImages|length - 1 %}
+			{% for i in 0..entity.quoteImages|length - 1 %}
 				<li data-target="#myCarousel" data-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}></li>
 			{% endfor %}
 		</ol>
@@ -127,15 +127,15 @@
 		<!-- Wrapper for slides -->
 		<div class="carousel-inner">
 			{% set i = 0 %}
-			{% for proverbImage in entity.proverbImages %}
+			{% for quoteImage in entity.quoteImages %}
 				<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
-					<img src="{{ asset('photo/proverb/'~proverbImage.image) }}" class="text-center" alt="">
+					<img src="{{ asset('photo/quote/'~quoteImage.image) }}" class="text-center" alt="">
 					<div class="carousel-caption hidden_print">
-						<a class="btn btn-primary" target="_blank" title="Twitter" href="https://twitter.com/share?url={{ url('read', {id: proverbImage.proverb.id, slug: proverbImage.proverb.slug, idImage: proverbImage.id}) }}&text={{ proverbImage.proverb.text }}&via=Proverbius" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-						<a class="btn btn-primary" target="_blank" title="Facebook" href="https://www.facebook.com/sharer.php?u={{ url('read', {id: proverbImage.proverb.id, slug: proverbImage.proverb.slug, idImage: proverbImage.id }) }}&t={{ proverbImage.proverb.text }}" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-						<a class="btn btn-primary" target="_blank" title="Linkedin" href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ url('read', {id: proverbImage.proverb.id, slug: proverbImage.proverb.slug, idImage: proverbImage.id }) }}" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-						<a class="btn btn-primary" target="_blank" title="Pinterest" href="http://pinterest.com/pin/create/button/?url={{ url('read', {id: proverbImage.proverb.id, slug: proverbImage.proverb.slug, idImage: proverbImage.id }) }}&media={{ absolute_url(asset('photo/proverb/'~proverbImage.image)) }}&description={{ proverbImage.proverb.text }}" count-layout="horizontal" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fa fa-pinterest-p" aria-hidden="true"></i></a>
-						<a href="{{ path('download_image', {'fileName': proverbImage.image}) }}" class="btn btn-success "><i class="fa fa-download" aria-hidden="true"></i></a>
+						<a class="btn btn-primary" target="_blank" title="Twitter" href="https://twitter.com/share?url={{ url('read', {id: quoteImage.quote.id, slug: quoteImage.quote.slug, idImage: quoteImage.id}) }}&text={{ quoteImage.quote.text }}&via=Quotus" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+						<a class="btn btn-primary" target="_blank" title="Facebook" href="https://www.facebook.com/sharer.php?u={{ url('read', {id: quoteImage.quote.id, slug: quoteImage.quote.slug, idImage: quoteImage.id }) }}&t={{ quoteImage.quote.text }}" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+						<a class="btn btn-primary" target="_blank" title="Linkedin" href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ url('read', {id: quoteImage.quote.id, slug: quoteImage.quote.slug, idImage: quoteImage.id }) }}" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+						<a class="btn btn-primary" target="_blank" title="Pinterest" href="http://pinterest.com/pin/create/button/?url={{ url('read', {id: quoteImage.quote.id, slug: quoteImage.quote.slug, idImage: quoteImage.id }) }}&media={{ absolute_url(asset('photo/quote/'~quoteImage.image)) }}&description={{ quoteImage.quote.text }}" count-layout="horizontal" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fa fa-pinterest-p" aria-hidden="true"></i></a>
+						<a href="{{ path('download_image', {'fileName': quoteImage.image}) }}" class="btn btn-success "><i class="fa fa-download" aria-hidden="true"></i></a>
 					</div>
 				</div>
 				{% set i = i + 1 %}
@@ -154,9 +154,16 @@
 	</div>
 	{% endif %}
 	<hr>
-	<p>
-	<a href="{{ path('country', {'id' : entity.country.id, 'slug' : entity.country.slug }) }}" alt=""><img class="flag" src="{{ asset('photo/country/'~entity.country.flag) }}" alt="" height="8" /> Proverbe - {{ entity.country.title }}</a>
-	</p>
+	{% if entity.isBiography %}
+		{% if entity.biography.isFictionalCharacter %}
+		<p><b><a href="{{ path('fictionalcharacter', {'id': entity.biography.id, 'slug': entity.biography.slug}) }}">{{ entity.biography.title }}</a></b>
+		{% else %}
+		<p><b><a href="{{ path('author', {'id': entity.biography.id, 'slug': entity.biography.slug}) }}">{{ entity.biography.title }}</a></b>
+		{% endif %}
+		- <u><i><a href="{{ path('source', {'id': entity.source.id, 'slug': entity.source.slug}) }}">{{ entity.source.title }}</a></i></u></p>
+	{% else %}
+		<p class="card-text mb-0"><b><a href="">{{ entity.user.username }}</a></b></p>
+	{% endif %}
 	
 	<div class="social_network_container">
 		<div>
@@ -231,15 +238,15 @@
 		</div>
 	</div>
 	
-	{% if(browsingProverbs['previous'] is not empty or browsingProverbs['next'] is not empty) %}
+	{% if(browsing['previous'] is not empty or browsing['next'] is not empty) %}
 		<div id="proverb_browsing" class="hidden_print">
 			<hr>
-			{% if(browsingProverbs['previous'] is not empty) %}
-				<span data-nav-action="Précédent" data-nav-title="{{ browsingProverbs['previous']['text'] }}" id="previous_data"><a href="{{ path('read', {'id' : browsingProverbs['previous']['id'], 'slug' : browsingProverbs['previous']['slug']}) }}"><i class="fa fa-arrow-circle-left"></i> Précédent</a></span>
+			{% if(browsing['previous'] is not empty) %}
+				<span data-nav-action="Précédent" data-nav-title="{{ browsing['previous']['text'] }}" id="previous_data"><a href="{{ path('read', {'id' : browsing['previous']['id'], 'slug' : browsing['previous']['slug']}) }}"><i class="fa fa-arrow-circle-left"></i> Précédent</a></span>
 			{% endif %}
 			
-			{% if(browsingProverbs['next'] is not empty) %}
-				<span data-nav-action="Suivant" data-nav-title="{{ browsingProverbs['next']['text'] }}" class="float-right" id="next_data"><a href="{{ path('read', {'id' : browsingProverbs['next']['id'], 'slug' : browsingProverbs['next']['slug']}) }}">Suivant <i class="fa fa-arrow-circle-right"></i></a></span>
+			{% if(browsing['next'] is not empty) %}
+				<span data-nav-action="Suivant" data-nav-title="{{ browsing['next']['text'] }}" class="float-right" id="next_data"><a href="{{ path('read', {'id' : browsing['next']['id'], 'slug' : browsing['next']['slug']}) }}">Suivant <i class="fa fa-arrow-circle-right"></i></a></span>
 			{% endif %}
 		</div>
 		<div style="clear: both;"></div>

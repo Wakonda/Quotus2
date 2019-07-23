@@ -260,6 +260,7 @@ search:
 quote:
     read:
         InPictures: "En images ..."
+        Quote: "Citation"
     state:
         Published: "Publié"
         Deleted: "Supprimé"

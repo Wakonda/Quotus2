@@ -123,6 +123,26 @@ class IndexController extends Controller
 		return $this->render('Index/read.html.twig', array('entity' => $entity, 'browsing' => $browsing, 'image' => $image));
 	}
 
+	public function readPDFAction(Request $request, $id)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$entity = $entityManager->getRepository(Quote::class)->find($id, true);
+		
+		if(empty($entity))
+			throw $this->createNotFoundException('404');
+		
+		$content = $this->renderView('Index/pdf_quote.html.twig', array('entity' => $entity));
+
+		$html2pdf = new Html2Pdf('P','A4','fr');
+		$html2pdf->WriteHTML($content);
+		$file = $html2pdf->Output('quote.pdf');
+
+		$response = new Response($file);
+		$response->headers->set('Content-Type', 'application/pdf');
+
+		return $response;
+	}
+
 	public function byImagesAction(Request $request)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
@@ -518,6 +538,13 @@ class IndexController extends Controller
 		$response = new Response(json_encode($output));
 		$response->headers->set('Content-Type', 'application/json');
 
+		return $response;
+	}
+
+	public function downloadImageAction($fileName)
+	{
+		$response = new BinaryFileResponse('photo/quote/'.$fileName);
+		$response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $fileName);
 		return $response;
 	}
 
