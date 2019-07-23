@@ -75,10 +75,10 @@
 			return false;
 		}
 		
-		$("#proverb_browsing span#next_data a").qtip({
+		$("#quote_browsing span#next_data a").qtip({
 			content: {
-				text: $('#proverb_browsing span#next_data').data('navTitle'),
-				title: $('#proverb_browsing span#next_data').data('navAction') + ' <i class="fa fa-arrow-circle-right"></i>'
+				text: $('#quote_browsing span#next_data').data('navTitle'),
+				title: $('#quote_browsing span#next_data').data('navAction') + ' <i class="fa fa-arrow-circle-right"></i>'
 			},
 			position : {
 					my: 'top right',
@@ -87,10 +87,10 @@
 			style: { classes: 'qtip-tipped' }
 		});
 		
-		$("#proverb_browsing span#previous_data a").qtip({
+		$("#quote_browsing span#previous_data a").qtip({
 			content: {
-				text: $('#proverb_browsing span#previous_data').data('navTitle'),
-				title: '<i class="fa fa-arrow-circle-left"></i> ' + $('#proverb_browsing span#previous_data').data('navAction')
+				text: $('#quote_browsing span#previous_data').data('navTitle'),
+				title: '<i class="fa fa-arrow-circle-left"></i> ' + $('#quote_browsing span#previous_data').data('navAction')
 			},
 
 			style: { classes: 'qtip-tipped' }
@@ -239,7 +239,7 @@
 	</div>
 	
 	{% if(browsing['previous'] is not empty or browsing['next'] is not empty) %}
-		<div id="proverb_browsing" class="hidden_print">
+		<div id="quote_browsing" class="hidden_print">
 			<hr>
 			{% if(browsing['previous'] is not empty) %}
 				<span data-nav-action="Précédent" data-nav-title="{{ browsing['previous']['text'] }}" id="previous_data"><a href="{{ path('read', {'id' : browsing['previous']['id'], 'slug' : browsing['previous']['slug']}) }}"><i class="fa fa-arrow-circle-left"></i> Précédent</a></span>
