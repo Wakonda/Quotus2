@@ -1,39 +1,20 @@
 <script type="text/javascript">
-	$(function()
+	function loadComments()
 	{
-		$('body').on('submit', "#form_comment", function(event)
+		$.ajax(
 		{
-			var DATA = $(this).serialize();
-
-			$.ajax(
+			type: "GET",
+			url: "{{ path('comment_load', { id: id }) }}?page=1",
+			cache: false,
+			success: function(data)
 			{
-				type: "POST",
-				url: "{{ path('comment_create', { id: id }) }}?page=1",
-				data: DATA,
-				cache: false,
-				success: function(data)
-				{
-					loadComments();
-					tinyMCE.activeEditor.setContent('');
-				}
-			});
-			event.preventDefault();
+				$("#list_comments").html(data);
+			}
 		});
-		
-		function loadComments()
-		{
-			$.ajax(
-			{
-				type: "GET",
-				url: "{{ path('comment_load', { id: id }) }}?page=1",
-				cache: false,
-				success: function(data)
-				{
-					$("#list_comments").html(data);
-				}
-			});
-		}
-		
+	}
+
+	$(function()
+	{	
 		$(document).on("click", ".page_action", function()
 		{
 			$.ajax(

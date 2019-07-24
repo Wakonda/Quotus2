@@ -16,7 +16,6 @@
 		}
 	});
 </script>
-
 {% form_theme form 'Form/fields.html.twig' %}
 
 {{ form_start(form, {'method' : 'post', 'action' : '', 'attr': {'id': 'form_comment', 'novalidate': 'novalidate'} }) }}
@@ -28,3 +27,32 @@
 	{{ form_widget(form.save, {'icon': 'fa-commenting'}) }}
 	{{ form_rest(form) }}
 {{ form_end(form) }}
+
+<script type="text/javascript">
+	$(function()
+	{
+		$('body').off('submit').on('submit', "#form_comment", function(event)
+		{
+			var DATA = $(this).serialize();
+			
+			$.ajax(
+			{
+				type: "POST",
+				url: "{{ path('comment_create', { id: id }) }}?page=1",
+				data: DATA,
+				cache: false,
+				success: function(data)
+				{
+					tinymce.remove('#{{ form.text.vars.id }}');
+					$("#form_comment_container").html(data);
+					loadComments();
+					tinyMCE.activeEditor.setContent('');
+				},
+				complete: function() {
+					tinymce.init('#{{ form.text.vars.id }}');
+				}
+			});
+			event.preventDefault();
+		});
+	});
+</script>

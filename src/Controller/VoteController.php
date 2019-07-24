@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Quote;
 use App\Entity\Vote;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
