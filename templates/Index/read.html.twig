@@ -242,11 +242,11 @@
 		<div id="quote_browsing" class="hidden_print">
 			<hr>
 			{% if(browsing['previous'] is not empty) %}
-				<span data-nav-action="Précédent" data-nav-title="{{ browsing['previous']['text'] }}" id="previous_data"><a href="{{ path('read', {'id' : browsing['previous']['id'], 'slug' : browsing['previous']['slug']}) }}"><i class="fa fa-arrow-circle-left"></i> Précédent</a></span>
+				<span data-nav-action="Précédent" data-nav-title="{{ browsing['previous']['text'] }}" id="previous_data"><a href="{{ path('read', {'id' : browsing['previous']['id'], 'slug' : browsing['previous']['slug']}) }}"><i class="fa fa-arrow-circle-left"></i> {{ "quote.browsing.Previous"|trans }}</a></span>
 			{% endif %}
 			
 			{% if(browsing['next'] is not empty) %}
-				<span data-nav-action="Suivant" data-nav-title="{{ browsing['next']['text'] }}" class="float-right" id="next_data"><a href="{{ path('read', {'id' : browsing['next']['id'], 'slug' : browsing['next']['slug']}) }}">Suivant <i class="fa fa-arrow-circle-right"></i></a></span>
+				<span data-nav-action="Suivant" data-nav-title="{{ browsing['next']['text'] }}" class="float-right" id="next_data"><a href="{{ path('read', {'id' : browsing['next']['id'], 'slug' : browsing['next']['slug']}) }}">{{ "quote.browsing.Next"|trans }} <i class="fa fa-arrow-circle-right"></i></a></span>
 			{% endif %}
 		</div>
 		<div style="clear: both;"></div>
