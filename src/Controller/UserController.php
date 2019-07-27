@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Vote;
 use App\Entity\Comment;
+use App\Entity\Quote;
 use App\Form\Type\UserType;
 use App\Form\Type\UpdatePasswordType;
 use App\Form\Type\ForgottenPasswordType;
@@ -64,7 +65,7 @@ class UserController extends Controller
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		if(!empty($username))
-			$entity = $entityManager->getRepository(User::class)->findOneByName(["username" => $username]);
+			$entity = $entityManager->getRepository(User::class)->findOneBy(["username" => $username]);
 		else
 			$entity = $tokenStorage->getToken()->getUser();
 
@@ -349,6 +350,55 @@ class UserController extends Controller
 	}
 	
 	// Profil show
+	public function quotesUserDatatablesAction(Request $request, TokenStorageInterface $tokenStorage, TranslatorInterface $translator, AuthorizationCheckerInterface $authChecker, $username)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$iDisplayStart = $request->query->get('iDisplayStart');
+		$iDisplayLength = $request->query->get('iDisplayLength');
+		$sSearch = $request->query->get('sSearch');
+
+		$sortByColumn = array();
+		$sortDirColumn = array();
+			
+		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+		{
+			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
+			{
+				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
+				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
+			}
+		}
+
+		$entities = $entityManager->getRepository(Quote::class)->findQuoteByUserAndAuhorType($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $username, $tokenStorage->getToken()->getUser(), 'user');
+		$iTotal = $entityManager->getRepository(Quote::class)->findQuoteByUserAndAuhorType($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $username, $tokenStorage->getToken()->getUser(), 'user', true);
+
+		$output = array(
+			"sEcho" => $request->query->get('sEcho'),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iTotal,
+			"aaData" => array()
+		);
+
+		foreach($entities as $entity)
+		{
+			$row = array();
+
+			$show = $this->generateUrl('read', array('id' => $entity->getId(), 'slug' => $entity->getSlug()));
+			$row[] = '<a href="'.$show.'" alt="Show">'.$entity->getText().'</a>';
+
+			if ($authChecker->isGranted('IS_AUTHENTICATED_REMEMBERED') and $tokenStorage->getToken()->getUser()->getUsername() == $username) {
+				$row[] = '<div class="state_entity '.$entity->getStateRealName().'">'.$translator->trans($entity->getStateString()).'</div>';
+				$row[] = '<a href="'.$this->generateUrl('quoteuser_edit', array("id" => $entity->getId())).'" alt=""><span class="fa fa-pencil">'.$translator->trans('user.myProfile.Edit').'</span></a> / <a href="#" alt="" data-id="'.$entity->getId().'" class="delete_poem"><span class="fa fa-times">'.$translator->trans('user.myProfile.Delete').'</span></a>';
+			}
+			
+			$output['aaData'][] = $row;
+		}
+
+		$response = new Response(json_encode($output));
+		$response->headers->set('Content-Type', 'application/json');
+		return $response;
+	}
+
 	//** Mes Votes
 	public function votesUserDatatablesAction(Request $request, $username)
 	{
@@ -433,7 +483,7 @@ class UserController extends Controller
 
 			$show = $this->generateUrl('read', array('id' => $entity['id'], 'slug' => $entity["slug"]));
 			$row[] = '<a href="'.$show.'" alt="Show">'.$entity['text'].'</a>';
-			$row[] = "le ".date_format(new \Datetime($entity['created_at']), "d/m/Y à H:i:s");
+			$row[] = "le ".$entity['created_at']->format("d/m/Y à H:i:s");
 
 			$output['aaData'][] = $row;
 		}

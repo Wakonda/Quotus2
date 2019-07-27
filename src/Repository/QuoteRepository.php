@@ -130,7 +130,9 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 	{
 		$qb = $this->createQueryBuilder("pa");
 
-		$qb->setMaxResults(7)
+		$qb->where("pa.authorType = :biography")
+		   ->setParameter("biography", Quote::BIOGRAPHY_AUTHORTYPE)
+		   ->setMaxResults(7)
 		   ->orderBy("pa.id", "DESC")
 		   ->andWhere("pa.state = :state")
 		   ->setParameter("state", Quote::PUBLISHED_STATE);
@@ -361,7 +363,7 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 
 		$aColumns = array( 'co.username', 'COUNT(pa.id)');
 		
-		$qb->select("co.username AS username, COUNT(pa.id) AS number_by_biography, co.avatar AS avatar, co.gravatar as gravatar")
+		$qb->select("pa.id AS id, pa.text AS text, pa.slug AS slug, co.username AS username")
 		   ->leftjoin("pa.user", "co")
 		   ->groupBy("co.id, co.username")
 		   ->andWhere("pa.state = :state")
@@ -394,7 +396,9 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 		}
 		else
 			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
-
+		
+		// var_dump(Quote::PUBLISHED_STATE, Quote::USER_AUTHORTYPE, $locale);
+// die($qb->getQuery()->getSQL());
 		return $qb->getQuery()->getResult();
     }
 
@@ -407,5 +411,43 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 		   ->setParameter("locale", $locale);
 		
 		return $qb;
+	}
+
+	public function findQuoteByUserAndAuhorType($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $username, $currentUser, $authorType, $count = false)
+	{
+		$qb = $this->createQueryBuilder("pf");
+
+		$aColumns = array( 'pf.id', 'pf.text', 'pf.state', 'pf.id');
+		
+		$qb->leftjoin("pf.user", "pfu")
+		   ->where("pfu.username = :username")
+		   ->setParameter("username", $username)
+		   ->andWhere("pf.state <> 2")
+		   ->andWhere('pf.authorType = :authorType')
+		   ->setParameter('authorType', $authorType);
+
+		if($username != $currentUser->getUsername())
+		{
+			$qb->andWhere("pf.state = 0");
+		}
+		
+		if(!empty($sortDirColumn))
+		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+		
+		if(!empty($sSearch))
+		{
+			$search = "%".$sSearch."%";
+			$qb->andhere('pf.title LIKE :search')
+			   ->setParameter('search', $search);
+		}
+		if($count)
+		{
+			$qb->select("COUNT(pf) AS count");
+			return $qb->getQuery()->getSingleScalarResult();
+		}
+		else
+			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
+
+		return $qb->getQuery()->getResult();
 	}
 }

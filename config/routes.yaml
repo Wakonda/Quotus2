@@ -209,7 +209,32 @@ user_forgottenpasswordsend:
     path: /user/forgottenpasswordsend
     controller: App\Controller\UserController::forgottenPasswordSendAction
 
+# QUOTE USER
+quoteuser_new:
+    path: /quoteuser/new
+    controller: App\Controller\IndexController::quoteUserNewAction
+
+quoteuser_create:
+    path: /quoteuser/create
+    controller: App\Controller\IndexController::quoteUserCreateAction
+
+quoteuser_edit:
+    path: /quoteuser/edit/{id}
+    controller: App\Controller\IndexController::quoteUserEditAction
+
+quoteuser_update:
+    path: /quoteuser/update/{id}
+    controller: App\Controller\IndexController::quoteUserUpdateAction
+
+quoteuser_delete:
+    path: /quoteuser/delete
+    controller: App\Controller\IndexController::quoteUserDeleteAction
+
 # ADMIN AJAX
+quote_user_datatables:
+    path: /user/quote_user_datatables/{username}
+    controller: App\Controller\UserController::quotesUserDatatablesAction
+
 vote_datatables:
     path: /user/vote_datatables/{username}
     controller: App\Controller\UserController::votesUserDatatablesAction

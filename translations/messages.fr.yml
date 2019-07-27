@@ -22,6 +22,7 @@ menu:
         MyProfile: "Mon profil"
         ChangeMyPassword: "Modifier mon mot de passe"
         EditProfile: "Modifier mon profil"
+        WriteQuote: "Ecrire une citation"
         LogOut: "Déconnexion"
         Admin: "Admin"
         HelpUs: "Aidez-nous"
@@ -78,12 +79,6 @@ fictionalCharacter:
         Photo: "Photo"
         Source: "Source"
         Read: "Lire"
-yourQuotes:
-    index:
-        YourQoutes: "Vos citations"
-    table:
-        Text: "Texte"
-        Author: "Auteur"
 store:
     index:
         Store: "Boutique"
@@ -93,6 +88,18 @@ store:
         Action: "Action"
     read:
         Abstract: "Résumé"
+yourQuotes:
+    index:
+        YourQuotes: "Vos citations"
+    table:
+        Author: "Auteur"
+        Text: "Texte"
+    field:
+        WriteQuote: "Ecrire une citation"
+        EditQuote: "Modifier une citation"
+        Text: "Texte"
+        Draft: "Brouillon"
+        Save: "Sauvegarder"
 backup:
     index:
         File: "Fichier"
@@ -164,12 +171,17 @@ user:
         Action: "Action"
     myProfile:
         User: "Membre"
+        MyQuotes: "Mes citations"
         MyComments: "Mes commentaires"
         MyVotes: "Mes votes"
         Login: "Nom d'utilisateur"
         Country: "Pays"
         Description: "Présentation"
-        Title: "Titre"
+        Text: "Texte"
+        Action: "Action"
+        Edit: "Modifier"
+        Delete: "Supprimer"
+        State: "Etat"
         Quote: "Citation"
         PublicationDate: "Date de publication"
         Vote: "Vote"

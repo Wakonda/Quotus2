@@ -7,7 +7,7 @@
 
 {% block meta_tag %}
 	{{ parent() }}
-	<meta property="og:description"   content="{{ entity.text }}" />
+	<meta property="og:description" content="{{ entity.text }}" />
 	
 	{% if image is not null %}
 		<meta name="twitter:card" content="summary_large_image">
@@ -162,7 +162,7 @@
 		{% endif %}
 		- <u><i><a href="{{ path('source', {'id': entity.source.id, 'slug': entity.source.slug}) }}">{{ entity.source.title }}</a></i></u></p>
 	{% else %}
-		<p class="card-text mb-0"><b><a href="">{{ entity.user.username }}</a></b></p>
+		<p><b><a href="{{ path('user_show', {'username' : entity.user.username }) }}">{{ entity.user.username }}</a></b></p>
 	{% endif %}
 	
 	<div class="social_network_container">

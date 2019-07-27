@@ -584,20 +584,20 @@ progress::-webkit-progress-bar {
 	text-align: center;
 }
 
-table div.state_poem {
+table div.state_entity {
 	border-radius: 10px;
 	text-align: center;
 }
 
-table div.state_poem.draft {
+table div.state_entity.draft {
 	background-color: #FDCA7A;
 }
 
-table div.state_poem.published {
+table div.state_entity.published {
 	background-color: #7AFD8B;
 }
 
-table.poems_user_datatables th:first-child{
+table.entities_user_datatables th:first-child{
 	width: 50%;
 }
 

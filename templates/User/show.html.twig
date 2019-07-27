@@ -16,6 +16,61 @@
 	<script type="text/javascript">
 		$(function ()
 		{
+			oTable = $('table.entities_user_datatables').DataTable( {
+				"oLanguage": {
+					"sUrl": "{{ asset('js/DataTables/language/dataTables.'~app.request.locale) }}.txt"
+				},
+				"bFilter": true,
+				"bInfo": true,
+				"bSort": true,
+				"bLengthChange": true,
+				"iDisplayLength": 15,
+				"bProcessing": true,
+				"bServerSide": true,
+				"sAjaxSource": "{{ path('quote_user_datatables', { 'username' : entity.username }) }}",
+				"autoWidth": false
+			});
+			
+			$(document).on("click", ".delete_poem", function(event)
+			{
+				var id = $(this).data("id");
+				event.preventDefault();
+				var n = noty({
+					layout: 'center',
+					type: 'confirm',
+					killer: true,
+					text: 'Êtes-vous sûr de vouloir supprimer cette citation ?',
+					animation: {
+						open: {height: 'toggle'}, // jQuery animate function property object
+						close: {height: 'toggle'}, // jQuery animate function property object
+						easing: 'swing', // easing
+						speed: 500 // opening & closing animation speed
+					},
+					buttons: [
+					{
+						addClass: 'btn btn-primary', text: 'Oui', onClick: function($noty) {
+						$.ajax(
+						{
+							type: "GET",
+							url: "{{ path('quoteuser_delete') }}?id=" + id,
+							cache: false,
+							success: function(data)
+							{
+								oTable.ajax.reload();
+							}
+						});
+						$noty.close();
+					  }
+					},
+					{
+						addClass: 'btn btn-danger', text: 'Annuler', onClick: function($noty) {
+							$noty.close();
+						}
+					}
+				  ]
+				});
+			});
+
 			$('table.comments_user_datatables').dataTable( {
 				"oLanguage": {
 					"sUrl": "{{ asset('js/DataTables/language/dataTables.'~app.request.locale) }}.txt"
@@ -74,6 +129,19 @@
 			<th class="table-active w-25">{{ 'user.myProfile.Description'|trans }}</th>
 			<td>{{ entity.presentation|raw }}</td>
 		</tr>
+	</table>
+	<h2 class="subtitle_show_user">{{ 'user.myProfile.MyQuotes'|trans }}</h2>
+	<hr class="show_user_separator">
+	<table class="entities_user_datatables table table-striped table-bordered dt-responsive">
+		<thead>
+			<th>{{ 'user.myProfile.Text'|trans }}</th>
+			{% if is_granted("IS_AUTHENTICATED_REMEMBERED") and entity.username == app.user.username %}
+				<th>{{ 'user.myProfile.State'|trans }}</th>
+				<th>{{ 'user.myProfile.Action'|trans }}</th>
+			{% endif %}
+		</thead>
+		<tbody>
+		</tbody>
 	</table>
 	<h2 class="subtitle_show_user">{{ 'user.myProfile.MyComments'|trans }}</h2>
 	<hr class="show_user_separator">

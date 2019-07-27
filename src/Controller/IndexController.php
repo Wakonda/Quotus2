@@ -9,8 +9,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use App\Form\Type\QuoteUserType;
 use App\Form\Type\IndexSearchType;
 use App\Service\Captcha;
 use App\Service\Gravatar;
@@ -525,8 +527,8 @@ class IndexController extends Controller
 			{
 				$row = array();
 
-				$show = $this->generateUrl('read', array('id' => $entity['quote_id'], 'slug' => $entity['slug']));
-				$row[] = '<a href="'.$show.'" alt="Show">'.$entity['quote_title'].'</a>';
+				$show = $this->generateUrl('read', array('id' => $entity['id'], 'slug' => $entity['slug']));
+				$row[] = '<a href="'.$show.'" alt="Show">'.$entity['text'].'</a>';
 
 				$show = $this->generateUrl('user_show', array('username' => $entity['username']));
 				$row[] = '<a href="'.$show.'" alt="Show">'.$entity['username'].'</a>';
@@ -603,6 +605,107 @@ class IndexController extends Controller
 
 		return $this->render('Index/stat.html.twig', array('statistics' => $statistics));
     }
+	// Create User Quote
+	public function quoteUserNewAction(Request $request)
+	{
+		$form = $this->createForm(QuoteUserType::class, null);
+
+		return $this->render("Index/quoteUserNew.html.twig", array("form" => $form->createView()));
+	}
+	
+	public function quoteUserCreateAction(Request $request, TokenStorageInterface $tokenStorage)
+	{
+		$entity = new Quote();
+		$form = $this->createForm(QuoteUserType::class, $entity);
+		$form->handleRequest($request);
+		
+		if(array_key_exists("draft", $request->request->get($form->getName())))
+			$entity->setState(1);
+		else
+			$entity->setState(0);
+		
+		if($form->isValid())
+		{
+			$user = $tokenStorage->getToken()->getUser();
+
+			$entity->setUser($user);
+			$entity->setAuthorType("user");
+
+			$entityManager = $this->getDoctrine()->getManager();
+			$entity->setLanguage($entityManager->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]));
+			$entity->setText(nl2br($entity->getText()));
+
+			$entityManager->persist($entity);
+			$entityManager->flush();
+
+			return $this->redirect($this->generateUrl('user_show', array('id' => $user->getId())));
+		}
+		
+		return $this->render('Index/quoteUserNew.html.twig', array('form' => $form->createView(), 'entity' => $entity));
+	}
+	
+	public function quoteUserEditAction(Request $request, $id)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$entity = $entityManager->getRepository(Quote::class)->find($id);
+		$entity->setText(strip_tags($entity->getText()));
+		
+		$form = $this->createForm(QuoteUserType::class, $entity);
+
+		return $this->render("Index/quoteUserEdit.html.twig", ["form" => $form->createView(), "entity" => $entity]);
+	}
+
+	public function quoteUserUpdateAction(Request $request, TokenStorageInterface $tokenStorage, $id)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$entity = $entityManager->getRepository(Quote::class)->find($id, true);
+		$form = $this->createForm(QuoteUserType::class, $entity);
+		$form->handleRequest($request);
+
+		if(array_key_exists("draft", $request->request->get($form->getName())))
+			$entity->setState(1);
+		else
+			$entity->setState(0);
+		
+		if($form->isValid())
+		{
+			$entity->setText(nl2br($entity->getText()));
+
+			$user = $tokenStorage->getToken()->getUser();
+
+			$entity->setUser($user);
+			
+			$language = $entityManager->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
+
+			$entity->setLanguage($language->getId());
+			
+			$entityManager->persist($entity);
+			$entityManager->flush();
+
+			return $this->redirect($this->generateUrl('user_show', array('id' => $user->getId())));
+		}
+		
+		return $this->render('Index/quoteUserEdit.html.twig', array('form' => $form->createView(), 'entity' => $entity));
+	}
+	
+	public function quoteUserDeleteAction(Request $request, TokenStorageInterface $tokenStorage)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$id = $request->query->get("id");
+		
+		$entity = $entityManager->getRepository(Quote::class)->find($id, false);
+		$entity->setState(2);
+		
+		$entity->setText(nl2br($entity->getText()));
+		$user = $tokenStorage->getToken()->getUser();
+
+		$entity->setUser($user);
+
+		$entityManager->persist($entity);
+		$entityManager->flush();
+		
+		return new Response();
+	}
 
 	public function reloadCaptchaAction(Request $request)
 	{

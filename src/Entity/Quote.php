@@ -251,4 +251,14 @@ class Quote
     {
         $this->authorType = $authorType;
     }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
 }

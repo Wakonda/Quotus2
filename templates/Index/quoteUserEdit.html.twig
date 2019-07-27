@@ -1,0 +1,24 @@
+{% extends 'generic_layout.html.twig' %}
+
+{% block head_title %}{{ 'yourQuotes.field.EditQuote'|trans }}{% endblock %}
+{% block main_title %}{{ 'yourQuotes.field.EditQuote'|trans }}{% endblock %}
+
+{% block script_additional %}
+{% endblock %}
+
+{% block main_content %}
+{% form_theme form with['Form/fields.html.twig'] %}
+{{ form_start(form, {'method' : 'post', 'action' : path('quoteuser_update', { 'id' : entity.id }), 'attr': {'novalidate': 'novalidate'} }) }}
+	<div class="form-group row">
+		{{ form_label(form.text, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+		<div class="col-sm-10">
+			{{ form_errors(form.text) }}{{ form_widget(form.text, {'attr':{'class':'text form-control'}}) }}
+		</div>
+	</div>
+	<hr />
+	{{ form_widget(form.save, {'icon': 'fa-save'}) }}
+	{{ form_widget(form.draft, {'icon': 'fa-inbox'}) }}
+	{{ form_rest(form) }}
+{{ form_end(form) }}
+
+{% endblock %}
