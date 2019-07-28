@@ -8,7 +8,9 @@
 	{% endif %}
 {% endif %}
 
-<p>{{ senderName }} (<a href="mailto:{{ data.yourMail }}">{{ data.yourMail }}</a>) {{ "send.index.HeSentYouThisProverb"|trans }}.</p>
+{% set author = (entity.isBiography()) ? entity.biography.title : entity.user.username %}
+
+<p>{{ senderName }} (<a href="mailto:{{ data.yourMail }}">{{ data.yourMail }}</a>) {{ "send.index.HeSentYouWrittenBy"|trans }} {{ author }}.</p>
 
 {{ data.message|raw }}
 
@@ -17,4 +19,4 @@
 
 <hr>
 
-<p>{{ "send.index.ThisProverbHasBeenSentSince"|trans }} <a href="{{ url("index") }}" alt="Proverbius">Proverbius</a></p>
+<p>{{ "send.index.HasBeenSentSince"|trans }} <a href="{{ url("index") }}" alt="Quotus">Quotus</a></p>

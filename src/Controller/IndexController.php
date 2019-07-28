@@ -128,12 +128,12 @@ class IndexController extends Controller
 	public function readPDFAction(Request $request, $id)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
-		$entity = $entityManager->getRepository(Quote::class)->find($id, true);
+		$entity = $entityManager->getRepository(Quote::class)->find($id);
 		
 		if(empty($entity))
 			throw $this->createNotFoundException('404');
 		
-		$content = $this->renderView('Index/pdf_quote.html.twig', array('entity' => $entity));
+		$content = $this->renderView('Index/pdf.html.twig', array('entity' => $entity));
 
 		$html2pdf = new Html2Pdf('P','A4','fr');
 		$html2pdf->WriteHTML($content);
@@ -310,7 +310,7 @@ class IndexController extends Controller
 			$row = array();
 
 			$show = $this->generateUrl('author', array('id' => $entity['biography_id'], 'slug' => $entity['biography_slug']));
-			$row[] = '<img src="'.$request->getBaseUrl().'/photo/biography/'.$entity['source_photo'].'"/>';
+			$row[] = '<img src="'.$request->getBaseUrl().'/photo/biography/'.$entity['biography_photo'].'"/>';
 			$row[] = '<a href="'.$show.'" alt="Show">'.$entity['biography_title'].'</a>';
 
 			$row[] = '<span class="badge badge-secondary">'.$entity['number_by_biography'].'</span>';

@@ -162,7 +162,7 @@ user:
     confirmation:
         Title: "Confirmation"
         Text: "Votre compte a bien été créé. Toutefois pour pouvoir connecter, vous devez activer votre compte. Pour ce faire, cliquez sur le lien que vous avez reçu par email."
-        Email: "<p>Bonjour %username%,</p><p>Nous vous remercions de votre inscription sur <b>Poéticus</b>. Pour pouvoir vous connecter, et ainsi profiter de l'ensemble des fonctionnalités du site, cliquez sur le lien de confirmation ci-dessous.</p><p><a href='%urlLogin%' alt=''>Cliquez-ici pour activer votre compte</a></p><p><b><u>Attention : </u></b>Ce lien expirera le <i>%expiredAt%</i></p><p>A bientôt sur Poéticus ...</p><p>L'équipe de <a href='%urlIndex%' alt=''><b>Poéticus</b></a></p>"
+        Email: "<p>Bonjour %username%,</p><p>Nous vous remercions de votre inscription sur <b>Quotus</b>. Pour pouvoir vous connecter, et ainsi profiter de l'ensemble des fonctionnalités du site, cliquez sur le lien de confirmation ci-dessous.</p><p><a href='%urlLogin%' alt=''>Cliquez-ici pour activer votre compte</a></p><p><b><u>Attention : </u></b>Ce lien expirera le <i>%expiredAt%</i></p><p>A bientôt sur Quotus ...</p><p>L'équipe de <a href='%urlIndex%' alt=''><b>Quotus</b></a></p>"
     editAccount:
         Title: "Modifier mon compte"
     listUsers:
@@ -200,7 +200,7 @@ forgottenPassword:
         YourPasswordHasBeenChanged: "Votre mot de passe a bien été modifié."
         Title: "Confirmation - Mot de passe oublié"
         EmailSent: "Un email vous a été envoyé. Vous y trouverez la procédure afin de pouvoir vous reconnecter sur"
-        Email: "<p>Bonjour %entity.username%,</p><p>Si vous recevez cet email, c'est que vous avez oublié votre mot de passe. Pour remédier à la situation, nous vous en avons généré un provisoire :</p><p><b><u>Mot de passe provisoire :</u></b> <i>%temporaryPassword%</i></p><p><b><u>Attention :</u></b> Ce mot de passe est provisoire. De ce fait, nous vous invitons vivement à le modifier dès que vous vous serez <a href='%urlLogin%'>connecté à votre compte</a>.</p><p>Cordialement,</p><p>L'équipe de <a href='%urlIndex%'><b>Poéticus</b></a></p>"
+        Email: "<p>Bonjour %entity.username%,</p><p>Si vous recevez cet email, c'est que vous avez oublié votre mot de passe. Pour remédier à la situation, nous vous en avons généré un provisoire :</p><p><b><u>Mot de passe provisoire :</u></b> <i>%temporaryPassword%</i></p><p><b><u>Attention :</u></b> Ce mot de passe est provisoire. De ce fait, nous vous invitons vivement à le modifier dès que vous vous serez <a href='%urlLogin%'>connecté à votre compte</a>.</p><p>Cordialement,</p><p>L'équipe de <a href='%urlIndex%'><b>Quotus</b></a></p>"
 editPassword:
     index:
         EditMyPassword: "Modifier mon mot de passe"
@@ -230,9 +230,9 @@ send:
         AutomaticallyAddedPost: "La citation sera automatiquement ajoutée à votre message"
         SendFriend: "Envoyez cette citation à un ami"
         Infos: "Infos"
-        YourMessageHasBeenSentSuccessfully: "Votre citation a été envoyé avec succès !"
-        HasBeenSentSince: "Cette citation a été envoyé depuis "
-        HeSentYouWrittenBy: "vous a envoyé cette citation écrit par"
+        YourMessageHasBeenSentSuccessfully: "Votre citation a été envoyée avec succès !"
+        HasBeenSentSince: "Cette citation a été envoyée depuis "
+        HeSentYouWrittenBy: "vous a envoyé cette citation écrite par"
         Somebody: "Quelqu'un"
         AndEntitled: "et intitulé"
     field:
@@ -310,13 +310,14 @@ admin:
         SentSuccessfully: "Envoyé avec succès"
         YouMustSelectAnImage: "Vous devez sélectionner une image"
         SentError: "Une erreur s'est produite"
-        AddedSuccessfully: "%numberAdded% poésie(s) ajoutée(s), %numberDoubloons% doublon(s)"
+        AddedSuccessfully: "%numberAdded% citation(s) ajoutée(s), %numberDoubloons% doublon(s)"
         List: "Liste"
         Backup: "Backup"
     error:
         UnknownURL: "URL inconnue"
     table:
         Title: "Titre"
+        Text: "Texte"
         Action: "Action"
         Subject: "Sujet"
         ReadQuestion: "Lu ?"
@@ -334,6 +335,7 @@ admin:
         Source: "Source"
         Biography: "Biographie"
         AuthorKind: "Type d'auteur"
+        ProxyAddress: "Adresse proxy"
         User: "Utilisateur"
         Image: "Image"
         RapidCreation: "Création rapide"

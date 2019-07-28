@@ -33,8 +33,7 @@ class QuoteAdminController extends Controller
 {
 	private $formName = "quote";
 	
-	private $authorizedURLs = [];
-	private $authorizedURLMultiples = [];
+	private $authorizedURLs = ['Y2l0YXRpb24tY2VsZWJyZS5sZXBhcmlzaWVuLmZy', 'ZXZlbmUubGVmaWdhcm8uZnI='];
 
 	public function indexAction(Request $request)
 	{
@@ -185,10 +184,10 @@ class QuoteAdminController extends Controller
 
 		$form = $this->createForm(QuoteFastMultipleType::class, $entity, array("locale" => $request->getLocale()));
 
-		return $this->render('Quote/fastMultiple.html.twig', array('form' => $form->createView(), 'language' => $request->getLocale(), 'authorizedURLMultiples' => $this->authorizedURLMultiples));
+		return $this->render('Quote/fastMultiple.html.twig', array('form' => $form->createView(), 'language' => $request->getLocale(), 'authorizedURLs' => $this->authorizedURLs));
 	}
 	
-	public function addFastMultipleAction(Request $request, TranslatorInterface $translator)
+	public function addFastMultipleAction(Request $request, SessionInterface $session, TranslatorInterface $translator)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = new Quote();
@@ -203,15 +202,12 @@ class QuoteAdminController extends Controller
 			$url = $req["url"];
 			$url_array = parse_url($url);
 
-			if(!in_array(base64_encode($url_array['host']), $this->authorizedURLMultiples))
+			if(!in_array(base64_encode($url_array['host']), $this->authorizedURLs))
 				$form->get("url")->addError(new FormError($translator->trans("admin.error.UnknownURL")));
 		}
 
 		if($form->isValid())
 		{
-			$entity->setAuthorType("biography");
-			$entity->setCountry( $entityManager->getRepository(Biography::class)->find($entity->getBiography())->getCountry());
-			$number = $req['number'];
 			$i = 0;
 			$gf = new GenericFunction();
 			
@@ -219,23 +215,100 @@ class QuoteAdminController extends Controller
 				$html = $gf->getContentURL($url, $ipProxy);
 			else
 				$html = $gf->getContentURL($url);
+			
+			$entitiesArray = [];
 
 			$dom = new \simple_html_dom();
 			$dom->load($html);
 
 			switch(base64_encode($url_array['host']))
 			{
-			}
-			
-			if(isset($id))
-				$redirect = $this->generateUrl('quoteadmin_show', array('id' => $id));
-			else
-				$redirect = $this->generateUrl('quoteadmin_index');
+				case 'Y2l0YXRpb24tY2VsZWJyZS5sZXBhcmlzaWVuLmZy':
+					$urlArray = parse_url($url, PHP_URL_PATH);
+					
+					$type = array_filter(explode("/", $urlArray))[1];
+					
+					foreach($dom->find('.citation') as $pb)
+					{
+						$save = true;
+						$entityNew = clone $entity;
+						$q = current($pb->find("q"));
+						
+						if(!empty($q->find("a", 1)))
+							continue;
 
-			return $this->redirect($redirect);
+						$text = html_entity_decode($q->plaintext, ENT_QUOTES);
+						
+						if($type == "personnage") {
+							$source = html_entity_decode(current($pb->find(".auteurLien"))->plaintext, ENT_QUOTES);
+							$source = $entityManager->getRepository(Source::class)->findOneBy(["title" => $source]);
+							
+							if(!empty($source))
+								$entityNew->setSource($source);
+							else
+								$save = false;
+						}
+						
+						$entityNew->setText($text);
+						
+						if($save)
+							$entitiesArray[] = $entityNew;
+					}
+					break;
+				case 'ZXZlbmUubGVmaWdhcm8uZnI=':
+					foreach($dom->find('.figsco__selection__list__evene__list__item') as $pb)
+					{
+						$save = true;
+						$entityNew = clone $entity;
+						
+						$a = current($pb->find("a"));
+						$text = html_entity_decode($a->plaintext);
+						$entityNew->setText(trim(trim($text, "“"), "”"));
+						
+						$div = $pb->find(".figsco__quote__from .figsco__fake__col-9");		
+						$div = preg_replace('#<div class="figsco__note__users">(.*?)</div>#', '', current($div)->innertext);
+
+						$div = explode("/", strip_tags($div));
+						$source = null;
+
+						if(isset($div[1])) {
+							$source = $entityManager->getRepository(Source::class)->findOneBy(["title" => trim($div[1])]);
+							
+							if(!empty($source))
+								$entityNew->setSource($source);
+							else
+								$save = false;
+						}
+						
+						if($save)
+							$entitiesArray[] = $entityNew;
+					}
+					break;
+			}
+
+			$numberAdded = 0;
+			$numberDoubloons = 0;
+
+			$entityManager = $this->getDoctrine()->getManager();
+
+			foreach($entitiesArray as $entity)
+			{
+				if($entityManager->getRepository(Quote::class)->checkForDoubloon($entity) > 0)
+					$numberDoubloons++;
+				else
+				{
+					$entityManager->persist($entity);
+					$entityManager->flush();
+					$numberAdded++;
+				}
+			}
+
+			$session->getFlashBag()->add('message', $translator->trans("admin.index.AddedSuccessfully", ["%numberAdded%" => $numberAdded, "%numberDoubloons%" => $numberDoubloons]));
+	
+			return $this->redirect($this->generateUrl('quoteadmin_index'));
 		}
 		
-		return $this->render('Quote/fastMultiple.html.twig', array('form' => $form->createView(), 'language' => $request->getLocale(), 'authorizedURLMultiples' => $this->authorizedURLMultiples));
+		return $this->render('Quote/fastMultiple.html.twig', array('form' => $form->createView(), 'language' => $request->getLocale(), 'authorizedURLs' => $this->authorizedURLs));
 	}
 
 	public function twitterAction(Request $request, SessionInterface $session, TranslatorInterface $translator, $id)

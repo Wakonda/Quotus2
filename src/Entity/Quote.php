@@ -91,13 +91,13 @@ class Quote
 		
 		switch($this->state)
 		{
-			case 0:
+			case self::PUBLISHED_STATE:
 				$res = "quote.state.Published";
 				break;
-			case 1:
+			case self::DRAFT_STATE:
 				$res = "quote.state.Draft";
 				break;
-			case 2:
+			case self::DELETE_STATE:
 				$res = "quote.state.Deleted";
 				break;
 			default:
@@ -113,13 +113,13 @@ class Quote
 		
 		switch($this->state)
 		{
-			case 0:
+			case self::PUBLISHED_STATE:
 				$res = "published";
 				break;
-			case 1:
+			case self::DRAFT_STATE:
 				$res = "draft";
 				break;
-			case 2:
+			case self::DELETE_STATE:
 				$res = "deleted";
 				break;
 			default:
@@ -133,6 +133,7 @@ class Quote
     {
         $this->quoteImages = new ArrayCollection();
 		$this->authorType = self::BIOGRAPHY_AUTHORTYPE;
+		$this->state = self::PUBLISHED_STATE;
     }
 	
 	public function isBiography()

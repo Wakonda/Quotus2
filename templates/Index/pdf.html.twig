@@ -52,13 +52,13 @@
         <table class="page_footer">
             <tr>
                 <td style="width: 33%; text-align: left;">
-                    Proverbius
+                    Quotus
                 </td>
                 <td style="width: 34%; text-align: center">
                     [[page_cu]]/[[page_nb]]
                 </td>
                 <td style="width: 33%; text-align: right">
-                    © Proverbius {{ ("2017" == "now"|date("Y")) ? "2017" : "2017 - " ~ "now"|date("Y") }}
+                    © Quotus {{ ("2019" == "now"|date("Y")) ? "2019" : "2019 - " ~ "now"|date("Y") }}
                 </td>
             </tr>
         </table>
@@ -71,6 +71,16 @@
 {{ ("photo/right-quotes-symbol.png")|max_size_image([], true) }}
 </blockquote>
 <hr>
-<p>
-<a href="{{ path('country', {'id' : entity.country.id, 'slug' : entity.country.slug }) }}" alt=""><img class="flag" src="photo/country/{{ entity.country.flag }}" alt="" height="8" /> Proverbe - {{ entity.country.title }}</a>
-</p>
+	{% if entity.isBiography %}
+		{% if entity.biography.isFictionalCharacter %}
+		<p><b><a href="{{ path('fictionalcharacter', {'id': entity.biography.id, 'slug': entity.biography.slug}) }}">{{ entity.biography.title }}</a></b>
+		{% else %}
+		<p><b><a href="{{ path('author', {'id': entity.biography.id, 'slug': entity.biography.slug}) }}">{{ entity.biography.title }}</a></b>
+		{% endif %}
+		
+		{% if entity.source is not empty %}
+			- <u><i><a href="{{ path('source', {'id': entity.source.id, 'slug': entity.source.slug}) }}">{{ entity.source.title }}</a></i></u></p>
+		{% endif %}
+	{% else %}
+		<p><b><a href="{{ path('user_show', {'username' : entity.user.username }) }}">{{ entity.user.username }}</a></b></p>
+	{% endif %}

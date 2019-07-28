@@ -56,9 +56,9 @@ class QuotusExtension extends AbstractExtension
 	
 	public function textMonthFilter($monthInt)
 	{
-		$arrayMonth = array("janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre");
-		
-		return $arrayMonth[intval($monthInt) - 1];
+		$locale = $this->app['generic_function']->getLocaleTwigRenderController();
+		$arrayMonth = $this->formatDateByLocale();
+		return $arrayMonth[$locale]["months"][intval($month) - 1].(!empty($year) ? $arrayMonth[$locale]["separator"].$year : "");
 	}
 	
 	public function maxSizeImageFilter($img, array $options = [], $isPDF = false)
@@ -84,13 +84,15 @@ class QuotusExtension extends AbstractExtension
 		return '<img src="'.$basePath.$img.'" alt="" style="max-width: '.$width.'px;" />';
 	}
 	
-	public function dateLetterFilter($date)
+	public function dateLetterFilter($date, $locale)
 	{
-		$arrayMonth = array("janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre");
+		if(is_string($date))
+			$date = new \DateTime($date);
+
+		$arrayMonth = $this->formatDateByLocale();
+		$month = $arrayMonth[$locale]["months"][$date->format("n") - 1];
 		
-		$month = $arrayMonth[$date->format("n") - 1];
-		
-		$day = ($date->format("j") == 1) ? $date->format("j")."<sup>er</sup>" : $date->format("j");
+		$day = ($date->format("j") == 1) ? $date->format("j").((!empty($arrayMonth[$locale]["sup"])) ? "<sup>".$arrayMonth[$locale]["sup"]."</sup>" : "") : $date->format("j");
 		
 		return $day." ".$month." ".$date->format("Y");
 	}
@@ -159,5 +161,13 @@ class QuotusExtension extends AbstractExtension
 			default:
 				return "fr_FR";
 		}
+	}
+	
+	private function formatDateByLocale()
+	{
+		$arrayMonth = array();
+		$arrayMonth['fr'] = array("sup" => "er", "separator" => " ", "months" => array("janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"));
+
+		return $arrayMonth;
 	}
 }

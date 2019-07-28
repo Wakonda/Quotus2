@@ -27,7 +27,7 @@
 				"iDisplayLength": 15,
 				"bProcessing": true,
 				"bServerSide": true,
-				"sAjaxSource": "{{ path('author_datatables', {'authorId' : biographyId.id }) }}",
+				"sAjaxSource": "{{ path('author_datatables', {'biographyId' : entity.id }) }}",
 				"autoWidth": false
 			});
 

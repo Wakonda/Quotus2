@@ -1,10 +1,10 @@
-<div id="form_id_send_painting">
+<div id="form_id_send">
 	{% include "Index/send_form.html.twig" with {'form':form} %}
 </div>
 
 <script>
 	$(function() {
-		$('body').on('submit', "form#send_form", function(event) {
+		$(document).on('submit', "form#send_form", function(event) {
 			event.preventDefault();
 			
 			var formValue = $(this).serialize();
@@ -17,7 +17,7 @@
 				{
 					if(res.result == "error")
 					{
-						$("div#form_id_send_painting").html(res.content);
+						$("div#form_id_send").html(res.content);
 					}
 					else
 					{
@@ -26,7 +26,7 @@
 						$('#send_modal').modal('hide');
 						$('html, body').animate({scrollTop:$('h1').position().top}, 'slow');
 						$('#send_result').html("{{ 'send.index.YourMessageHasBeenSentSuccessfully'|trans }}");
-						$('#send_result').show();
+						$('#send_result').removeClass("d-none");
 					}
 				}
 			});

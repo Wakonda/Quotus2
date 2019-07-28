@@ -163,6 +163,18 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 		   ->where("pa.slug = :slug")
 		   ->setParameter('slug', $entity->getSlug());
 
+		if($entity->isBiography())
+		{
+			$qb->andWhere("pa.biography = :biographyId")
+			   ->setParameter("biographyId", $entity->getBiography()->getId());
+		}
+
+		if($entity->isUser())
+		{
+			$qb->andWhere("pa.user = :userId")
+			   ->setParameter("userId", $entity->getUser()->getId());
+		}
+
 		if($entity->getId() != null)
 		{
 			$qb->andWhere("pa.id != :id")
@@ -203,7 +215,7 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 		$aColumns = array( 'co.title', 'COUNT(pa.id)');
 		
 		$qb->select("co.id AS source_id, co.title AS source_title, COUNT(pa.id) AS number_by_source, co.slug AS source_slug, co.photo AS source_photo")
-		   ->leftjoin("pa.source", "co")
+		   ->join("pa.source", "co")
 		   ->groupBy("co.id, co.title")
 		   ->andWhere("pa.authorType = :biography")
 		   ->setParameter("biography", Quote::BIOGRAPHY_AUTHORTYPE)

@@ -10,9 +10,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 use App\Entity\Quote;
 use App\Entity\Language;
+use App\Entity\Biography;
 use App\Repository\LanguageRepository;
 
 class QuoteFastMultipleType extends AbstractType
@@ -40,6 +42,39 @@ class QuoteFastMultipleType extends AbstractType
 				'placeholder' => 'main.field.ChooseAnOption',
 				'constraints' => new Assert\NotBlank()
 			))
+
+		   ->add('source', Select2EntityType::class, [
+				'label' => 'admin.quote.Source',
+				'multiple' => false,
+				'remote_route' => 'quoteadmin_getsourcesbyajax',
+				'class' => Source::class,
+				'req_params' => ['locale' => 'parent.children[language]'],
+				'page_limit' => 10,
+				'primary_key' => 'id',
+				'text_property' => 'title',
+				'allow_clear' => true,
+				'delay' => 250,
+				'cache' => true,
+				'cache_timeout' => 60000, // if 'cache' is true
+				'language' => $locale,
+				'placeholder' => 'main.field.ChooseAnOption'
+			])
+		   ->add('biography', Select2EntityType::class, [
+				'label' => 'admin.quote.Biography',
+				'multiple' => false,
+				'remote_route' => 'quoteadmin_getbiographiesbyajax',
+				'class' => Biography::class,
+				'req_params' => ['source' => 'parent.children[source]'],
+				'page_limit' => 10,
+				'primary_key' => 'id',
+				'text_property' => 'title',
+				'allow_clear' => true,
+				'delay' => 250,
+				'cache' => true,
+				'cache_timeout' => 60000, // if 'cache' is true
+				'language' => $locale,
+				'placeholder' => 'main.field.ChooseAnOption'
+			])
             ->add('save', SubmitType::class, array('label' => 'admin.main.Save', 'attr' => array('class' => 'btn btn-success')));
     }
 

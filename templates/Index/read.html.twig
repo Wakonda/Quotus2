@@ -160,7 +160,10 @@
 		{% else %}
 		<p><b><a href="{{ path('author', {'id': entity.biography.id, 'slug': entity.biography.slug}) }}">{{ entity.biography.title }}</a></b>
 		{% endif %}
-		- <u><i><a href="{{ path('source', {'id': entity.source.id, 'slug': entity.source.slug}) }}">{{ entity.source.title }}</a></i></u></p>
+		
+		{% if entity.source is not empty %}
+			- <u><i><a href="{{ path('source', {'id': entity.source.id, 'slug': entity.source.slug}) }}">{{ entity.source.title }}</a></i></u></p>
+		{% endif %}
 	{% else %}
 		<p><b><a href="{{ path('user_show', {'username' : entity.user.username }) }}">{{ entity.user.username }}</a></b></p>
 	{% endif %}
@@ -227,11 +230,11 @@
 	</div>
 	<!-- Modal -->
 	<div class="modal fade hidden_print" id="send_modal" tabindex="-1" role="dialog" aria-labelledby="sendModalLabel">
-		<div class="modal-dialog" role="document">
+		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
+					<h4 class="modal-title" id="sendModalLabel"><i class="fa fa-share-square-o" aria-hidden="true"></i> {{ "send.index.SendFriend"|trans }}</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="sendModalLabel"><i class="fa fa-share-square-o" aria-hidden="true"></i> {{ "send.message.SendFriend"|trans }}</h4>
 				</div>
 				{{ render(controller('App\\Controller\\SendController::indexAction', {'id': entity.id})) }}
 			</div>
