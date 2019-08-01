@@ -37,6 +37,7 @@ main:
         WelcomeTo: "Bienvenue sur Quotus"
         Search: "Rechercher une citation"
         Randomly: "Citation au hasard"
+        NoQuote: "Aucun Citation encore ajoutée"
     field:
         Title: "Titre"
         Keywords: "Mots-clés"

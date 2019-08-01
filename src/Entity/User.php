@@ -53,7 +53,7 @@ class User implements UserInterface, \Serializable
     protected $gravatar;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $presentation;
 	
