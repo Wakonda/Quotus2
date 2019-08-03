@@ -440,7 +440,7 @@ class IndexController extends Controller
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Biography::class)->find($id);
 
-		return $this->render('Index/fictionalCharacter.html.twig', array('entity' => $entity));
+		return $this->render('Index/fictionalcharacter.html.twig', array('entity' => $entity));
 	}
 
 	public function fictionalCharacterDatatablesAction(Request $request, TranslatorInterface $translator, $biographyId)

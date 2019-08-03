@@ -278,7 +278,8 @@ class QuoteAdminController extends Controller
 								$entityNew->setSource($source);
 							else
 								$save = false;
-						}
+						} else
+							$entityNew->setSource(null);
 						
 						if($save)
 							$entitiesArray[] = $entityNew;

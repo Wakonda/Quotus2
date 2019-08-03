@@ -15,6 +15,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 use App\Entity\Quote;
 use App\Entity\Language;
 use App\Entity\Biography;
+use App\Entity\Source;
 use App\Repository\LanguageRepository;
 
 class QuoteFastMultipleType extends AbstractType
