@@ -1,0 +1,11 @@
+{% if is_granted('IS_AUTHENTICATED_FULLY') and is_granted("ROLE_ADMIN") %}
+<div class="card mt-3">
+	<div class="card-header">
+		{{ 'menu.left.Admin'|trans }}
+	</div>
+	<div class="card-body">
+		<a href="{{ path(show_route, {id: entity.id}) }}" class="btn btn-info"><i class="fa fa-eye" aria-hidden="true"></i></a>
+		<a href="{{ path(edit_route, {id: entity.id}) }}" class="btn btn-info"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+	</div>
+</div>
+{% endif %}

@@ -153,6 +153,9 @@
 		</a>
 	</div>
 	{% endif %}
+	
+	{% include "Admin/quick_admin.html.twig" with {edit_route: 'quoteadmin_edit', show_route: 'quoteadmin_show'} %}
+	
 	<hr>
 	{% if entity.isBiography %}
 		{% if entity.biography.isFictionalCharacter %}
