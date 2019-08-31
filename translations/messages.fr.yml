@@ -314,6 +314,9 @@ admin:
         AddedSuccessfully: "%numberAdded% citation(s) ajoutée(s), %numberDoubloons% doublon(s)"
         List: "Liste"
         Backup: "Backup"
+        All: "Tous"
+        ToComplete: "A compléter"
+        State: "Etat"
     error:
         UnknownURL: "URL inconnue"
     table:

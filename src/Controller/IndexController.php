@@ -17,6 +17,7 @@ use App\Form\Type\IndexSearchType;
 use App\Service\Captcha;
 use App\Service\Gravatar;
 use App\Service\Pagination;
+use App\Service\GenericFunction;
 
 use App\Entity\Country;
 use App\Entity\Page;
@@ -196,13 +197,17 @@ class IndexController extends Controller
 			"iTotalDisplayRecords" => $iTotal,
 			"aaData" => array()
 		);
+		
+		$gf = new GenericFunction();
 
 		foreach($entities as $entity)
 		{
 			$row = array();
+			
+			$img = $gf->adaptImageSize("photo/source/".$entity['source_photo']);
 
 			$show = $this->generateUrl('source', array('id' => $entity['source_id'], 'slug' => $entity['source_slug']));
-			$row[] = '<img src="'.$request->getBaseUrl().'/photo/source/'.$entity['source_photo'].'"/>';
+			$row[] = "<img src='".$img."' alt='".$entity['source_photo']."'>";
 			$row[] = '<a href="'.$show.'" alt="Show">'.$entity['source_title'].'</a>';
 
 			$row[] = '<span class="badge badge-secondary">'.$entity['number_by_source'].'</span>';
@@ -304,13 +309,17 @@ class IndexController extends Controller
 			"iTotalDisplayRecords" => $iTotal,
 			"aaData" => array()
 		);
+		
+		$gf = new GenericFunction();
 
 		foreach($entities as $entity)
 		{
 			$row = array();
+			
+			$img = $gf->adaptImageSize("photo/biography/".$entity['biography_photo']);
 
 			$show = $this->generateUrl('author', array('id' => $entity['biography_id'], 'slug' => $entity['biography_slug']));
-			$row[] = '<img src="'.$request->getBaseUrl().'/photo/biography/'.$entity['biography_photo'].'"/>';
+			$row[] = "<img src='".$img."' alt='".$entity['biography_photo']."'>";
 			$row[] = '<a href="'.$show.'" alt="Show">'.$entity['biography_title'].'</a>';
 
 			$row[] = '<span class="badge badge-secondary">'.$entity['number_by_biography'].'</span>';
@@ -414,13 +423,17 @@ class IndexController extends Controller
 			"iTotalDisplayRecords" => $iTotal,
 			"aaData" => array()
 		);
+		
+		$gf = new GenericFunction();
 
 		foreach($entities as $entity)
 		{
 			$row = array();
+			
+			$img = $gf->adaptImageSize("photo/biography/".$entity['biography_photo']);
 
 			$show = $this->generateUrl('fictionalcharacter', array('id' => $entity['biography_id'], 'slug' => $entity['biography_slug']));
-			$row[] = '<img src="'.$request->getBaseUrl().'/photo/biography/'.$entity['biography_photo'].'"/>';
+			$row[] = "<img src='".$img."' alt='".$entity['biography_photo']."'>";
 			$row[] = '<a href="'.$show.'" alt="Show">'.$entity['biography_title'].'</a>';
 
 			$row[] = '<span class="badge badge-secondary">'.$entity['number_by_biography'].'</span>';

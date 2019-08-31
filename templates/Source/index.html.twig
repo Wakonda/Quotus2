@@ -16,7 +16,7 @@
 	<script type="text/javascript">
 		$(function ()
 		{
-			$('table.index_directories').DataTable({
+			var oTable = $('table.index_directories').DataTable({
 				"oLanguage": {
 					"sUrl": "{{ asset('js/DataTables/language/dataTables.'~app.request.locale) }}.txt"
 				}, 
@@ -30,11 +30,24 @@
 				"sAjaxSource": "{{ path('sourceadmin_indexdatatables') }}",
 				"autoWidth": false
 			});
+			
+			$("select#selected_state").change(function()
+			{
+				oTable.ajax.url("{{ path('sourceadmin_indexdatatables') }}?state=" + $(this).val()).load();
+			});
 		});
 	</script>
 {% endblock %}
 
 {% block main_content %}
+	<label>{{ "admin.index.State"|trans }}</label>
+	<select id="selected_state" class="form-control">
+		<option value="all">{{ "admin.index.All"|trans }}</option>
+		<option value="toComplete">{{ "admin.index.ToComplete"|trans }}</option>
+
+	</select>
+	<hr>
+
 	<table class="index_directories table table-striped table-bordered dt-responsive">
 		<thead>
 			<th>Id</th>

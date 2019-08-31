@@ -76,6 +76,8 @@ class QuoteType extends AbstractType
 				'allow_clear' => true,
 				'delay' => 250,
 				'cache' => true,
+				'constraints' => new Assert\NotBlank(),
+				'required' => true,
 				'cache_timeout' => 60000, // if 'cache' is true
 				'language' => $locale,
 				'placeholder' => 'main.field.ChooseAnOption'

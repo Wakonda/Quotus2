@@ -32,9 +32,9 @@ class BiographyType extends AbstractType
                 'constraints' => new Assert\NotBlank(), "label" => "admin.biography.Title"
             ))
 			->add('text', TextareaType::class, array(
-                'constraints' => new Assert\NotBlank(), "label" => "admin.biography.Text", 'attr' => array('class' => 'redactor')
+                'required' => false, "label" => "admin.biography.Text", 'attr' => array('class' => 'redactor')
             ))
-			->add('photo', FileType::class, array('data_class' => null, "label" => "admin.biography.Image", "required" => true))
+			->add('photo', FileType::class, array('data_class' => null, "label" => "admin.biography.Image", "required" => false))
 			->add('dayBirth', IntegerType::class, array("label" => "admin.biography.BirthDate", "required" => false))
 			->add('monthBirth', IntegerType::class, array("label" => "", "required" => false))
 			->add('yearBirth', IntegerType::class, array("label" => "", "required" => false))

@@ -28,6 +28,7 @@ class BiographyAdminController extends Controller
 		$iDisplayStart = $request->query->get('iDisplayStart');
 		$iDisplayLength = $request->query->get('iDisplayLength');
 		$sSearch = $request->query->get('sSearch');
+		$state = $request->query->get('state');
 
 		$sortByColumn = array();
 		$sortDirColumn = array();
@@ -43,8 +44,8 @@ class BiographyAdminController extends Controller
 
 		$entityManager = $this->getDoctrine()->getManager();
 		
-		$entities = $entityManager->getRepository(Biography::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
-		$iTotal = $entityManager->getRepository(Biography::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
+		$entities = $entityManager->getRepository(Biography::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $state);
+		$iTotal = $entityManager->getRepository(Biography::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $state, true);
 
 		$output = array(
 			"sEcho" => $request->query->get('sEcho'),
@@ -95,18 +96,17 @@ class BiographyAdminController extends Controller
 		$form->handleRequest($request);
 		
 		$this->checkForDoubloon($translator, $entity, $form);
-		
-		if($entity->getPhoto() == null)
-			$form->get("photo")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
 
 		if($form->isValid())
 		{
 			$entityManager = $this->getDoctrine()->getManager();
 			
-			$gf = new GenericFunction();
-			$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
-			$entity->getPhoto()->move("photo/biography/", $image);
-			$entity->setPhoto($image);
+			if($entity->getPhoto() != null) {
+				$gf = new GenericFunction();
+				$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
+				$entity->getPhoto()->move("photo/biography/", $image);
+				$entity->setPhoto($image);
+			}
 			
 			$entityManager->persist($entity);
 			$entityManager->flush();

@@ -74,10 +74,11 @@ class QuoteFastMultipleType extends AbstractType
 				'cache' => true,
 				'cache_timeout' => 60000, // if 'cache' is true
 				'language' => $locale,
+				'required' => true,
 				'placeholder' => 'main.field.ChooseAnOption'
 			])
             ->add('save', SubmitType::class, array('label' => 'admin.main.Save', 'attr' => array('class' => 'btn btn-success')));
-    }
+	}
 
 	/**
 	 * {@inheritdoc}

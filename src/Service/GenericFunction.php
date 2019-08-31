@@ -100,7 +100,7 @@ class GenericFunction
 
 	public function adaptImageSize($file, $width=null)
 	{
-		if(!file_exists($file))
+		if(!file_exists($file) or !is_file($file))
 			$file = "photo/640px-Starry_Night_Over_the_Rhone.jpg";
 		
 		if(empty($width))

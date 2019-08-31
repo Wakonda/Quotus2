@@ -16,7 +16,7 @@ class BiographyRepository extends ServiceEntityRepository implements iRepository
         parent::__construct($registry, Biography::class);
     }
 	
-	public function getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $count = false)
+	public function getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $state = "all", $count = false)
 	{
 		$qb = $this->createQueryBuilder("pf");
 
@@ -33,6 +33,12 @@ class BiographyRepository extends ServiceEntityRepository implements iRepository
 			$qb->where('pf.title LIKE :search')
 			   ->setParameter('search', $search);
 		}
+
+		if($state == "toComplete")
+		{
+			$qb->andWhere('pf.text IS NULL OR pf.photo IS NULL');
+		}
+
 		if($count)
 		{
 			$qb->select("COUNT(pf) AS count");

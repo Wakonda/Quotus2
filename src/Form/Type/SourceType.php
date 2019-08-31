@@ -35,7 +35,7 @@ class SourceType extends AbstractType
                 'constraints' => new Assert\NotBlank(), 'label' => 'admin.source.Title'
             ))
 			->add('text', TextareaType::class, array(
-                'constraints' => new Assert\NotBlank(), 'attr' => array('class' => 'redactor'), 'label' => 'admin.source.Text'
+                'attr' => array('class' => 'redactor'), 'label' => 'admin.source.Text', "required" => false
             ))
 			->add('language', EntityType::class, array(
 				'label' => 'admin.form.Language',
@@ -92,7 +92,7 @@ class SourceType extends AbstractType
 					 Source::TV_SERIES_CANONICAL => Source::TV_SERIES
 				],
 			])
-			->add('photo', FileType::class, array('data_class' => null, "label" => "admin.source.Photo", "required" => true))
+			->add('photo', FileType::class, array('data_class' => null, "label" => "admin.source.Photo", "required" => false))
             ->add('save', SubmitType::class, array('label' => 'admin.main.Save', 'attr' => array('class' => 'btn btn-success')));
     }
 

@@ -34,6 +34,7 @@ class SourceAdminController extends Controller
 		$iDisplayStart = $request->query->get('iDisplayStart');
 		$iDisplayLength = $request->query->get('iDisplayLength');
 		$sSearch = $request->query->get('sSearch');
+		$state = $request->query->get('state');
 
 		$sortByColumn = array();
 		$sortDirColumn = array();
@@ -47,8 +48,8 @@ class SourceAdminController extends Controller
 			}
 		}
 		
-		$entities = $entityManager->getRepository(Source::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
-		$iTotal = $entityManager->getRepository(Source::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
+		$entities = $entityManager->getRepository(Source::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $state);
+		$iTotal = $entityManager->getRepository(Source::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $state, true);
 
 		$output = array(
 			"sEcho" => $request->query->get('sEcho'),
@@ -103,17 +104,16 @@ class SourceAdminController extends Controller
 
 		$this->checkForDoubloon($translator, $entity, $form);
 
-		if($entity->getPhoto() == null)
-			$form->get("photo")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
-
 		if($form->isValid())
 		{
 			$entityManager->persist($entity);
 			
-			$gf = new GenericFunction();
-			$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
-			$entity->getPhoto()->move("photo/source/", $image);
-			$entity->setPhoto($image);
+			if($entity->getPhoto() != null) {
+				$gf = new GenericFunction();
+				$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
+				$entity->getPhoto()->move("photo/source/", $image);
+				$entity->setPhoto($image);
+			}
 			
 			$entityManager->flush();
 

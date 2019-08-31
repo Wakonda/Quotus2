@@ -196,7 +196,7 @@ class QuoteAdminController extends Controller
 		
 		$form->handleRequest($request);
 		$req = $request->request->get($form->getName());
-			
+
 		if(!empty($req["url"]) and filter_var($req["url"], FILTER_VALIDATE_URL))
 		{
 			$url = $req["url"];
@@ -204,6 +204,22 @@ class QuoteAdminController extends Controller
 
 			if(!in_array(base64_encode($url_array['host']), $this->authorizedURLs))
 				$form->get("url")->addError(new FormError($translator->trans("admin.error.UnknownURL")));
+			else {
+				switch(base64_encode($url_array['host']))
+				{
+					case 'Y2l0YXRpb24tY2VsZWJyZS5sZXBhcmlzaWVuLmZy':
+						if(!isset($req["biography"]) or empty($req["biography"]))
+							$form->get("biography")->addError(new FormError($translator->trans((new Assert\NotBlank())->message, [], 'validators')));
+
+						if(!isset($req["source"]) or empty($req["source"]))
+							$form->get("source")->addError(new FormError($translator->trans((new Assert\NotBlank())->message, [], 'validators')));
+						break;
+					case 'ZXZlbmUubGVmaWdhcm8uZnI=':
+						if(!isset($req["biography"]) or empty($req["biography"]))
+							$form->get("biography")->addError(new FormError($translator->trans((new Assert\NotBlank())->message, [], 'validators')));
+						break;
+				}
+			}
 		}
 
 		if($form->isValid())
@@ -239,6 +255,11 @@ class QuoteAdminController extends Controller
 
 						$text = html_entity_decode($q->plaintext, ENT_QUOTES);
 						
+						$author = current($pb->find("character"))->plaintext;
+						
+						if($entity->getBiography()->getTitle() != $author)
+							$save = false;
+						
 						if($type == "personnage") {
 							$source = html_entity_decode(current($pb->find(".auteurLien"))->plaintext, ENT_QUOTES);
 							$source = $entityManager->getRepository(Source::class)->findOneBy(["title" => $source]);
@@ -270,6 +291,8 @@ class QuoteAdminController extends Controller
 
 						$div = explode("/", strip_tags($div));
 						$source = null;
+						
+						$entityNew->setSource(null);
 
 						if(isset($div[1])) {
 							$source = $entityManager->getRepository(Source::class)->findOneBy(["title" => trim($div[1])]);
@@ -278,8 +301,8 @@ class QuoteAdminController extends Controller
 								$entityNew->setSource($source);
 							else
 								$save = false;
-						} else
-							$entityNew->setSource(null);
+						}
+							
 						
 						if($save)
 							$entitiesArray[] = $entityNew;
