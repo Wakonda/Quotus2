@@ -3,16 +3,11 @@
 {% block head_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Tag'|trans }}{% endblock %}
 {% block main_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Tag'|trans }}{% endblock %}
 
-{% block script_additional %}
-	{% import "Index/macro.html.twig" as macro %}
-	{{ macro.redactor() }}
-{% endblock %}
-
 {% block main_content %}
 {% form_theme form 'Form/fields.html.twig' %}
 
 {{ form_start(form, {'method' : 'post', 'action' : path('tagadmin_update', {'id' : entity.id }), 'attr': {'novalidate': 'novalidate'} }) }}
-	{% include "Tag/_form.html.twig" with {'form' : form} %}
+	{% include "Tag/_form.html.twig" with {'form': form} %}
 {{ form_end(form) }}
 
 {% endblock %}

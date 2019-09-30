@@ -6,8 +6,20 @@
 {% block main_content %}
 	<table class="table table-bordered admin_show">
 		<tr>
-			<th>Titre</th>
+			<th>{{ 'admin.tag.Title'|trans }}</th>
 			<td>{{ entity.title }}</td>
+		</tr>
+		<tr>
+			<th>{{ 'admin.tag.Photo'|trans }}</th>
+			<td><p class="text-center">{{ ("photo/tag/"~entity.photo)|max_size_image() }}</p></td>
+		</tr>
+		<tr>
+			<th>{{ "admin.form.Language"|trans }}</th>
+			<td>{{ entity.language.title }}</td>
+		</tr>
+		<tr>
+			<th>{{ "admin.form.Slug"|trans }}</th>
+			<td>{{ entity.slug }}</td>
 		</tr>
 	</table>
 	<hr>

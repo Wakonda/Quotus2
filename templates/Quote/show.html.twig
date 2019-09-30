@@ -26,6 +26,18 @@
 			<td>{{ entity.slug }}</td>
 		</tr>
 		<tr>
+			<th>{{ "admin.poem.Tags"|trans }}</th>
+			<td>
+				{% if entity.tags is not empty %}
+					<ul>
+					{% for tag in entity.tags %}
+						<li>{{ tag.title }}</li>
+					{% endfor %}
+					</ul>
+				{% endif %}
+			</td>
+		</tr>
+		<tr>
 			<th>{{ 'admin.imageGenerator.Image'|trans }}</th>
 			<td>
 				{% if entity.quoteImages is not empty %}

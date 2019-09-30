@@ -116,7 +116,7 @@
 	
 	{% if entity.quoteImages is not empty %}
 	<h3>{{ "quote.read.InPictures"|trans }}</h3>
-	<div id="myCarousel" class="carousel slide" data-ride="carousel">
+	<div id="myCarousel" class="carousel slide mb-4" data-ride="carousel">
 		<!-- Indicators -->
 		<ol class="carousel-indicators hidden_print">
 			{% for i in 0..entity.quoteImages|length - 1 %}
@@ -152,6 +152,15 @@
 			<span class="sr-only">Next</span>
 		</a>
 	</div>
+	{% endif %}
+
+	{% if entity.tags is not empty %}
+		<fieldset class="border rounded p-2">
+			<legend class="w-auto mb-0"><i class="fa fa-tags"></i> Tags</legend>
+			{% for tag in entity.tags %}
+				<a href="{{ path('tag', {id: tag.id, slug: tag.slug}) }}" class="badge badge-dark">{{ tag.title }}</a>
+			{% endfor %}
+		</fieldset>
 	{% endif %}
 	
 	{% include "Admin/quick_admin.html.twig" with {edit_route: 'quoteadmin_edit', show_route: 'quoteadmin_show'} %}

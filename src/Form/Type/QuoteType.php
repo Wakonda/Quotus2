@@ -22,6 +22,7 @@ use App\Entity\Quote;
 use App\Entity\Language;
 use App\Entity\Biography;
 use App\Entity\Source;
+use App\Entity\Tag;
 use App\Repository\LanguageRepository;
 use App\Repository\BiographyRepository;
 
@@ -82,7 +83,22 @@ class QuoteType extends AbstractType
 				'language' => $locale,
 				'placeholder' => 'main.field.ChooseAnOption'
 			])
-
+		   ->add('tags', Select2EntityType::class, [
+				'label' => 'admin.quote.Tags',
+				'multiple' => true,
+				'remote_route' => 'tagadmin_gettagsbyajax',
+				'class' => Tag::class,
+				'req_params' => ['locale' => 'parent.children[language]'],
+				'page_limit' => 10,
+				'primary_key' => 'id',
+				'text_property' => 'title',
+				'allow_clear' => true,
+				'delay' => 250,
+				'cache' => true,
+				'cache_timeout' => 60000, // if 'cache' is true
+				'language' => $locale,
+				'placeholder' => 'main.field.ChooseAnOption'
+			])
             ->add('save', SubmitType::class, array('label' => 'admin.main.Save', 'attr' => array('class' => 'btn btn-success')));
     }
 

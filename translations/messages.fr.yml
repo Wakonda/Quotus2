@@ -58,7 +58,7 @@ biography:
     table:
         Number: "Nombre"
         Author: "Auteur"
-        Title: "Titre"
+        Text: "Texte"
         Photo: "Photo"
         Source: "Source"
         Read: "Lire"
@@ -76,10 +76,14 @@ fictionalCharacter:
     table:
         Number: "Nombre"
         Character: "Personnage"
-        Title: "Titre"
+        Text: "Texte"
         Photo: "Photo"
         Source: "Source"
         Read: "Lire"
+tag:
+    table:
+        Text: "Texte"
+        Author: "Auteur"
 store:
     index:
         Store: "Boutique"
@@ -120,6 +124,7 @@ source:
         Tvseries: "Série TV"
     table:
         Title: "Titre"
+        Author: "Auteur"
         Photo: "Photo"
         Number: "Nombre"
         Text: "Texte"
@@ -296,6 +301,7 @@ admin:
         QuoteImage: "Image Citation"
         Version: "Version"
         Store: "Boutique"
+        Tag: "Tag"
         Create: "Créer"
         Read: "Lire"
         Update: "Modifier"
@@ -344,6 +350,7 @@ admin:
         Image: "Image"
         RapidCreation: "Création rapide"
         Number: "Nombre"
+        Tags: "Tags"
     quoteImage:
         Image: "Image"
         Share: "Partager"
@@ -356,6 +363,10 @@ admin:
         Image: "Image"
         Nationality: "Nationalité"
         Country: "Pays"
+    tag:
+        Title: "Titre"
+        Photo: "Photo"
+        InternationalName: "Nom international"
     contact:
         Message: "Message"
         Email: "Email"

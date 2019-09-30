@@ -47,7 +47,7 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 
 	public function findIndexSearch($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $datasObject, $locale, $count = false)
 	{
-		$aColumns = array( 'pf.id', 'pf.id', 'pf.id');
+		$aColumns = array( 'pf.text', 'bi.title');
 		$qb = $this->createQueryBuilder("pf");
 		
 		$qb
@@ -184,6 +184,44 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 
+	public function getEntityByTagDatatables($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $tagId, $count = false)
+	{
+		$qb = $this->createQueryBuilder("pf");
+
+		$aColumns = array( 'pf.text', 'bi.title');
+		
+		$qb
+		   ->where("bo.id = :id")
+		   ->andWhere("pf.state = :state")
+		   ->setParameter("state", Quote::PUBLISHED_STATE)
+		   ->leftjoin("pf.biography", "bi")
+		   ->leftjoin("pf.tags", "bo")
+		   ->setParameter("id", $tagId);
+		
+		if(!empty($sortDirColumn))
+		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+
+		if(!empty($sSearch))
+		{
+			$search = "%".$sSearch."%";
+			$qb->andWhere('pf.title LIKE :search')
+			   ->setParameter('search', $search);
+		}
+		if($count)
+		{
+			$qb->select("COUNT(DISTINCT pf.id) AS count");
+			return $qb->getQuery()->getSingleScalarResult();
+		}
+		else
+		{
+			$qb->groupBy("pf.id")
+			   ->setFirstResult($iDisplayStart)
+			   ->setMaxResults($iDisplayLength);
+		}
+
+		return $qb->getQuery()->getResult();
+	}
+
 	public function browsingShow($id)
 	{
 		// Previous
@@ -255,10 +293,11 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 	{
 		$qb = $this->createQueryBuilder("pa");
 
-		$aColumns = array('pa.text', 'pa.id');
+		$aColumns = array('pa.text', 'bo.title', 'pa.id');
 		
-		$qb->select("pa.text AS quote_text, pa.id AS quote_id, pa.slug AS quote_slug")
+		$qb->select("pa.text AS quote_text, pa.id AS quote_id, pa.slug AS quote_slug, bo.title AS quote_author")
 		   ->leftjoin("pa.source", "co")
+		   ->leftjoin("pa.biography", "bo")
 		   ->where("co.id = :id")
 		   ->setParameter("id", $sourceId)
 		   ->andWhere("pa.state = :state")

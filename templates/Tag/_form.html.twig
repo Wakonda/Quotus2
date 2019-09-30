@@ -1,8 +1,27 @@
 {% import "Index/macro.html.twig" as macro %}
+
 <div class="form-group row">
 	{{ form_label(form.title, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 	<div class="col-sm-10">
 		{{ form_errors(form.title) }}{{ form_widget(form.title, {'attr':{'class':'form-control'}}) }}
+	</div>
+</div>
+<div class="form-group row">
+	{{ form_label(form.internationalName, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.internationalName) }}{{ form_widget(form.internationalName, {'attr':{'class':'form-control'}}) }}
+	</div>
+</div>
+<div class="form-group row">
+	{{ form_label(form.photo, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.photo) }}{% if entity.photo is defined %}{{ macro.currentImage("photo/page/", entity.photo) }}{% endif %}{{ form_widget(form.photo) }}
+	</div>
+</div>
+<div class="form-group row">
+	{{ form_label(form.language, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.language) }}{{ form_widget(form.language, {'attr':{'class':'form-control'}}) }}
 	</div>
 </div>
 <hr />

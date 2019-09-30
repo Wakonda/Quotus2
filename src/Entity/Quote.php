@@ -74,7 +74,12 @@ class Quote
      * @ORM\Column(type="string", length=255)
      */
     protected $authorType;
-	
+
+   /**
+    * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="quotes", cascade={"persist"})
+    */
+	protected $tags;
+
 	public function isBiographyAuthorType()
 	{
 		return $this->authorType == self::BIOGRAPHY_AUTHORTYPE;
@@ -262,4 +267,44 @@ class Quote
     {
         $this->user = $user;
     }
+	
+   /**
+    * Add tags
+    *
+    * @param Tag $tags
+    */
+	public function addTag(Tag $tag)
+	{
+		$this->tags[] = $tag;
+	}
+
+    /**
+     * Set tags
+     *
+     * @param string $tags
+     */
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
+    }
+
+   /**
+    * Remove tags
+    *
+    * @param Tag $tag
+    */
+	public function removeTag(Tag $tag)
+	{
+		$this->tags->removeElement($tag);
+	}
+
+   /**
+    * Get tags
+    *
+    * @return Doctrine\Common\Collections\Collection
+    */
+	public function getTags()
+	{
+		return $this->tags;
+	}
 }

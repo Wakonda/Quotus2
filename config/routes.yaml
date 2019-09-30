@@ -31,6 +31,16 @@ read_pdf:
     defaults:
         slug: null
 
+tag:
+    path: /tag/{id}/{slug}
+    controller: App\Controller\IndexController::tagAction
+    defaults:
+        slug: null
+
+tag_datatables:
+    path: /tag_poem_datatables/{tagId}
+    controller: App\Controller\IndexController::tagDatatablesAction
+
 store:
     path: /store/{page}
     controller: App\Controller\IndexController::storeAction
@@ -282,6 +292,39 @@ quoteimageadmin_index:
 poemimageadmin_indexdatatables:
     path: /admin/poem_image/indexdatatables
     controller: App\Controller\PoemImageAdminController::indexDatatablesAction
+
+# ADMIN TAG
+tagadmin_index:
+    path: /admin/tag/index
+    controller: App\Controller\TagAdminController::indexAction
+
+tagadmin_indexdatatables:
+    path: /admin/tag/indexdatatables
+    controller: App\Controller\TagAdminController::indexDatatablesAction
+
+tagadmin_new:
+    path: /admin/tag/new
+    controller: App\Controller\TagAdminController::newAction
+
+tagadmin_create:
+    path: /admin/tag/create
+    controller: App\Controller\TagAdminController::createAction
+
+tagadmin_show:
+    path: /admin/tag/show/{id}
+    controller: App\Controller\TagAdminController::showAction
+
+tagadmin_edit:
+    path: /admin/tag/edit/{id}
+    controller: App\Controller\TagAdminController::editAction
+
+tagadmin_update:
+    path: /admin/tag/upate/{id}
+    controller: App\Controller\TagAdminController::updateAction
+
+tagadmin_gettagsbyajax:
+    path: /admin/tag/gettagsbyajax
+    controller: App\Controller\TagAdminController::getTagsByAjaxAction
 
 # ADMIN COUNTRY
 countryadmin_index:

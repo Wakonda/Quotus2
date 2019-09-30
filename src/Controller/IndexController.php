@@ -27,6 +27,7 @@ use App\Entity\Source;
 use App\Entity\QuoteImage;
 use App\Entity\Language;
 use App\Entity\Biography;
+use App\Entity\Tag;
 
 use Spipu\Html2Pdf\Html2Pdf;
 use MatthiasMullie\Minify;
@@ -163,6 +164,60 @@ class IndexController extends Controller
 		return $this->render('Index/byimage.html.twig', ['pagination' => $pagination]);
 	}
 
+	// TAG
+	public function tagAction(Request $request, $id)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$entity = $entityManager->getRepository(Tag::class)->find($id);
+
+		return $this->render('Index/tag.html.twig', array('entity' => $entity));
+	}
+	
+	public function tagDatatablesAction(Request $request, $tagId)
+	{
+		$iDisplayStart = $request->query->get('iDisplayStart');
+		$iDisplayLength = $request->query->get('iDisplayLength');
+		$sSearch = $request->query->get('sSearch');
+
+		$sortByColumn = array();
+		$sortDirColumn = array();
+			
+		for($i=0 ; $i < intval($request->query->get('iSortingCols')); $i++)
+		{
+			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
+			{
+				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
+				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
+			}
+		}
+
+		$entityManager = $this->getDoctrine()->getManager();
+		$entities = $entityManager->getRepository(Quote::class)->getEntityByTagDatatables($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $tagId);
+		$iTotal = $entityManager->getRepository(Quote::class)->getEntityByTagDatatables($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $tagId, true);
+
+		$output = array(
+			"sEcho" => $request->query->get('sEcho'),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iTotal,
+			"aaData" => array()
+		);
+		
+		foreach($entities as $entity)
+		{
+			$row = array();
+			$show = $this->generateUrl('read', array('id' => $entity->getId(), 'slug' => $entity->getSlug()));
+			$row[] = '<a href="'.$show.'" alt="Show">'.$entity->getText().'</a>';
+			$row[] = $entity->isBiographyAuthorType() ? $entity->getBiography()->getTitle() : $entity->getUser()->getUsername();
+
+			$output['aaData'][] = $row;
+		}
+
+		$response = new Response(json_encode($output));
+		$response->headers->set('Content-Type', 'application/json');
+		return $response;
+	}
+	// END TAG
+
 	// BY SOURCES
 	public function bySourcesAction(Request $request)
     {
@@ -263,6 +318,7 @@ class IndexController extends Controller
 		{
 			$row = array();
 			$row[] = $entity["quote_text"];
+			$row[] = $entity["quote_author"];
 			$show = $this->generateUrl('read', array('id' => $entity["quote_id"], 'slug' => $entity["quote_slug"]));
 			$row[] = '<a href="'.$show.'" alt="Show">'.$translator->trans("source.table.Read").'</a>';
 
