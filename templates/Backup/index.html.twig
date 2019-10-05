@@ -19,8 +19,8 @@
 				<tr>
 					<td>{{ file }}</td>
 					<td>
-						<a href="{{ path('backupadmin_download', {'filename': file}) }}" class="btn btn-success btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
-						<a href="{{ path('backupadmin_delete', {'filename': file}) }}" class="btn btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i></a>
+						<a href="{{ path('backupadmin_download', {'filename': file}) }}" class="btn btn-success btn-sm"><i class="fas fa-download" aria-hidden="true"></i></a>
+						<a href="{{ path('backupadmin_delete', {'filename': file}) }}" class="btn btn-danger btn-sm"><i class="fas fa-trash" aria-hidden="true"></i></a>
 					</td>
 				</tr>
 			{% else %}
@@ -31,5 +31,5 @@
 		</tbody>
 	</table>
 	<hr>
-	<a href="{{ path('backupadmin_generate') }}"><i class="fa fa-plus-square"></i> {{ 'admin.index.Create'|trans }}</a>
+	<a href="{{ path('backupadmin_generate') }}"><i class="fas fa-plus-square"></i> {{ 'admin.index.Create'|trans }}</a>
 {% endblock %}

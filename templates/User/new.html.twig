@@ -103,7 +103,7 @@
 			{{ form_widget(form.avatar) }}
 			<p class="font-weight-bold underline">{{ 'user.createAccount.OR'|trans }}</p>
 			<p class="font-italic underline">{{ 'user.createAccount.UseGravatar'|trans }}</p>
-			<img src="{{ gravatar() }}" alt="gravatar" id="gravatar" /> <span class="fa fa-refresh reload" id="reload_gravatar"></span>
+			<img src="{{ gravatar() }}" alt="gravatar" id="gravatar" /> <span class="fas fa-sync reload" id="reload_gravatar"></span>
 		</div>
 	</div>
 	<div class="form-group row">
@@ -122,7 +122,7 @@
 		{{ form_label(form.captcha, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 		<div class="col-sm-10">
 			{{ form_errors(form.captcha) }}{{ form_widget(form.captcha, {'attr':{ 'placeholder':'Recopiez le mot contenu dans l\'image', 'class':'form-control'}}) }}
-			<p><img src='data:image/png;base64,{{ captcha(app.request) }}' id="captcha" /> <span class="fa fa-refresh reload" id="reload_captcha"></span></p>
+			<p><img src='data:image/png;base64,{{ captcha(app.request) }}' id="captcha" /> <span class="fas fa-sync reload" id="reload_captcha"></span></p>
 		</div>
 	</div>
 

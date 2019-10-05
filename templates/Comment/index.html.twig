@@ -63,7 +63,7 @@
 			<div role="tabpanel" class="tab-pane" id="quotus_comment">
 				{% if is_granted('IS_AUTHENTICATED_FULLY') == false and is_granted('IS_AUTHENTICATED_REMEMBERED') == false %}
 					<div class="alert alert-danger" role="alert">
-						<i class="fa fa-exclamation-triangle"></i> {{ 'comment.field.YouMustBeLoggedInToWriteAComment'|trans }}
+						<i class="fas fa-exclamation-triangle"></i> {{ 'comment.field.YouMustBeLoggedInToWriteAComment'|trans }}
 					</div>
 				{% endif %}
 				<div id="form_comment_container">

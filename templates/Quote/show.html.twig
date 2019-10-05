@@ -26,7 +26,7 @@
 			<td>{{ entity.slug }}</td>
 		</tr>
 		<tr>
-			<th>{{ "admin.poem.Tags"|trans }}</th>
+			<th>{{ "admin.quote.Tags"|trans }}</th>
 			<td>
 				{% if entity.tags is not empty %}
 					<ul>
@@ -45,13 +45,13 @@
 						<div>
 							{{ ("photo/quote/"~quoteImage.image)|max_size_image() }}
 							&nbsp;
-							<a class="btn btn-danger" href="{{ path('quoteadmin_remove_image', {'id' : entity.id, 'quoteImageId': quoteImage.id}) }}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+							<a class="btn btn-danger" href="{{ path('quoteadmin_remove_image', {'id' : entity.id, 'quoteImageId': quoteImage.id}) }}"><i class="fas fa-trash" aria-hidden="true"></i></a>
 						</div>
 						<div class="input-group mt-3">
 							<input class="form-control" id="url_image_{{ quoteImage.id }}" value="{{ url('read', {id: quoteImage.quote.id, slug: quoteImage.quote.slug, idImage: quoteImage.id}) }}">
 							<div class="input-group-append">
 								<button class="btn btn-outline-secondary copy" type="button" data-clipboard-target="#url_image_{{ quoteImage.id }}">
-								<i class="fa fa-clipboard" aria-hidden="true"></i>
+								<i class="fas fa-clipboard" aria-hidden="true"></i>
 								</button>
 							</div>
 						</div>
@@ -65,7 +65,7 @@
 	<div class="card">
 		<div class="card-header" role="tab" id="headingImageGenerator">
 			<a href="#" role="button" data-toggle="collapse" data-target="#collapseImageGenerator" aria-expanded="true" aria-controls="collapseOne">
-			<i class="fa fa-picture-o" aria-hidden="true"></i> {{ 'admin.imageGenerator.GenerateAnImage'|trans }}
+			<i class="far fa-image" aria-hidden="true"></i> {{ 'admin.imageGenerator.GenerateAnImage'|trans }}
 			</a>
 		</div>
 		<div id="collapseImageGenerator" class="collapse" aria-labelledby="headingImageGenerator" aria-expanded="true">
@@ -106,7 +106,7 @@
 	<div class="card mt-2">
 		<div class="card-header" role="tab" id="headingTwitter">
 			<a href="#" role="button" data-toggle="collapse" data-target="#collapseTwitter" aria-expanded="true" aria-controls="collapseOne">
-			<i class="fa fa-twitter-square" aria-hidden="true"></i> Twitter
+			<i class="fab fa-twitter-square" aria-hidden="true"></i> Twitter
 			</a>
 		</div>
 		<div id="collapseTwitter" class="collapse" aria-labelledby="headingTwitter" aria-expanded="true">
@@ -131,7 +131,7 @@
 	<div class="card mt-2">
 		<div class="card-header" role="tab" id="headingPinterest">
 			<a href="#" role="button" data-toggle="collapse" data-target="#collapsePinterest" aria-expanded="true" aria-controls="collapseOne">
-			<i class="fa fa-pinterest" aria-hidden="true"></i> Pinterest
+			<i class="fab fa-pinterest" aria-hidden="true"></i> Pinterest
 			</a>
 		</div>
 		<div id="collapsePinterest" class="collapse" aria-labelledby="headingTwitter" aria-expanded="true">
@@ -154,7 +154,7 @@
 	<div class="card mt-2">
 		<div class="card-header role="tab" id="headingFacebook">
 			<a href="#" role="button" data-toggle="collapse" data-target="#collapseFacebook" aria-expanded="true" aria-controls="collapseOne">
-			<i class="fa fa-facebook-square" aria-hidden="true"></i> Facebook
+			<i class="fab fa-facebook-square" aria-hidden="true"></i> Facebook
 			</a>
 		</div>
 		<div id="collapseFacebook" class="collapse" aria-labelledby="headingFacebook" aria-expanded="true">
@@ -175,7 +175,20 @@
 	</div>
 	{% endif %}
 	<hr>
-	<a href="{{ path('quoteadmin_index') }}"><i class="fa fa-list"></i> {{ 'admin.index.List'|trans }}</a> - <a href="{{ path('quoteadmin_edit', { 'id' : entity.id }) }}"><i class="fa fa-edit"></i> {{ 'admin.index.Update'|trans }}</a> - <a href="{{ path('quoteadmin_new') }}"><i class="fa fa-plus-square"></i> {{ 'admin.index.Create'|trans }}</a>
+	<a href="{{ path('quoteadmin_index') }}"><i class="fas fa-list"></i> {{ 'admin.index.List'|trans }}</a> - <a href="{{ path('quoteadmin_edit', { 'id' : entity.id }) }}"><i class="fas fa-edit"></i> {{ 'admin.index.Update'|trans }}</a> - <a href="{{ path('quoteadmin_new') }}"><i class="fas fa-plus-square"></i> {{ 'admin.index.Create'|trans }}</a>
+	 | 
+	<a href="{{ path('quoteadmin_new', {'biographyId' : entity.biography.id}) }}">
+		{{ 'admin.quote.ForSameBiography'|trans }}
+	{% if entity.source %}
+		 | 
+		<a href="{{ path('quoteadmin_new', {'biographyId' : 0, 'sourceId' : entity.source.id}) }}">
+			{{ 'admin.quote.ForSameSource'|trans }}
+		</a>
+		 | 
+		<a href="{{ path('quoteadmin_new', {'biographyId' : entity.biography.id, 'sourceId' : entity.source.id}) }}">
+			{{ 'admin.quote.ForSameBiographyAndSameSource'|trans }}
+		</a>
+	{% endif %}
 {% endblock %}
 
 {% block script_additional %}

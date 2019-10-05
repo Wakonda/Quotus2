@@ -19,7 +19,7 @@
 		</tr>
 		<tr>
 			<th>{{ "admin.store.Biography"|trans }}</th>
-			<td><a href="{{ path('biographyadmin_show', {'id': entity.biography.id}) }}">{{ entity.biography.title }}</a> {% if entity.biography.text is empty %}<a href="{{ path('biographyadmin_edit', {'id': entity.biography.id}) }}" class="btn btn-info"><i class="fa fa-edit fa-lg"></i></a>{% endif %}</td>
+			<td><a href="{{ path('biographyadmin_show', {'id': entity.biography.id}) }}">{{ entity.biography.title }}</a> {% if entity.biography.text is empty %}<a href="{{ path('biographyadmin_edit', {'id': entity.biography.id}) }}" class="btn btn-info"><i class="fas fa-edit fa-lg"></i></a>{% endif %}</td>
 		</tr>
 		<tr>
 			<th>{{ "admin.store.ProductCode"|trans }}</th>
@@ -35,5 +35,5 @@
 		</tr>
 	</table>
 	<hr>
-	<a href="{{ path('storeadmin_index') }}"><i class="fa fa-list"></i> {{ 'admin.index.List'|trans }}</a> - <a href="{{ path('storeadmin_edit', { 'id' : entity.id }) }}"><i class="fa fa-edit"></i> {{ 'admin.index.Update'|trans }}</a> - <a href="{{ path('storeadmin_new') }}"><i class="fa fa-plus-square"></i> {{ 'admin.index.Create'|trans }}</a>
+	<a href="{{ path('storeadmin_index') }}"><i class="fas fa-list"></i> {{ 'admin.index.List'|trans }}</a> - <a href="{{ path('storeadmin_edit', { 'id' : entity.id }) }}"><i class="fas fa-edit"></i> {{ 'admin.index.Update'|trans }}</a> - <a href="{{ path('storeadmin_new') }}"><i class="fas fa-plus-square"></i> {{ 'admin.index.Create'|trans }}</a>
 {% endblock %}

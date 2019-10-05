@@ -12,7 +12,7 @@
 			<div class="input-group">
 				<input type="text" class="form-control" name="query" value="{{ query }}" placeholder="{{ 'store.index.Search'|trans }} ...">
 				<div class="input-group-append">
-					<button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
+					<button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
 				</div>
 			</div>
 		</div>
@@ -28,11 +28,11 @@
                   <h4 class="card-title">
                     <a href="{{ path('read_store', {'id': entity.id, 'slug': entity.slug}) }}">{{ entity.title }}</a>
                   </h4>
-                  <h5>{% if entity.biography is not empty %}<i class="fa fa-chevron-circle-right"></i> <span class="font-weight-bold">{{ entity.biography.title }}</span>{% endif %}</h5>
+                  <h5>{% if entity.biography is not empty %}<i class="fas fa-chevron-circle-right"></i> <span class="font-weight-bold">{{ entity.biography.title }}</span>{% endif %}</h5>
                 </div>
 				<div class="card-footer">
-				    <a href="{{ path('read_store', {'id': entity.id, 'slug': entity.slug}) }}" class="btn btn-info"><i class="fa fa-plus" aria-hidden="true"></i></a>
-				    <a href="{{ entity.getExternalStoreLink() }}" class="btn btn-success" target="_blank"><i class="fa fa-shopping-basket" aria-hidden="true"></i></a>
+				    <a href="{{ path('read_store', {'id': entity.id, 'slug': entity.slug}) }}" class="btn btn-info"><i class="fas fa-plus" aria-hidden="true"></i></a>
+				    <a href="{{ entity.getExternalStoreLink() }}" class="btn btn-success" target="_blank"><i class="fas fa-shopping-basket" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>

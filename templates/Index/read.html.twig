@@ -78,7 +78,7 @@
 		$("#quote_browsing span#next_data a").qtip({
 			content: {
 				text: $('#quote_browsing span#next_data').data('navTitle'),
-				title: $('#quote_browsing span#next_data').data('navAction') + ' <i class="fa fa-arrow-circle-right"></i>'
+				title: $('#quote_browsing span#next_data').data('navAction') + ' <i class="fas fa-arrow-circle-right"></i>'
 			},
 			position : {
 					my: 'top right',
@@ -90,7 +90,7 @@
 		$("#quote_browsing span#previous_data a").qtip({
 			content: {
 				text: $('#quote_browsing span#previous_data').data('navTitle'),
-				title: '<i class="fa fa-arrow-circle-left"></i> ' + $('#quote_browsing span#previous_data').data('navAction')
+				title: '<i class="fas fa-arrow-circle-left"></i> ' + $('#quote_browsing span#previous_data').data('navAction')
 			},
 
 			style: { classes: 'qtip-tipped' }
@@ -131,11 +131,11 @@
 				<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
 					<img src="{{ asset('photo/quote/'~quoteImage.image) }}" class="text-center" alt="">
 					<div class="carousel-caption hidden_print">
-						<a class="btn btn-primary" target="_blank" title="Twitter" href="https://twitter.com/share?url={{ url('read', {id: quoteImage.quote.id, slug: quoteImage.quote.slug, idImage: quoteImage.id}) }}&text={{ quoteImage.quote.text }}&via=Quotus" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-						<a class="btn btn-primary" target="_blank" title="Facebook" href="https://www.facebook.com/sharer.php?u={{ url('read', {id: quoteImage.quote.id, slug: quoteImage.quote.slug, idImage: quoteImage.id }) }}&t={{ quoteImage.quote.text }}" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-						<a class="btn btn-primary" target="_blank" title="Linkedin" href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ url('read', {id: quoteImage.quote.id, slug: quoteImage.quote.slug, idImage: quoteImage.id }) }}" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-						<a class="btn btn-primary" target="_blank" title="Pinterest" href="http://pinterest.com/pin/create/button/?url={{ url('read', {id: quoteImage.quote.id, slug: quoteImage.quote.slug, idImage: quoteImage.id }) }}&media={{ absolute_url(asset('photo/quote/'~quoteImage.image)) }}&description={{ quoteImage.quote.text }}" count-layout="horizontal" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fa fa-pinterest-p" aria-hidden="true"></i></a>
-						<a href="{{ path('download_image', {'fileName': quoteImage.image}) }}" class="btn btn-success "><i class="fa fa-download" aria-hidden="true"></i></a>
+						<a class="btn btn-primary" target="_blank" title="Twitter" href="https://twitter.com/share?url={{ url('read', {id: quoteImage.quote.id, slug: quoteImage.quote.slug, idImage: quoteImage.id}) }}&text={{ quoteImage.quote.text }}&via=Quotus" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+						<a class="btn btn-primary" target="_blank" title="Facebook" href="https://www.facebook.com/sharer.php?u={{ url('read', {id: quoteImage.quote.id, slug: quoteImage.quote.slug, idImage: quoteImage.id }) }}&t={{ quoteImage.quote.text }}" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+						<a class="btn btn-primary" target="_blank" title="Linkedin" href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{ url('read', {id: quoteImage.quote.id, slug: quoteImage.quote.slug, idImage: quoteImage.id }) }}" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+						<a class="btn btn-primary" target="_blank" title="Pinterest" href="http://pinterest.com/pin/create/button/?url={{ url('read', {id: quoteImage.quote.id, slug: quoteImage.quote.slug, idImage: quoteImage.id }) }}&media={{ absolute_url(asset('photo/quote/'~quoteImage.image)) }}&description={{ quoteImage.quote.text }}" count-layout="horizontal" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;"><i class="fab fa-pinterest-p" aria-hidden="true"></i></a>
+						<a href="{{ path('download_image', {'fileName': quoteImage.image}) }}" class="btn btn-success "><i class="fas fa-download" aria-hidden="true"></i></a>
 					</div>
 				</div>
 				{% set i = i + 1 %}
@@ -144,11 +144,11 @@
 
 		<!-- Left and right controls -->
 		<a class="carousel-control-prev hidden_print" href="#myCarousel" data-slide="prev">
-			<span class="fa fa-chevron-left"></span>
+			<span class="fas fa-chevron-left"></span>
 			<span class="sr-only">Previous</span>
 		</a>
 		<a class="carousel-control-next hidden_print" href="#myCarousel" data-slide="next">
-			<span class="fa fa-chevron-right"></span>
+			<span class="fas fa-chevron-right"></span>
 			<span class="sr-only">Next</span>
 		</a>
 	</div>
@@ -156,7 +156,7 @@
 
 	{% if entity.tags is not empty %}
 		<fieldset class="border rounded p-2">
-			<legend class="w-auto mb-0"><i class="fa fa-tags"></i> Tags</legend>
+			<legend class="w-auto mb-0"><i class="fas fa-tags"></i> Tags</legend>
 			{% for tag in entity.tags %}
 				<a href="{{ path('tag', {id: tag.id, slug: tag.slug}) }}" class="badge badge-dark">{{ tag.title }}</a>
 			{% endfor %}
@@ -186,13 +186,13 @@
 				<tbody>
 					<tr>
 						<td class="socialNetwork">
-							<a href="{{ path('read_pdf', {'id' : entity.id, 'slug' : entity.slug}) }}" class="btn btn-outline-secondary"><i class="fa fa-file-pdf-o fa-2x" aria-hidden="true"></i></a>
+							<a href="{{ path('read_pdf', {'id' : entity.id, 'slug' : entity.slug}) }}" class="btn btn-outline-secondary"><i class="fas fa-file-pdf fa-2x" aria-hidden="true"></i></a>
 						</td>
 						<td class="socialNetwork">
-							<a id="print_page" href="#" class="btn btn-outline-secondary"><i class="fa fa-print fa-2x" aria-hidden="true"></i></a>
+							<a id="print_page" href="#" class="btn btn-outline-secondary"><i class="fas fa-print fa-2x" aria-hidden="true"></i></a>
 						</td>
 						<td class="socialNetwork">
-							<a href="#" data-toggle="modal" data-target="#send_modal" class="btn btn-outline-secondary"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a>
+							<a href="#" data-toggle="modal" data-target="#send_modal" class="btn btn-outline-secondary"><i class="fas fa-envelope fa-2x" aria-hidden="true"></i></a>
 						</td>
 					</tr>
 				</tbody>
@@ -245,7 +245,7 @@
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title" id="sendModalLabel"><i class="fa fa-share-square-o" aria-hidden="true"></i> {{ "send.index.SendFriend"|trans }}</h4>
+					<h4 class="modal-title" id="sendModalLabel"><i class="fas fa-share-square-o" aria-hidden="true"></i> {{ "send.index.SendFriend"|trans }}</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				</div>
 				{{ render(controller('App\\Controller\\SendController::indexAction', {'id': entity.id})) }}
@@ -257,11 +257,11 @@
 		<div id="quote_browsing" class="hidden_print">
 			<hr>
 			{% if(browsing['previous'] is not empty) %}
-				<span data-nav-action="Précédent" data-nav-title="{{ browsing['previous']['text'] }}" id="previous_data"><a href="{{ path('read', {'id' : browsing['previous']['id'], 'slug' : browsing['previous']['slug']}) }}"><i class="fa fa-arrow-circle-left"></i> {{ "quote.browsing.Previous"|trans }}</a></span>
+				<span data-nav-action="Précédent" data-nav-title="{{ browsing['previous']['text'] }}" id="previous_data"><a href="{{ path('read', {'id' : browsing['previous']['id'], 'slug' : browsing['previous']['slug']}) }}"><i class="fas fa-arrow-circle-left"></i> {{ "quote.browsing.Previous"|trans }}</a></span>
 			{% endif %}
 			
 			{% if(browsing['next'] is not empty) %}
-				<span data-nav-action="Suivant" data-nav-title="{{ browsing['next']['text'] }}" class="float-right" id="next_data"><a href="{{ path('read', {'id' : browsing['next']['id'], 'slug' : browsing['next']['slug']}) }}">{{ "quote.browsing.Next"|trans }} <i class="fa fa-arrow-circle-right"></i></a></span>
+				<span data-nav-action="Suivant" data-nav-title="{{ browsing['next']['text'] }}" class="float-right" id="next_data"><a href="{{ path('read', {'id' : browsing['next']['id'], 'slug' : browsing['next']['slug']}) }}">{{ "quote.browsing.Next"|trans }} <i class="fas fa-arrow-circle-right"></i></a></span>
 			{% endif %}
 		</div>
 		<div style="clear: both;"></div>

@@ -503,14 +503,14 @@ quoteadmin_indexdatatables:
     controller: App\Controller\QuoteAdminController::indexDatatablesAction
 
 quoteadmin_new:
-    path: /admin/quote/new/{biographyId}/{collectionId}
+    path: /admin/quote/new/{biographyId}/{sourceId}
     controller: App\Controller\QuoteAdminController::newAction
     requirements:
         biographyId: \d+
-        collectionId: \d+
+        sourceId: \d+
     defaults:
         biographyId: null
-        collectionId: null
+        sourceId: null
 
 quoteadmin_create:
     path: /admin/quote/create

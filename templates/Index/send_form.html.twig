@@ -22,7 +22,7 @@
 {{ form_start(form, {'method' : 'post', 'action' : '' , 'attr': {'novalidate': 'novalidate', 'id': 'send_form'} }) }}
 	<div class="modal-body">
 		<div class="alert alert-info" role="alert">
-			<strong><i class="fa fa-info-circle" aria-hidden="true"></i> Infos</strong> - {{ "send.index.AutomaticallyAddedPost"|trans }}
+			<strong><i class="fas fa-info-circle" aria-hidden="true"></i> Infos</strong> - {{ "send.index.AutomaticallyAddedPost"|trans }}
 		</div>
 		<div class="form-group row">
 			{{ form_label(form.firstName, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
@@ -62,8 +62,8 @@
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> {{ 'send.field.Close'|trans }}</button>
-		{{ form_widget(form.send, {'icon': 'fa-send'}) }}
+		<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> {{ 'send.field.Close'|trans }}</button>
+		{{ form_widget(form.send, {'icon': 'fa-paper-plane'}) }}
 	</div>
 	{{ form_rest(form) }}
 {{ form_end(form) }}

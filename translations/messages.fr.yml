@@ -351,6 +351,9 @@ admin:
         RapidCreation: "Création rapide"
         Number: "Nombre"
         Tags: "Tags"
+        ForSameBiography: "pour le même auteur"
+        ForSameSource: "pour la même source"
+        ForSameBiographyAndSameSource: "pour le même auteur et la même source"
     quoteImage:
         Image: "Image"
         Share: "Partager"

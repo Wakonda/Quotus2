@@ -89,7 +89,7 @@ class QuoteAdminController extends Controller
 		return $response;
 	}
 
-    public function newAction(Request $request, $biographyId, $collectionId)
+    public function newAction(Request $request, $biographyId, $sourceId)
     {
 		$entity = new Quote();
 		
@@ -97,6 +97,12 @@ class QuoteAdminController extends Controller
 		$language = $entityManager->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]);
 		
 		$entity->setLanguage($language);
+		
+		if(!empty($biographyId))
+			$entity->setBiography($entityManager->getRepository(Biography::class)->find($biographyId));
+		
+		if(!empty($sourceId))
+			$entity->setSource($entityManager->getRepository(Source::class)->find($sourceId));
 
         $form = $this->genericCreateForm($request->getLocale(), $entity);
 

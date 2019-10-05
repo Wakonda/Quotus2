@@ -55,7 +55,7 @@
 	{{ form_end(form) }}
 
 	<hr class="flare">
-	<h2>{{ 'main.index.Randomly'|trans }}{% if random is not null %} <a href="{{ path('read', {'id' : random.id, 'slug' : random.slug}) }}" class="btn btn-primary btn-sm"><i class="fa fa-info" aria-hidden="true"></i></a>{% endif %}</h2>
+	<h2>{{ 'main.index.Randomly'|trans }}{% if random is not null %} <a href="{{ path('read', {'id' : random.id, 'slug' : random.slug}) }}" class="btn btn-primary btn-sm"><i class="fas fa-info" aria-hidden="true"></i></a>{% endif %}</h2>
 	{% if random is not null %}
 		{% set ri = random_image(random) %}
 		{% if ri is not null %}

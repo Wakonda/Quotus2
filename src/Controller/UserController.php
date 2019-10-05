@@ -388,7 +388,7 @@ class UserController extends Controller
 
 			if ($authChecker->isGranted('IS_AUTHENTICATED_REMEMBERED') and $tokenStorage->getToken()->getUser()->getUsername() == $username) {
 				$row[] = '<div class="state_entity '.$entity->getStateRealName().'">'.$translator->trans($entity->getStateString()).'</div>';
-				$row[] = '<a href="'.$this->generateUrl('quoteuser_edit', array("id" => $entity->getId())).'" alt=""><span class="fa fa-pencil">'.$translator->trans('user.myProfile.Edit').'</span></a> / <a href="#" alt="" data-id="'.$entity->getId().'" class="delete_poem"><span class="fa fa-times">'.$translator->trans('user.myProfile.Delete').'</span></a>';
+				$row[] = '<a href="'.$this->generateUrl('quoteuser_edit', array("id" => $entity->getId())).'" alt=""><span class="fas fa-pencil">'.$translator->trans('user.myProfile.Edit').'</span></a> / <a href="#" alt="" data-id="'.$entity->getId().'" class="delete_poem"><span class="fas fa-times">'.$translator->trans('user.myProfile.Delete').'</span></a>';
 			}
 			
 			$output['aaData'][] = $row;
@@ -437,7 +437,7 @@ class UserController extends Controller
 			$row[] = '<a href="'.$show.'" alt="Show">'.$entity['text'].'</a>';
 			
 			list($icon, $color) = (($entity['vote'] == -1) ? array("fa-arrow-down", "red") : array("fa-arrow-up", "green"));
-			$row[] = "<i class='fa ".$icon."' aria-hidden='true' style='color: ".$color.";'></i>";
+			$row[] = "<i class='fab ".$icon."' aria-hidden='true' style='color: ".$color.";'></i>";
 
 			$output['aaData'][] = $row;
 		}

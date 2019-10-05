@@ -33,7 +33,7 @@
 	<div id="success_copy"><span></span></div>
 	<textarea class="form-control" id="embedded_document" cols="65" rows="4"><iframe src="{{ url('widget', {'locale': app.request.locale}) }}" frameborder=0 style="width: 100%;" onload="this.style.height=this.contentDocument.body.scrollHeight +'px';"></iframe></textarea>
 	<br>
-	<button type="button" id="copy-button" class="btn btn-success vertical submitcomment clip_button" data-clipboard-action="copy"data-clipboard-target="#embedded_document" title="Click to copy me."><i class="fa fa-clipboard" aria-hidden="true"></i> {{ 'widget.random.Copy'|trans }}</button>
+	<button type="button" id="copy-button" class="btn btn-success vertical submitcomment clip_button" data-clipboard-action="copy"data-clipboard-target="#embedded_document" title="Click to copy me."><i class="fas fa-clipboard" aria-hidden="true"></i> {{ 'widget.random.Copy'|trans }}</button>
 
 	<h4 class="mt-4">{{ 'widget.random.Preview'|trans }}</h4>
 	<div>
