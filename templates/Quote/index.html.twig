@@ -16,6 +16,8 @@
 	<script type="text/javascript">
 		$(function ()
 		{
+			var selected = [];
+
 			$('table.index_directories').DataTable({
 				"oLanguage": {
 					"sUrl": "{{ asset('js/DataTables/language/dataTables.'~app.request.locale) }}.txt"
@@ -28,7 +30,30 @@
 				"bProcessing": true,
 				"bServerSide": true,
 				"sAjaxSource": "{{ path('quoteadmin_indexdatatables') }}",
+				"rowCallback": function( row, data ) {
+					if ( $.inArray(data.DT_RowId, selected) !== -1 ) {
+						$(row).addClass('selected');
+					}
+				},
 				"autoWidth": false
+			});
+			
+			$('.index_directories tbody').on('click', 'tr', function () {
+				var id = this.id;
+				var index = $.inArray(id, selected);
+		 
+				if ( index === -1 ) {
+					selected.push( id );
+				} else {
+					selected.splice( index, 1 );
+				}
+		 
+				$(this).toggleClass('selected');
+			});
+			
+			$("#add_multiple_tags").click(function(e) {
+				e.preventDefault();
+				window.location.href = "{{ path('quoteadmin_editmultiple') }}?ids=" + JSON.stringify(selected);
 			});
 		});
 	</script>
@@ -47,4 +72,5 @@
 	</table>
 	<hr>
 	<a href="{{ path('quoteadmin_new') }}"><i class="fas fa-plus-square"></i> {{ 'admin.index.Create'|trans }}</a>
+	 | <a href="#" id="add_multiple_tags"><i class="fas fa-frog"></i> {{ 'admin.index.MultipleEdition'|trans }}</a>
 {% endblock %}

@@ -564,6 +564,14 @@ quoteadmin_remove_image:
     path: /admin/quote/removeimage/{id}/{quoteImageId}
     controller: App\Controller\QuoteAdminController:removeImageAction
 
+quoteadmin_editmultiple:
+    path: /admin/quote/editmultiple
+    controller: App\Controller\QuoteAdminController:editMultipleAction
+
+quoteadmin_updatemultiple:
+    path: /admin/quote/updatemultiple/{ids}
+    controller: App\Controller\QuoteAdminController:updateMultipleAction
+
 # ADMIN SOURCE
 sourceadmin_index:
     path: /admin/source/index

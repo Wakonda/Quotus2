@@ -52,7 +52,7 @@ text-decoration:none;}
 Main Styles
 */
 #Wrapper{ width: 90%; margin:0px auto;}
-#Wrapper2{ overflow:hidden; border:1px dotted #ddd; background-color: white;}
+#Wrapper2{ overflow:hidden; border-top:1px dotted #ddd; background-color: white;}
 #header {
 	width: 100%;
 }
@@ -70,38 +70,13 @@ article
 	border-left:1px solid #ccc;
 }
 
-.navigation {
-	text-align: left;
-	display: block;
-	line-height: 50px;
-	padding: 5px 0px;
+li.nav-item:hover {
+    border-radius: 5px;
+    background-color: rgba(224, 224, 224, 0.9);
 }
 
-.navigation a {
-	display: inline-block;
-	margin: 0px 4px;
-	padding: 0px 6px;
-	color: #aaa;
-	line-height: 30px;	
-	font-size: 15px;
-	text-shadow: 1px 1px 1px #fff;
-	border: 1px solid #fff;
-	background: #ffffff; /* Old browsers */
-	background: -moz-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* IE10+ */
-	background: linear-gradient(top, #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
-	box-shadow: 0px 1px 1px rgba(0,0,0,0.3);
-}
-
-.navigation a:hover{
-	color: #333;
-}
-.navigation a:active{
-	background: #fff;
+.nav-item.active {
+	font-weight: bold;
 }
 
 #title h1 a, #title h1 a:hover, #title h1 a:hover, #title h1 a:hover  {	
@@ -582,6 +557,13 @@ progress::-webkit-progress-bar {
     -webkit-animation: animate-stripes 2s linear infinite;  
 }
 
+/********* DATATABLES **********/
+table.dataTable.hover tbody tr:hover.selected, table.dataTable.display tbody tr:hover.selected {
+    background-color: #aab7d1;
+}
+table.dataTable tbody tr.selected {
+    background-color: #B0BED9;
+}
 /********* USER SHOW **********/
 #poem_vote td
 {

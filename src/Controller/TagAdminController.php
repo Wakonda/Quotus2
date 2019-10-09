@@ -169,7 +169,7 @@ class TagAdminController extends Controller
 		$datas =  $entityManager->getRepository(Tag::class)->getDatasSelect($type, $locale, $query, null);
 		
 		$res = [];
-		
+
 		foreach($datas as $data)
 		{
 			$row = [];

@@ -8,9 +8,11 @@ use App\Entity\User;
 use App\Entity\Language;
 use App\Entity\Biography;
 use App\Entity\Source;
+use App\Entity\Tag;
 use App\Form\Type\QuoteType;
 use App\Form\Type\ImageGeneratorType;
 use App\Form\Type\QuoteFastMultipleType;
+use App\Form\Type\QuoteEditMultipleType;
 use App\Service\GenericFunction;
 use App\Service\ImageGenerator;
 use App\Service\PHPImage;
@@ -72,6 +74,7 @@ class QuoteAdminController extends Controller
 		foreach($entities as $entity)
 		{
 			$row = array();
+			$row["DT_RowId"] = $entity->getId();
 			$row[] = $entity->getId();
 			$row[] = $entity->getText();
 			$row[] = $entity->getLanguage()->getTitle();
@@ -179,6 +182,54 @@ class QuoteAdminController extends Controller
 		}
 	
 		return $this->render('Quote/edit.html.twig', array('form' => $form->createView(), 'entity' => $entity));
+	}
+	
+	public function editMultipleAction(Request $request)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$ids = json_decode($request->query->get("ids"));
+		$locale = $entityManager->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]);
+		$form = $this->createForm(QuoteEditMultipleType::class, null, array("locale" => $locale->getId()));
+
+		return $this->render('Quote/editMultiple.html.twig', array('form' => $form->createView(), 'ids' => $ids));
+	}
+	
+	public function updateMultipleAction(Request $request, SessionInterface $session, TranslatorInterface $translator, $ids)
+	{
+		$entityManager = $this->getDoctrine()->getManager();
+		$ids = json_decode($ids);
+		$locale = $entityManager->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]);
+		$form = $this->createForm(QuoteEditMultipleType::class, null, array("locale" => $locale->getId()));
+		$form->handleRequest($request);
+
+		$req = $request->request->get($form->getName());
+
+		foreach($ids as $id)
+		{
+			$entity = $entityManager->getRepository(Quote::class)->find($id);
+			$tagsId = $req["tags"];
+
+			foreach($tagsId as $tagId)
+			{
+				$tag = $entityManager->getRepository(Tag::class)->find($tagId);
+				$realTag = $entityManager->getRepository(Tag::class)->findOneBy(["internationalName" => $tag->getInternationalName(), "language" => $entity->getLanguage()]);
+				
+				if(!empty($realTag))
+				{
+					if(!$entity->isTagExisted($realTag))
+					{
+						$entity->addTag($realTag);
+						$entityManager->persist($entity);
+					}
+				}
+			}
+			
+			$entityManager->flush();
+		}
+		
+		$session->getFlashBag()->add('message', $translator->trans("admin.index.ChangesMadeSuccessfully"));
+
+		return $this->redirect($this->generateUrl('quoteadmin_index'));
 	}
 	
 	public function newFastMultipleAction(Request $request)

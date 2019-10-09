@@ -323,6 +323,8 @@ admin:
         All: "Tous"
         ToComplete: "A compléter"
         State: "Etat"
+        MultipleEdition: "Edition multiple"
+        ChangesMadeSuccessfully: "Modifications apportées avec succès"
     error:
         UnknownURL: "URL inconnue"
     table:
