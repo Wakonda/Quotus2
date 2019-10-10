@@ -68,9 +68,15 @@
 			</div>
 		{% endif %}
 		<hr>
-		<p>
-		{#<a href="{{ path('country', {'id' : random.country.id, 'slug' : random.country.slug }) }}" alt=""><img class="flag" src="{{ asset('photo/country/'~random.country.flag) }}" alt="" height="8" /> Proverbe - {{ random.country.title }}</a>#}
-		</p>
+		{% if random.biography.isFictionalCharacter %}
+		<p><b><a href="{{ path('fictionalcharacter', {'id': random.biography.id, 'slug': random.biography.slug}) }}">{{ random.biography.title }}</a></b>
+		{% else %}
+		<p><b><a href="{{ path('author', {'id': random.biography.id, 'slug': random.biography.slug}) }}">{{ random.biography.title }}</a></b>
+		{% endif %}
+		
+		{% if random.source is not empty %}
+			- <u><i><a href="{{ path('source', {'id': random.source.id, 'slug': random.source.slug}) }}">{{ random.source.title }}</a></i></u></p>
+		{% endif %}
 	{% else %}
 		<div class="alert alert-danger text-center" role="alert">{{ 'main.index.NoQuote'|trans }}</div>
 	{% endif %}
