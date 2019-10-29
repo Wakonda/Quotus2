@@ -405,6 +405,10 @@ admin:
         Text: "Texte"
         Image: "Image"
         Biography: "Biographie"
+    country:
+        Title: "Titre"
+        InternationalName: "Nom international"
+        Flag: "Drapeau"
     socialNetwork:
         AddAnImage: "Ajouter une image"
         Send: "Envoyer"

@@ -268,8 +268,8 @@ class QuoteAdminController extends Controller
 						if(!isset($req["biography"]) or empty($req["biography"]))
 							$form->get("biography")->addError(new FormError($translator->trans((new Assert\NotBlank())->message, [], 'validators')));
 
-						if(!isset($req["source"]) or empty($req["source"]))
-							$form->get("source")->addError(new FormError($translator->trans((new Assert\NotBlank())->message, [], 'validators')));
+						// if(!isset($req["source"]) or empty($req["source"]))
+							// $form->get("source")->addError(new FormError($translator->trans((new Assert\NotBlank())->message, [], 'validators')));
 						break;
 					case 'ZXZlbmUubGVmaWdhcm8uZnI=':
 						if(!isset($req["biography"]) or empty($req["biography"]))
@@ -312,18 +312,24 @@ class QuoteAdminController extends Controller
 
 						$text = html_entity_decode($q->plaintext, ENT_QUOTES);
 						
-						$author = current($pb->find("character"))->plaintext;
-						
-						if($entity->getBiography()->getTitle() != $author)
-							$save = false;
-						
 						if($type == "personnage") {
-							$source = html_entity_decode(current($pb->find(".auteurLien"))->plaintext, ENT_QUOTES);
-							$source = $entityManager->getRepository(Source::class)->findOneBy(["title" => $source]);
+							$author = current($pb->find("character"))->plaintext;
+
+							if($entity->getBiography()->getTitle() != $author)
+								$save = false;
+							
+							$sourceTitle = html_entity_decode(current($pb->find(".auteurLien"))->plaintext, ENT_QUOTES);
+							$source = $entityManager->getRepository(Source::class)->findOneBy(["title" => $sourceTitle]);
 							
 							if(!empty($source))
 								$entityNew->setSource($source);
 							else
+								if(empty($sourceTitle))
+									$save = false;
+						} else {
+							$author = current($pb->find("cite"))->plaintext;
+
+							if($entity->getBiography()->getTitle() != $author)
 								$save = false;
 						}
 						
@@ -418,13 +424,13 @@ class QuoteAdminController extends Controller
 		$statues = $connection->post("statuses/update", $parameters);
 	
 		if(isset($statues->errors) and !empty($statues->errors))
-			$session->getFlashBag()->add('message', $translator->trans("admin.index.SentError"));
+			$session->getFlashBag()->add('message', "Twitter - ".$translator->trans("admin.index.SentError"));
 		else {
 			$quoteImage->addSocialNetwork("Twitter");
 			$entityManager->persist($quoteImage);
 			$entityManager->flush();
 		
-			$session->getFlashBag()->add('message', $translator->trans("admin.index.SentSuccessfully"));
+			$session->getFlashBag()->add('message', "Twitter - ".$translator->trans("admin.index.SentSuccessfully"));
 		}
 	
 		return $this->redirect($this->generateUrl("quoteadmin_show", array("id" => $id)));
@@ -449,14 +455,14 @@ class QuoteAdminController extends Controller
 		$quoteImage = $entityManager->getRepository(QuoteImage::class)->find($imageId);
 		
 		if(empty($quoteImage)) {
-			$session->getFlashBag()->add('message', $translator->trans("admin.index.YouMustSelectAnImage"));
+			$session->getFlashBag()->add('message', "Pinterest - ".$translator->trans("admin.index.YouMustSelectAnImage"));
 			return $this->redirect($this->generateUrl("quoteadmin_show", array("id" => $id)));
 		}
 
 		$bot->pins->create($request->getUriForPath('/photo/quote/'.$quoteImage->getImage()), $boards[0]['id'], $request->request->get("pinterest_area"), $this->generateUrl("read", ["id" => $entity->getId(), "slug" => $entity->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL));
 		
 		if(empty($bot->getLastError())) {
-			$session->getFlashBag()->add('message', $translator->trans("admin.index.SentSuccessfully"));
+			$session->getFlashBag()->add('message', "Pinterest - ".$translator->trans("admin.index.SentSuccessfully"));
 			
 			$quoteImage->addSocialNetwork("Pinterest");
 			$entityManager->persist($quoteImage);
