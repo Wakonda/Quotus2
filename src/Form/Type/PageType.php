@@ -41,9 +41,10 @@ class PageType extends AbstractType
 					return $er->findAllForChoice($locale);
 				},
 				'multiple' => false,
-				'required' => false,
+				'required' => true,
 				'expanded' => false,
-				'placeholder' => 'main.field.ChooseAnOption'
+				'placeholder' => 'main.field.ChooseAnOption',
+				'constraints' => new Assert\NotBlank()
 			))
 			->add('save', SubmitType::class, array('label' => 'admin.main.Save', 'attr' => array('class' => 'btn btn-success')))
 			;
