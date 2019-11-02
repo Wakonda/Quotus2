@@ -414,6 +414,8 @@ class QuoteAdminController extends Controller
 		$parameters["status"] = $request->request->get("twitter_area")." ".$this->generateUrl("read", array("id" => $id, 'slug' => $entity->getSlug()), UrlGeneratorInterface::ABSOLUTE_URL);
 		$imageId = $request->request->get('image_id_tweet');
 
+		$quoteImage = null;
+
 		if(!empty($imageId)) {
 			$quoteImage = $entityManager->getRepository(QuoteImage::class)->find($imageId);
 			
