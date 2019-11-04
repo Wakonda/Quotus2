@@ -416,7 +416,6 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 		
 		$qb->select("pa.id AS id, pa.text AS text, pa.slug AS slug, co.username AS username")
 		   ->leftjoin("pa.user", "co")
-		   ->groupBy("co.id, co.username")
 		   ->andWhere("pa.state = :state")
 		   ->setParameter("state", Quote::PUBLISHED_STATE)
 		   ->andWhere("pa.authorType = :biography")
@@ -447,9 +446,7 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 		}
 		else
 			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
-		
-		// var_dump(Quote::PUBLISHED_STATE, Quote::USER_AUTHORTYPE, $locale);
-// die($qb->getQuery()->getSQL());
+
 		return $qb->getQuery()->getResult();
     }
 
