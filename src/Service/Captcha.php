@@ -27,7 +27,7 @@ class Captcha
 		$size = 80;
 		$margin = 60;
 
-		$font = realpath(__DIR__."/../../public").'/font/Edmundsbury_Serif.ttf';
+		$font = realpath(__DIR__."/../../assets").'/font/Edmundsbury_Serif.ttf';
 
 		$matrix_blur = array(
 			array(1,1,1),

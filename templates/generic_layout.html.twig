@@ -14,14 +14,9 @@
 
 		<link rel="shortcut icon" href="{{ asset('photo/favicon.ico') }}">
 
-		<link rel="stylesheet" type="text/css" href="{{ asset(minify_file('css/style.css')) }}" media="screen" />
-		<link rel="stylesheet" type="text/css" href="{{ asset(minify_file('css/style_print.css')) }}" media="print" />
-		<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-4.2.1-dist/css/bootstrap.min.css') }}" media="screen" />
-		<link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome/css/fontawesome.min.css') }}" />
-		<link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome/css/solid.min.css') }}" />
-		<link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome/css/brands.min.css') }}" />
-		<link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome/css/regular.min.css') }}" />
-		<link rel="stylesheet" type="text/css" href="{{ asset(minify_file('js/BackToTop/BackToTop.css')) }}" />
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
 		
 		{% block style_additional %}
 		{% endblock %}
@@ -211,7 +206,8 @@
 		</div>
 		<!-- Div Wrapper Element ends Here -->
 
-		<script src="{{ asset('css/bootstrap-4.2.1-dist/js/bootstrap.min.js') }}"></script>
+		{{ encore_entry_script_tags('app') }}
+
 		<script src="{{ asset(minify_file('js/cookiechoices/cookiechoices.js')) }}"></script>
 		<script type="text/javascript">
 			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -229,8 +225,7 @@
 				});
 			});
 		</script>
-		
-		<script src="{{ asset(minify_file('js/BackToTop/BackToTop.js')) }}"></script>
+
 		<script>
 			// Resize "aside" and "article" tags
 			function resizeAsideArticle() {
@@ -245,10 +240,6 @@
 					$("article#contents").css("border-left", "none");
 				}
 			}
-			
-			$(function() {
-				$(document).BackToTop();
-			});
 		</script>
 		{% block script_additional %}
 		{% endblock %}
