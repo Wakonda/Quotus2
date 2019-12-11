@@ -80,7 +80,7 @@
 			<!-- Div wrapper2 starts here -->
 			<div id="Wrapper2">			
 				<!-- Sidebar Element Starts Here -->
-				<aside id="sidebar-wrapper">
+				<aside id="sidebar-wrapper" class="align-self-stretch">
 					<nav class="sidebar">
 						<h1>{{ 'menu.left.RecentQuotes'|trans }}</h1>
 						{{ render(controller('App\\Controller\\IndexController::lastAction')) }}
@@ -170,7 +170,7 @@
 				</aside>
 				<!-- Another Sidebar Element Ends Here -->
 				<!-- Article Element Starts Here -->
-				<article id="contents">
+				<article id="contents" class="align-self-stretch">
 					<!-- Article's Header Element Starts Here -->
 					<header>
 						<h1>{% block main_title %}{{ 'main.index.WelcomeTo'|trans }}{% endblock %}</h1>
@@ -225,39 +225,7 @@
 				});
 			});
 		</script>
-
-		<script>
-			// Resize "aside" and "article" tags
-			function resizeAsideArticle() {
-				var articleHeight = $("article#contents").height();
-				var asideHeight = $("aside#sidebar-wrapper").height();
-
-				if(asideHeight < articleHeight) {
-					$("article#contents").css("border-left", "1px solid #ccc");
-					$("aside").css("border-right", "none");
-				} else {
-					$("aside").css("border-right", "1px solid #ccc");
-					$("article#contents").css("border-left", "none");
-				}
-			}
-		</script>
 		{% block script_additional %}
 		{% endblock %}
-		
-		<script>
-			$(function() {
-				resizeAsideArticle();
-			});
-			
-			$( document ).ajaxComplete(function() {
-				resizeAsideArticle();
-			});
-
-			window.fbAsyncInit = function(){
-				FB.Event.subscribe("xfbml.render", function(){
-					resizeAsideArticle();
-				});
-			};
-		</script>
 	</body>
 </html>
