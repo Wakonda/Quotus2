@@ -20,11 +20,11 @@
 		
 		{% block style_additional %}
 		{% endblock %}
+		
+		{{ encore_entry_script_tags('app') }}
 
 		{% block script_additional_sup %}
 		{% endblock %}
-		
-		<script src="{{ asset('js/jquery.js') }}"></script>
 	</head>
 	<body>
 		<div class="resize"></div>
@@ -33,14 +33,30 @@
 			<!-- Header Element Starts Here -->
 			<header id="header">
 				<!-- Hgroup Element Starts Here -->
-				<hgroup id="title">
-					<div id="logo">
-						<a href="{{ path('index') }}" alt="">
-							<img src="{{ asset('photo/logo.png') }}" alt="logo" />
-							<span>Quotus</span>
-						</a>
+				<hgroup id="title" class="row no-gutters">
+					<div class="col-lg-6">
+						<div id="logo">
+							<a href="{{ path('index') }}" alt="">
+								<img src="{{ asset('photo/favicon.ico') }}" alt="logo" />
+								<span>Quotus</span>
+							</a>
+						</div>
+						<!--<h1>Creating HTML5 <span>Responsive Web Template Using Media Queries</span></h1>-->
+						<h2 class="mt-2">{{ 'main.index.WonderfulWorldOfQuote'|trans|raw }}</h2>
 					</div>
-					<h2 class="mt-2">{{ 'main.index.WonderfulWorldOfQuote'|trans|raw }}</h2>
+					<div class="col-lg-6 mt-2">
+						<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+						<!-- QPP - Right side -->
+						<ins class="adsbygoogle"
+							 style="display:block"
+							 data-ad-client="ca-pub-1951906303386196"
+							 data-ad-slot="6687056419"
+							 data-ad-format="horizontal"
+							 data-full-width-responsive="true"></ins>
+						<script>
+							 (adsbygoogle = window.adsbygoogle || []).push({});
+						</script>
+					</div>
 				</hgroup>
 				<!-- Hgroup Element Ends Here -->
 
@@ -205,8 +221,6 @@
 			<!-- Footer Element Ends Here -->
 		</div>
 		<!-- Div Wrapper Element ends Here -->
-
-		{{ encore_entry_script_tags('app') }}
 
 		<script src="{{ asset(minify_file('js/cookiechoices/cookiechoices.js')) }}"></script>
 		<script type="text/javascript">
