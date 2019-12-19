@@ -6,9 +6,23 @@
  */
 
 // any CSS you require will output into a single css file (app.css in this case)
-require('../css/app.css');
+require('../css/app.scss');
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // const $ = require('jquery');
 
-console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
+// jQuery
+global.$ = global.jQuery = window.$ = window.jQuery = require('jquery');
+
+require('bootstrap');
+
+require('@fortawesome/fontawesome-free/css/all.min.css');
+require('@fortawesome/fontawesome-free/js/all.js');
+
+require('./BackToTop/BackToTop')
+require('./BackToTop/arrow-up.png');
+require('./BackToTop/BackToTop.css');
+
+$(function() {
+	$(document).BackToTop();
+});

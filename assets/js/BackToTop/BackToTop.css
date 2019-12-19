@@ -1,0 +1,19 @@
+a.back-to-top {
+	display: none;
+	width: 60px;
+	height: 60px;
+	text-indent: -9999px;
+	position: fixed;
+	z-index: 999;
+	right: 20px;
+	bottom: 20px;
+	background: rgba(119,119,119,.2) url("arrow-up.png") no-repeat center 50%;
+	background-size: 34px 34px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+}
+a.back-to-top:hover {
+	background: rgba(119,119,119,.5) url("arrow-up.png") no-repeat center 50%;
+	background-size: 34px 34px;
+}
