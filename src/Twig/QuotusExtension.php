@@ -24,9 +24,7 @@ class QuotusExtension extends AbstractExtension
         return array(
 			new TwigFilter('html_entity_decode', array($this, 'htmlEntityDecodeFilter')),
 			new TwigFilter('toString', array($this, 'toStringFilter')),
-			new TwigFilter('text_month', array($this, 'textMonthFilter')),
 			new TwigFilter('max_size_image', array($this, 'maxSizeImageFilter'), array('is_safe' => array('html'))),
-			new TwigFilter('date_letter', array($this, 'dateLetterFilter'), array('is_safe' => array('html'))),
 			new TwigFilter('remove_control_characters', array($this, 'removeControlCharactersFilter')),
 			new TwigFilter('base64_decode', array($this, 'base64DecodeFilter'))
         );
@@ -39,7 +37,9 @@ class QuotusExtension extends AbstractExtension
 			new TwigFunction('minify_file', array($this, 'minifyFile')),
 			new TwigFunction('count_unread_messages', array($this, 'countUnreadMessagesFunction')),
 			new TwigFunction('code_by_language', array($this, 'getCodeByLanguage')),
-			new TwigFunction('random_image', array($this, 'randomImage'))
+			new TwigFunction('random_image', array($this, 'randomImage')),
+			new TwigFunction('text_month', array($this, 'textMonth')),
+			new TwigFunction('date_biography_letter', array($this, 'dateBiographyLetter'), array('is_safe' => array('html')))
 		);
 	}
 
@@ -54,11 +54,10 @@ class QuotusExtension extends AbstractExtension
         return html_entity_decode($str);
     }
 	
-	public function textMonthFilter($monthInt)
+	public function textMonth($year, $month, $locale)
 	{
-		$locale = $this->app['generic_function']->getLocaleTwigRenderController();
-		$arrayMonth = $this->formatDateByLocale();
-		return $arrayMonth[$locale]["months"][intval($month) - 1].(!empty($year) ? $arrayMonth[$locale]["separator"].$year : "");
+		list($arrayBCYear, $arrayMonth) = $this->formatDateByLocale();
+		return $arrayMonth[$locale]["months"][intval($month) - 1].(!empty($year) ? $arrayMonth[$locale]["separator"].($year < 0 ? abs($year)." ".$arrayBCYear[$locale] : $year) : "");
 	}
 	
 	public function maxSizeImageFilter($img, array $options = [], $isPDF = false)
@@ -84,17 +83,14 @@ class QuotusExtension extends AbstractExtension
 		return '<img src="'.$basePath.$img.'" alt="" style="max-width: '.$width.'px;" />';
 	}
 	
-	public function dateLetterFilter($date, $locale)
+	public function dateLetter($year, $month, $day, $locale)
 	{
-		if(is_string($date))
-			$date = new \DateTime($date);
-
-		$arrayMonth = $this->formatDateByLocale();
-		$month = $arrayMonth[$locale]["months"][$date->format("n") - 1];
+		list($arrayBCYear, $arrayMonth) = $this->formatDateByLocale();
+		$month = $arrayMonth[$locale]["months"][$month - 1];
 		
-		$day = ($date->format("j") == 1) ? $date->format("j").((!empty($arrayMonth[$locale]["sup"])) ? "<sup>".$arrayMonth[$locale]["sup"]."</sup>" : "") : $date->format("j");
+		$day = ($day == 1) ? $day.((!empty($arrayMonth[$locale]["sup"])) ? "<sup>".$arrayMonth[$locale]["sup"]."</sup>" : "") : $day;
 		
-		return $day." ".$month." ".$date->format("Y");
+		return ltrim($day, "0")." ".$month." ".($year < 0 ? abs($year)." ".$arrayBCYear[$locale] : $year);
 	}
 
 	public function removeControlCharactersFilter($string)
@@ -168,6 +164,9 @@ class QuotusExtension extends AbstractExtension
 		$arrayMonth = array();
 		$arrayMonth['fr'] = array("sup" => "er", "separator" => " ", "months" => array("janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"));
 
-		return $arrayMonth;
+		$arrayBCYear = [];
+		$arrayBCYear["fr"] = "av. J.-C.";
+
+		return [$arrayBCYear, $arrayMonth];
 	}
 }

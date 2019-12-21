@@ -58,9 +58,9 @@
 			<th><span class="font-weight-bold">{{ 'biography.field.BirthDate'|trans }} : </span></th>
 			<td>
 			{% if entity.dayBirth is not null and entity.monthBirth is not null and entity.yearBirth is not null %}
-				{{ (entity.yearBirth~"-"~entity.monthBirth~"-"~entity.dayBirth)|date_letter(app.request.locale) }}
+				{{ date_biography_letter(entity.yearBirth, entity.monthBirth, entity.dayBirth, app.request.locale) }}
 			{% elseif entity.monthBirth is not null and entity.yearBirth is not null %}
-				{{ entity.monthBirth|text_month(entity.yearBirth) }}
+				{{ text_month(entity.yearBirth, entity.monthBirth, app.request.locale) }}
 			{% else %}
 				{{ entity.yearBirth }}
 			{% endif %}
@@ -72,9 +72,9 @@
 			<th><span class="font-weight-bold">{{ 'biography.field.DeathDate'|trans }} : </span></th>
 			<td>
 			{% if entity.dayDeath is not null and entity.monthDeath is not null and entity.yearDeath is not null %}
-				{{ (entity.dayDeath~"-"~entity.monthDeath~"-"~entity.yearDeath)|date_letter(app.request.locale) }}
+				{{ date_biography_letter(entity.yearDeath, entity.dayDeath, entity.monthDeath, app.request.locale) }}
 			{% elseif entity.monthDeath is not null and entity.yearDeath is not null %}
-				{{ entity.monthDeath|text_month(entity.yearDeath) }}
+				{{ text_month(entity.yearDeath, entity.monthDeath, app.request.locale) }}
 			{% else %}
 				{{ entity.yearDeath }}
 			{% endif %}
