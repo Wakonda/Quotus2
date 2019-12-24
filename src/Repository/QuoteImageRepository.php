@@ -52,7 +52,8 @@ class QuoteImageRepository extends ServiceEntityRepository
 		$qb->join('ip.quote', 'pf')
 		   ->join('pf.language', 'la')
 		   ->where('la.abbreviation = :locale')
-		   ->setParameter("locale", $locale);
+		   ->setParameter("locale", $locale)
+		   ->orderBy("ip.id", "DESC");
 
 		return $qb->getQuery();
 	}
