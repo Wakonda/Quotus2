@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Page
 {
+	const PATH_FILE = "photo/page/";
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

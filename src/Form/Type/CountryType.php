@@ -28,8 +28,7 @@ class CountryType extends AbstractType
 			->add('internationalName', TextType::class, array(
                 'constraints' => new Assert\NotBlank(), "label" => "admin.country.InternationalName", 'attr' => array('class' => 'redactor')
             ))
-			->add('flag', FileType::class, array('data_class' => null, "label" => "admin.country.Flag", "required" => true
-            ))
+			->add('flag', FileSelectorType::class, array("label" => "admin.country.Flag", "required" => true, "current_file" => $builder->getData()->getFlag(), "path_file" => Country::PATH_FILE))
 			->add('language', EntityType::class, array(
 				'label' => 'admin.form.Language', 
 				'class' => Language::class,

@@ -87,17 +87,15 @@ class TagAdminController extends Controller
 		$form->handleRequest($request);
 		
 		$this->checkForDoubloon($entity, $form);
+	
+		if($entity->getPhoto() == null or empty($entity->getPhoto()["title"]) or empty($entity->getPhoto()["content"]))
+			$form->get("photo")["name"]->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
 
-		if($entity->getPhoto() == null)
-			$form->get("photo")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
-		
 		if($form->isValid())
 		{
 			$entityManager = $this->getDoctrine()->getManager();
-			$gf = new GenericFunction();
-			$photo = $gf->getUniqCleanNameForFile($entity->getPhoto());
-			$entity->getPhoto()->move("photo/tag/", $photo);
-			$entity->setPhoto($photo);
+			file_put_contents(Tag::PATH_FILE.$entity->getPhoto()["title"], $entity->getPhoto()["content"]);
+			$entity->setPhoto($entity->getPhoto()["title"]);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 
@@ -138,11 +136,10 @@ class TagAdminController extends Controller
 		
 		if($form->isValid())
 		{
-			if(!is_null($entity->getPhoto()))
+			if(!is_null($entity->getPhoto()) and (!empty($entity->getPhoto()["title"]) or !empty($entity->getPhoto()["content"])))
 			{
-				$gf = new GenericFunction();
-				$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
-				$entity->getPhoto()->move("photo/tag/", $image);
+				file_put_contents(Tag::PATH_FILE.$entity->getPhoto()["title"], $entity->getPhoto()["content"]);
+				$entity->setPhoto($entity->getPhoto()["title"]);
 			}
 			else
 				$image = $currentImage;

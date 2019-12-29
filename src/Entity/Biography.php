@@ -15,6 +15,8 @@ class Biography
 	
 	const AUTHOR_CANONICAL = "biography.type.Author";
 	const FICTIONAL_CHARACTER_CANONICAL = "biography.type.FictionalCharacter";
+	
+	const PATH_FILE = "photo/biography/";
 
     /**
      * @ORM\Id

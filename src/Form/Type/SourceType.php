@@ -92,7 +92,7 @@ class SourceType extends AbstractType
 					 Source::TV_SERIES_CANONICAL => Source::TV_SERIES
 				],
 			])
-			->add('photo', FileType::class, array('data_class' => null, "label" => "admin.source.Photo", "required" => false))
+			->add('photo', FileSelectorType::class, array("label" => "admin.source.Photo", "required" => false, "current_file" => $builder->getData()->getFlag(), "path_file" => Source::PATH_FILE))
             ->add('save', SubmitType::class, array('label' => 'admin.main.Save', 'attr' => array('class' => 'btn btn-success')));
     }
 

@@ -18,6 +18,8 @@ class Source
 	const MOVIE_CANONICAL = "source.type.Movie";
 	const TV_SERIES_CANONICAL = "source.type.Tvseries";
 
+	const PATH_FILE = "photo/source/";
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

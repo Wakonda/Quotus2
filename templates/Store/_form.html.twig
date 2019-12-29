@@ -29,10 +29,10 @@
 		{{ form_errors(form.amazonCode) }}{{ form_widget(form.amazonCode, {'attr':{'class':'form-control'}}) }}
 	</div>
 </div>
-<div id="photo_container" class="form-group row">
+<div class="form-group row">
 	{{ form_label(form.photo, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 	<div class="col-sm-10">
-		{{ form_errors(form.photo) }}{% if entity.photo is defined and entity.photo is not empty %}{{ macro.currentImage("photo/store/", entity.photo) }}{% endif %}{{ form_widget(form.photo) }}
+		{{ form_row(form.photo) }}
 	</div>
 </div>
 <hr />

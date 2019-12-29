@@ -26,8 +26,7 @@ class TagType extends AbstractType
             ->add('title', TextType::class, array(
                 'constraints' => new Assert\NotBlank(), "label" => "admin.tag.Title"
             ))
-			->add('photo', FileType::class, array('data_class' => null, "label" => "admin.tag.Photo", "required" => true
-            ))
+			->add('photo', FileSelectorType::class, array("label" => "admin.tag.Photo", "required" => true, "current_file" => $builder->getData()->getFlag(), "path_file" => Tag::PATH_FILE))
 			->add('internationalName', TextType::class, array(
                 'constraints' => new Assert\NotBlank(), "label" => "admin.tag.InternationalName", 'attr' => array('class' => 'redactor')
             ))

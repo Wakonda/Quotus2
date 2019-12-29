@@ -100,13 +100,11 @@ class BiographyAdminController extends Controller
 		if($form->isValid())
 		{
 			$entityManager = $this->getDoctrine()->getManager();
+
+			if(!empty($title = $entity->getPhoto()["title"]) and !empty($content = $entity->getPhoto()["content"]))
+				file_put_contents(Biography::PATH_FILE.$title, $content);
 			
-			if($entity->getPhoto() != null) {
-				$gf = new GenericFunction();
-				$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
-				$entity->getPhoto()->move("photo/biography/", $image);
-				$entity->setPhoto($image);
-			}
+			$entity->setPhoto($title);
 			
 			$entityManager->persist($entity);
 			$entityManager->flush();
@@ -150,16 +148,12 @@ class BiographyAdminController extends Controller
 		
 		if($form->isValid())
 		{
-			if(!is_null($entity->getPhoto()))
-			{
-				$gf = new GenericFunction();
-				$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
-				$entity->getPhoto()->move("photo/biography/", $image);
-			}
+			if(!empty($title = $entity->getPhoto()["title"]) and !empty($content = $entity->getPhoto()["content"]))
+				file_put_contents("photo/biography/".$title, $content);
 			else
-				$image = $currentImage;
+				$title = $currentImage;
 
-			$entity->setPhoto($image);
+			$entity->setPhoto($title);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 

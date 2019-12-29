@@ -33,7 +33,7 @@ class PageType extends AbstractType
 			->add('internationalName', TextType::class, array(
                 'constraints' => new Assert\NotBlank(), "label" => "admin.page.InternationalName"
             ))
-			->add('photo', FileType::class, array('data_class' => null, "label" => "admin.page.Image", "required" => true))
+			->add('photo', FileSelectorType::class, array("label" => "admin.page.Image", "required" => true, "current_file" => $builder->getData()->getFlag(), "path_file" => Page::PATH_FILE))
 			->add('language', EntityType::class, array(
 				'label' => 'admin.form.Language', 
 				'class' => Language::class,

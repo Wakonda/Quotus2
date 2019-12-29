@@ -34,7 +34,7 @@ class BiographyType extends AbstractType
 			->add('text', TextareaType::class, array(
                 'required' => false, "label" => "admin.biography.Text", 'attr' => array('class' => 'redactor')
             ))
-			->add('photo', FileType::class, array('data_class' => null, "label" => "admin.biography.Image", "required" => false))
+			->add('photo', FileSelectorType::class, array("label" => "admin.biography.Image", "required" => false, "current_file" => $builder->getData()->getPhoto(), "path_file" => Biography::PATH_FILE))
 			->add('dayBirth', IntegerType::class, array("label" => "admin.biography.BirthDate", "required" => false))
 			->add('monthBirth', IntegerType::class, array("label" => "", "required" => false))
 			->add('yearBirth', IntegerType::class, array("label" => "", "required" => false))

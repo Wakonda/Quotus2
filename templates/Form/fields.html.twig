@@ -31,3 +31,85 @@
         </span>
     {%- endif %}
 {%- endblock form_errors %}
+
+{% block file_widget -%}
+    <{{ element|default('div') }} class="custom-file">
+        {%- set type = type|default('file') -%}
+        {{- block('form_widget_simple') -}}
+        {%- set label_attr = label_attr|merge({ class: (label_attr.class|default('') ~ ' custom-file-label text-truncate')|trim }) -%}
+
+		<label for="{{ form.vars.id }}" {% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}>
+            {%- if attr.placeholder is defined and attr.placeholder is not none -%}
+                {{- translation_domain is same as(false) ? attr.placeholder : attr.placeholder|trans({}, translation_domain) -}}
+            {%- endif -%}
+        </label>
+    </{{ element|default('div') }}>
+{% endblock %}
+
+{% block file_selector_row %}
+	{{ form_errors(form.children.name) }}
+	<div class="input-group" id="{{ form.vars.id }}">
+		<div class="input-group-prepend">
+			<button class="btn btn-secondary upload active"><i class="fas fa-upload"></i></button>
+			<button class="btn btn-secondary link"><i class="fas fa-link"></i></button>
+		</div>
+		{{ form_widget(form.children.file, {attr: {class: "upload_file"}}) }}
+		{{ form_widget(form.children.name, {attr: {class: "name_file form-control"}}) }}
+
+		{% if current_file is not empty %}
+			<div class="input-group-append">
+				<a href="#" class="btn btn-secondary upload active" data-toggle="modal" data-target="#display_current_image"><i class="fas fa-file-image" aria-hidden="true"></i></a>
+			</div>
+		{% endif %}
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="display_current_image" tabindex="-1" role="dialog" aria-labelledby="currentImageLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">{{ 'admin.index.CurrentImage'|trans }}</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<p class="text-center">{{ (path_file~current_file)|max_size_image() }}</p>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$(function() {
+			if($("#{{ form.children.name.vars.id }}").val() != "") {
+				$("#{{ form.vars.id }} .custom-file").hide();
+				$("#{{ form.vars.id }} .link").addClass("active");
+				$("#{{ form.vars.id }} .upload").removeClass("active");
+			} else
+				$("#{{ form.vars.id }} .name_file").hide();
+
+			$("#{{ form.vars.id }} .upload").click(function(e) {
+				e.preventDefault();
+				$(this).addClass("active");
+				$("#{{ form.vars.id }} .link").removeClass("active");
+				$("#{{ form.vars.id }} .name_file").hide();
+				$("#{{ form.vars.id }} .custom-file").show();
+			});
+			$("#{{ form.vars.id }} .link").click(function(e) {
+				e.preventDefault();
+				$(this).addClass("active");
+				$("#{{ form.vars.id }} .upload").removeClass("active");
+				$("#{{ form.vars.id }} .custom-file").hide();
+				$("#{{ form.vars.id }} .name_file").show();
+			});
+			
+            $('#{{ form.children.file.vars.id }}').on('change',function(e){
+				if(typeof e.target.files[0] === "undefined")
+					$('.custom-file-label').html("");
+				else {
+					var fileName = e.target.files[0].name;
+					$('.custom-file-label').html(fileName);
+				}
+            })
+		});
+	</script>
+{% endblock %}

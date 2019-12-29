@@ -12,6 +12,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Tag
 {
+	const PATH_FILE = "photo/tag/";
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")

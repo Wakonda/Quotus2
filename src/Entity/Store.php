@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Store
 {
+	const PATH_FILE = "photo/store/";
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

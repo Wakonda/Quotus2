@@ -17,7 +17,7 @@
 <div class="form-group row">
 	{{ form_label(form.flag, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 	<div class="col-sm-10">
-		{{ form_errors(form.flag) }}{% if entity.flag is defined %}{{ macro.currentImage("photo/country/", entity.flag) }}{% endif %}{{ form_widget(form.flag, {'attr':{'class':'form-control'}}) }}
+		{{ form_row(form.flag) }}
 	</div>
 </div>
 

@@ -108,11 +108,9 @@ class SourceAdminController extends Controller
 		{
 			$entityManager->persist($entity);
 			
-			if($entity->getPhoto() != null) {
-				$gf = new GenericFunction();
-				$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
-				$entity->getPhoto()->move("photo/source/", $image);
-				$entity->setPhoto($image);
+			if($entity->getPhoto() != null and (!empty($entity->getPhoto()["title"]) or !empty($entity->getPhoto()["content"]))) {
+				file_put_contents(Source::PATH_FILE.$entity->getPhoto()["title"], $entity->getPhoto()["content"]);
+				$entity->setPhoto($entity->getPhoto()["title"]);
 			}
 			
 			$entityManager->flush();
@@ -158,11 +156,10 @@ class SourceAdminController extends Controller
 		
 		if($form->isValid())
 		{
-			if(!is_null($entity->getPhoto()))
+			if(!is_null($entity->getPhoto()) and (!empty($entity->getPhoto()["title"]) or !empty($entity->getPhoto()["content"])))
 			{
-				$gf = new GenericFunction();
-				$image = $gf->getUniqCleanNameForFile($entity->getPhoto());
-				$entity->getPhoto()->move("photo/source/", $image);
+				file_put_contents(Source::PATH_FILE.$entity->getPhoto()["title"], $entity->getPhoto()["content"]);
+				$entity->setPhoto($entity->getPhoto()["title"]);
 			}
 			else
 				$image = $currentImage;
