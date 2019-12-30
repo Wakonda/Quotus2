@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Country
 {
-		const PATH_FILE = "photo/country/";
+	const PATH_FILE = "photo/country/";
 
     /**
      * @ORM\Id

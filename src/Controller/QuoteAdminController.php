@@ -476,26 +476,29 @@ class QuoteAdminController extends Controller
 		return $this->redirect($this->generateUrl("quoteadmin_show", array("id" => $id)));
 	}
 	
-	public function saveImageAction(Request $request, $id)
+	public function saveImageAction(Request $request, TranslatorInterface $translator, $id)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Quote::class)->find($id);
 		
         $imageGeneratorForm = $this->createForm(ImageGeneratorType::class);
         $imageGeneratorForm->handleRequest($request);
+		$data = $imageGeneratorForm->getData();
+		
+		if(empty($data["image"]["title"]) and empty($data["image"]["content"]))
+			$imageGeneratorForm->get("image")["name"]->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
 		
 		if ($imageGeneratorForm->isSubmitted() && $imageGeneratorForm->isValid())
 		{
-			$data = $imageGeneratorForm->getData();
-			$file = $data['image'];
-            $fileName = md5(uniqid()).'_'.$file->getClientOriginalName();
+			$file = $data['image']["content"];
+            $fileName = md5(uniqid()).'_'.$data["image"]["title"];
 			$text = $entity->getText();
 			
 			$font = realpath(__DIR__."/../../assets").DIRECTORY_SEPARATOR.'font'.DIRECTORY_SEPARATOR.'source-serif-pro'.DIRECTORY_SEPARATOR.'SourceSerifPro-Regular.otf';
 
 			if($data["version"] == "v1")
 			{
-				$image = imagecreatefromstring(file_get_contents($file->getPathname()));
+				$image = imagecreatefromstring($file);
 				
 				ob_start();
 				imagepng($image);
@@ -552,8 +555,11 @@ class QuoteAdminController extends Controller
 					$strokeColor = [0, 0, 0];
 					$rectangleColor = [0, 0, 0];
 				}
+				
+				$tmp = tmpfile();
+				fwrite($tmp, $file);
+				$bg = stream_get_meta_data($tmp)['uri'];
 
-				$bg = $data['image']->getPathName();
 				$image = new PHPImage();
 				$image->setDimensionsFromImage($bg);
 				$image->draw($bg);
@@ -575,6 +581,7 @@ class QuoteAdminController extends Controller
 
 				imagepng($image->getResource(), "photo/quote/".$fileName);
 				imagedestroy($image->getResource());
+				fclose($tmp);
 			}
 
 			$entity->addQuoteImage(new QuoteImage($fileName));

@@ -17,7 +17,7 @@ class ImageGeneratorType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-			->add('image', FileType::class, array("label" => "admin.imageGenerator.Image", "required" => true, 'constraints' => new Assert\NotBlank()))
+			->add('image', FileSelectorType::class, array("label" => "admin.imageGenerator.Image", "required" => true))
 			->add('font_size', IntegerType::class, ["label" => "admin.imageGenerator.FontSize", "required" => true, 'constraints' => new Assert\NotBlank(), "data" => 35])
 			->add('invert_colors', CheckboxType::class, ["label" => "admin.imageGenerator.InvertColors", "required" => false])
 			->add('version', ChoiceType::class, array(

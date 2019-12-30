@@ -49,21 +49,3 @@
 	});
 	</script>
 {% endmacro %}
-
-{% macro currentImage(path, file) %}
-	<span class="underline font-weight-bold">{{ 'admin.index.CurrentImage'|trans }} :</span> {{ file }}
-	<a href="#" data-toggle="modal" data-target="#display_current_image"><i class="fas fa-file-image" aria-hidden="true"></i></a>
-
-	<!-- Modal -->
-	<div class="modal fade" id="display_current_image" tabindex="-1" role="dialog" aria-labelledby="currentImageLabel">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="currentImageLabel">{{ 'admin.index.CurrentImage'|trans }}</h4>
-				</div>
-				<p class="text-center">{{ (path~file)|max_size_image() }}</p>
-			</div>
-		</div>
-	</div>
-{% endmacro %}
