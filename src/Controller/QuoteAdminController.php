@@ -487,7 +487,7 @@ class QuoteAdminController extends Controller
 		
 		if(empty($data["image"]["title"]) and empty($data["image"]["content"]))
 			$imageGeneratorForm->get("image")["name"]->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
-		
+
 		if ($imageGeneratorForm->isSubmitted() && $imageGeneratorForm->isValid())
 		{
 			$file = $data['image']["content"];

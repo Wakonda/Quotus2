@@ -132,15 +132,14 @@ class CountryAdminController extends Controller
 		
 		if($form->isValid())
 		{
-			if(!is_null($entity->getFlag()) and (!empty($entity->getFlag()["title"]) or !empty($entity->getFlag()["content"])))
-			{
+			if(!is_null($entity->getFlag()) and (!empty($entity->getFlag()["title"]) or !empty($entity->getFlag()["content"]))) {
 				file_put_contents(Country::PATH_FILE.$entity->getFlag()["title"], $entity->getFlag()["content"]);
-				$entity->setFlag($entity->getFlag()["title"]);
+				$title = $entity->getFlag()["title"];
 			}
 			else
 				$image = $currentImage;
 
-			$entity->setFlag($image);
+			$entity->setFlag($entity->getFlag()["title"]);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 

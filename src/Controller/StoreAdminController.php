@@ -160,12 +160,12 @@ class StoreAdminController extends Controller
 			if(!is_null($entity->getPhoto()) and (!empty($entity->getPhoto()["title"]) or !empty($entity->getPhoto()["content"])))
 			{
 				file_put_contents(Store::PATH_FILE.$entity->getPhoto()["title"], $entity->getPhoto()["content"]);
-				$entity->setPhoto($entity->getPhoto()["title"]);
+				$title = $entity->getPhoto()["title"];
 			}
 			else
-				$image = $currentImage;
+				$title = $currentImage;
 
-			$entity->setPhoto($image);
+			$entity->setPhoto($title);
 
 			$entityManager = $this->getDoctrine()->getManager();
 			

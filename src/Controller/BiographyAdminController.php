@@ -148,8 +148,10 @@ class BiographyAdminController extends Controller
 		
 		if($form->isValid())
 		{
-			if(!empty($title = $entity->getPhoto()["title"]) and !empty($content = $entity->getPhoto()["content"]))
-				file_put_contents("photo/biography/".$title, $content);
+			if(!empty($title = $entity->getPhoto()["title"]) and !empty($content = $entity->getPhoto()["content"])) {
+				file_put_contents(Biography::PATH_FILE.$title, $content);
+				$title = $entity->getPhoto()["title"];
+			}
 			else
 				$title = $currentImage;
 
