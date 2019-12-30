@@ -26,10 +26,10 @@ class QuoteFastMultipleType extends AbstractType
 
         $builder
 			->add('url', TextType::class, array(
-                'constraints' => [new Assert\NotBlank(), new Assert\Url()], 'label' => 'URL', 'mapped' => false
+                'constraints' => [new Assert\NotBlank(), new Assert\Url()], 'label' => 'URL', 'mapped' => false, "data" => $options["url"]
             ))
 			->add('ipProxy', TextType::class, array(
-                'label' => 'admin.quote.ProxyAddress', 'required' => false, 'mapped' => false, 'constraints' => [new Assert\Regex("#^[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}:[0-9]{2,4}$#")]
+                'label' => 'admin.quote.ProxyAddress', 'required' => false, 'mapped' => false, 'constraints' => [new Assert\Regex("#^[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}:[0-9]{2,4}$#")], "data" => $options["ipProxy"]
             ))
 			->add('language', EntityType::class, array(
 				'label' => 'admin.form.Language',
@@ -87,7 +87,9 @@ class QuoteFastMultipleType extends AbstractType
 	{
 		$resolver->setDefaults(array(
 			"data_class" => Quote::class,
-			"locale" => null
+			"locale" => null,
+			"url" => null,
+			"ipProxy" => null
 		));
 	}
 

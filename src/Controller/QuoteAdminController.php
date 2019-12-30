@@ -235,11 +235,26 @@ class QuoteAdminController extends Controller
 	public function newFastMultipleAction(Request $request)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
-
+		$datas = $request->query->all();
+		$datas = !empty($datas) ? json_decode($datas["datas"], true) : null;
 		$entity = new Quote();
-		$entity->setLanguage($entityManager->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]));
+		
+		$url = null;
+		$ipProxy = null;
 
-		$form = $this->createForm(QuoteFastMultipleType::class, $entity, array("locale" => $request->getLocale()));
+		if(!empty($datas)) {
+			$entity->setLanguage($entityManager->getRepository(Language::class)->find($datas["language"]));
+			$entity->setBiography($entityManager->getRepository(Biography::class)->find($datas["biography"]));
+			
+			if(!empty($datas["source"]))
+				$entity->setSource($entityManager->getRepository(Source::class)->find($datas["source"]));
+			
+			$url = $datas["url"];
+			$ipProxy = $datas["ipProxy"];
+		} else
+			$entity->setLanguage($entityManager->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]));
+
+		$form = $this->createForm(QuoteFastMultipleType::class, $entity, array("locale" => $request->getLocale(), "url" => $url, "ipProxy" => $ipProxy));
 
 		return $this->render('Quote/fastMultiple.html.twig', array('form' => $form->createView(), 'language' => $request->getLocale(), 'authorizedURLs' => $this->authorizedURLs));
 	}
@@ -392,7 +407,9 @@ class QuoteAdminController extends Controller
 
 			$session->getFlashBag()->add('message', $translator->trans("admin.index.AddedSuccessfully", ["%numberAdded%" => $numberAdded, "%numberDoubloons%" => $numberDoubloons]));
 	
-			return $this->redirect($this->generateUrl('quoteadmin_index'));
+			unset($req["_token"]);
+
+			return $this->redirect($this->generateUrl('quoteadmin_newfastmultiple', ["datas" => json_encode($req)]));
 		}
 		
 		return $this->render('Quote/fastMultiple.html.twig', array('form' => $form->createView(), 'language' => $request->getLocale(), 'authorizedURLs' => $this->authorizedURLs));
