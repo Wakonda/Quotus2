@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -10,7 +10,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 use Ifsnop\Mysqldump as IMysqldump;
 
-class BackupAdminController extends Controller
+class BackupAdminController extends AbstractController
 {
     public function indexAction()
     {

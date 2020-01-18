@@ -21,7 +21,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -31,7 +31,7 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 
 require __DIR__.'/../../vendor/simple_html_dom.php';
 
-class QuoteAdminController extends Controller
+class QuoteAdminController extends AbstractController
 {
 	private $formName = "quote";
 	

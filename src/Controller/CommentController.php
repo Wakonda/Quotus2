@@ -6,7 +6,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -15,7 +15,7 @@ use App\Entity\User;
 use App\Entity\Quote;
 use App\Form\Type\CommentType;
 
-class CommentController extends Controller
+class CommentController extends AbstractController
 {
     public function indexAction(Request $request, $id)
     {

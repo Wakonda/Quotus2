@@ -5,13 +5,13 @@ namespace App\Controller;
 use App\Entity\Quote;
 use App\Entity\Vote;
 use App\Entity\User;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class VoteController extends Controller
+class VoteController extends AbstractController
 {
 	public function voteAction(Request $request, TokenStorageInterface $tokenStorage, TranslatorInterface $translator, $id)
 	{

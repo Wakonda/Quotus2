@@ -9,11 +9,11 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use App\Entity\Quote;
 
-class SendController extends Controller
+class SendController extends AbstractController
 {
     public function indexAction(Request $request, $id)
     {
