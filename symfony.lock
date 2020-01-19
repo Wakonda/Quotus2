@@ -20,11 +20,56 @@
     "matthiasmullie/path-converter": {
         "version": "1.1.2"
     },
+    "php": {
+        "version": "7.2"
+    },
+    "psr/event-dispatcher": {
+        "version": "1.0.0"
+    },
     "seregazhuk/pinterest-bot": {
         "version": "v5.9.1"
     },
     "spipu/html2pdf": {
         "version": "v5.2.1"
+    },
+    "symfony/error-handler": {
+        "version": "v5.0.2"
+    },
+    "symfony/mailer": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "15658c2a0176cda2e7dba66276a2030b52bd81b2"
+        },
+        "files": [
+            "./config/packages/mailer.yaml"
+        ]
+    },
+    "symfony/notifier": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "c31585e252b32fe0e1f30b1f256af553f4a06eb9"
+        },
+        "files": [
+            "./config/packages/notifier.yaml"
+        ]
+    },
+    "symfony/polyfill-intl-grapheme": {
+        "version": "v1.13.1"
+    },
+    "symfony/polyfill-intl-normalizer": {
+        "version": "v1.13.1"
+    },
+    "symfony/string": {
+        "version": "v5.0.2"
+    },
+    "symfony/twig-pack": {
+        "version": "v1.0.0"
     },
     "symfony/webpack-encore-bundle": {
         "version": "1.6",
@@ -47,5 +92,8 @@
     },
     "tecnickcom/tcpdf": {
         "version": "6.2.26"
+    },
+    "twig/extra-bundle": {
+        "version": "v3.0.1"
     }
 }

@@ -32,6 +32,7 @@ use App\Entity\Tag;
 use Spipu\Html2Pdf\Html2Pdf;
 use MatthiasMullie\Minify;
 
+use Knp\Component\Pager\PaginatorInterface;
 
 class IndexController extends AbstractController
 {
@@ -65,7 +66,6 @@ class IndexController extends AbstractController
 		elseif($search['type'] == Biography::FICTIONAL_CHARACTER)
 			$criteria['type'] = $translator->trans(Biography::FICTIONAL_CHARACTER_CANONICAL);
 		
-		// $criteria['country'] = (empty($search['country'])) ? null : $entityManager->getRepository(Country::class)->find($search['country'])->getTitle();
 		$criteria = array_filter(array_values($criteria));
 		$criteria = empty($criteria) ? $translator->trans("search.result.None") : $criteria;
 
@@ -147,12 +147,11 @@ class IndexController extends AbstractController
 		return $response;
 	}
 
-	public function byImagesAction(Request $request)
+	public function byImagesAction(Request $request, PaginatorInterface $paginator)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$query = $entityManager->getRepository(QuoteImage::class)->getPaginator($request->getLocale());
-		
-		$paginator  = $this->get('knp_paginator');
+
 		$pagination = $paginator->paginate(
 			$query, /* query NOT result */
 			$request->query->getInt('page', 1), /*page number*/
