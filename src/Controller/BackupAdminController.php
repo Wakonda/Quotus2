@@ -7,11 +7,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 use Ifsnop\Mysqldump as IMysqldump;
 
 class BackupAdminController extends AbstractController
 {
+	private $parameterBag;
+
+	public function __construct(ParameterBagInterface $parameterBag)
+	{
+		$this->parameterBag = $parameterBag;
+	}
+
     public function indexAction()
     {
 		$files = [];
@@ -87,6 +95,6 @@ class BackupAdminController extends AbstractController
 
 	private function getPath()
 	{
-		return $this->get('kernel')->getProjectDir().DIRECTORY_SEPARATOR."var".DIRECTORY_SEPARATOR."backup";
+		return $this->parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."var".DIRECTORY_SEPARATOR."backup";
 	}
 }

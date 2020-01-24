@@ -1,6 +1,12 @@
 @charset "utf-8";
 /* CSS Document */
 
+$twitter-color: #4099FF;
+$facebook-color: #3b5998;
+$linkedin-color: #0e76a8;
+$pinterest-color: #b31217;
+$instagram-color: #DD2A7B;
+
 @font-face {
 	font-family: "MagnetoBoldA";
 	src: url("../font/MagnetoBoldA.ttf") format("opentype");
@@ -806,23 +812,43 @@ div.social_network_container {
 }
 
 .social-media-icons a.facebook {
-	color: 	#3b5998;
+	color: $facebook-color;
 }
 
 .social-media-icons a.twitter {
-	color: #4099FF;
+	color: $twitter-color;
 }
 
 .social-media-icons a.pinterest {
-	color: #b31217;
+	color: $pinterest-color;
 }
 
 .social-media-icons a.instagram {
-	color: #DD2A7B;
+	color: $instagram-color;
 }
 
-.social-media-icons a:hover{
-	opacity: 0.8;
+a.social-network:hover {
+	filter: brightness(85%);
+}
+
+a.btn.facebook {
+	background-color: 	$facebook-color;
+	border-color: 	$facebook-color;
+}
+
+a.btn.twitter {
+	background-color: $twitter-color;
+	border-color: 	$twitter-color;
+}
+
+a.btn.pinterest {
+	background-color: $pinterest-color;
+	border-color: 	$pinterest-color;
+}
+
+a.btn.linkedin {
+	background-color: $linkedin-color;
+	border-color: 	$linkedin-color;
 }
 
 .row_flex {
