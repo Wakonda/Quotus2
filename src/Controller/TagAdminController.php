@@ -88,14 +88,13 @@ class TagAdminController extends AbstractController
 		
 		$this->checkForDoubloon($entity, $form);
 	
-		if($entity->getPhoto() == null or empty($entity->getPhoto()["title"]) or empty($entity->getPhoto()["content"]))
-			$form->get("photo")["name"]->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+		if(empty($entity->getFileManagement()) or $entity->getFileManagement()->getPhoto() == null) {
+			$form->get("fileManagement")->get("id")->addError(new FormError($translator->trans("This value should not be blank.", array(), "validators")));
+		}
 
 		if($form->isValid())
 		{
 			$entityManager = $this->getDoctrine()->getManager();
-			file_put_contents(Tag::PATH_FILE.$entity->getPhoto()["title"], $entity->getPhoto()["content"]);
-			$entity->setPhoto($entity->getPhoto()["title"]);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 

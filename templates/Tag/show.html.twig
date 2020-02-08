@@ -11,7 +11,7 @@
 		</tr>
 		<tr>
 			<th>{{ 'admin.tag.Photo'|trans }}</th>
-			<td><p class="text-center">{{ ("photo/tag/"~entity.photo)|max_size_image() }}</p></td>
+			<td>{% if entity.fileManagement is not empty %}<p class="text-center">{{ ("photo/tag/"~entity.fileManagement.photo)|max_size_image() }}</p>{% endif %}</td>
 		</tr>
 		<tr>
 			<th>{{ "admin.form.Language"|trans }}</th>

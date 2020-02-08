@@ -24,6 +24,12 @@
 	</div>
 </div>
 <div class="form-group row">
+	{{ form_label(form.embedCode, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+	<div class="col-sm-10">
+		{{ form_errors(form.embedCode) }}{{ form_widget(form.embedCode, {'attr':{'class':'form-control'}}) }}
+	</div>
+</div>
+{#<div class="form-group row">
 	{{ form_label(form.amazonCode, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 	<div class="col-sm-10">
 		{{ form_errors(form.amazonCode) }}{{ form_widget(form.amazonCode, {'attr':{'class':'form-control'}}) }}
@@ -34,7 +40,7 @@
 	<div class="col-sm-10">
 		{{ form_row(form.photo) }}
 	</div>
-</div>
+</div>#}
 <hr />
 {{ form_widget(form.save, {'icon': 'fa-save'}) }}
 {{ form_rest(form) }}

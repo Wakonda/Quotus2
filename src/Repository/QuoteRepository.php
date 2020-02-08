@@ -252,8 +252,9 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 
 		$aColumns = array( 'co.title', 'COUNT(pa.id)');
 		
-		$qb->select("co.id AS source_id, co.title AS source_title, COUNT(pa.id) AS number_by_source, co.slug AS source_slug, co.photo AS source_photo")
+		$qb->select("co.id AS source_id, co.title AS source_title, COUNT(pa.id) AS number_by_source, co.slug AS source_slug, fm.photo AS source_photo")
 		   ->join("pa.source", "co")
+		   ->leftjoin("co.fileManagement", "fm")
 		   ->groupBy("co.id, co.title")
 		   ->andWhere("pa.authorType = :biography")
 		   ->setParameter("biography", Quote::BIOGRAPHY_AUTHORTYPE)
@@ -331,8 +332,9 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 
 		$aColumns = array( 'co.title', 'COUNT(pa.id)');
 		
-		$qb->select("co.id AS biography_id, co.title AS biography_title, COUNT(pa.id) AS number_by_biography, co.slug AS biography_slug, co.photo AS biography_photo")
+		$qb->select("co.id AS biography_id, co.title AS biography_title, COUNT(pa.id) AS number_by_biography, co.slug AS biography_slug, fm.photo AS biography_photo")
 		   ->leftjoin("pa.biography", "co")
+		   ->leftjoin("co.fileManagement", "fm")
 		   ->groupBy("co.id, co.title")
 		   ->andWhere("co.type = :type")
 		   ->setParameter("type", $type)

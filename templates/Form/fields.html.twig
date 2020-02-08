@@ -113,3 +113,54 @@
 		});
 	</script>
 {% endblock %}
+
+{% block file_management_selector_row %}
+	{{ form_errors(form.children.id) }}
+	<div class="input-group">
+		<input type="text" readonly id="{{ form.children.id.vars.id }}_filename" class="form-control" value="{{ (form.vars.value is not empty) ? form.vars.value.filename : '' }}" />
+		{{ form_widget(form.children.id, {'attr':{'class':'form-control d-none'}}) }}
+		<div class="input-group-append">
+			<span class="input-group-text"><a href="#" id="file_manager_button_{{ form.children.id.vars.id }}"><i class="far fa-hand-pointer"></i></a></span>
+		</div>
+	</div>
+	<script>
+		function onMyFrameLoad() {
+			$("#iframe_loader_{{ form.children.id.vars.id }}").hide();
+			$("#iframe_container_{{ form.children.id.vars.id }}").show();
+		}
+	</script>
+	<!-- Modal -->
+	<div class="modal fade" id="media_management" tabindex="-1" role="dialog" aria-labelledby="mediaManagementLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">{{ "fileManagement.index.FileManager"|trans }}</h5>
+					<button class="btn btn-danger btn-sm float-right" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></button>
+				</div>
+				<div class="modal-body">
+					<div class="text-center text-primary" id="iframe_loader_{{ form.children.id.vars.id }}"><i class="fas fa-spinner fa-pulse fa-3x"></i></div>
+					<div class="embed-responsive embed-responsive-16by9" id="iframe_container_{{ form.children.id.vars.id }}">
+						<iframe id="iframe_{{ form.children.id.vars.id }}" class="embed-responsive-item" src="" allowfullscreen onload="onMyFrameLoad(this)"></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+			
+	<script>
+	$(function() {
+		$("#file_manager_button_{{ form.children.id.vars.id }}").click(function(e) {
+			e.preventDefault();
+			$("#iframe_container_{{ form.children.id.vars.id }}").hide();
+			$("#iframe_loader_{{ form.children.id.vars.id }}").show();
+			document.getElementById('iframe_{{ form.children.id.vars.id }}').src = "{{ path('filemanagementadmin_media', {idForm: form.children.id.vars.id, folder: form.vars.folder, id: form.children.id.vars.value}) }}";
+			$('#media_management').modal('show');
+		});
+		
+		window.closeModal = function(){
+			document.getElementById('iframe_{{ form.children.id.vars.id }}').src = "";
+			$('#media_management').modal('hide');
+		};
+	});
+	</script>
+{% endblock %}

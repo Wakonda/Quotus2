@@ -18,7 +18,8 @@ class Source
 	const MOVIE_CANONICAL = "source.type.Movie";
 	const TV_SERIES_CANONICAL = "source.type.Tvseries";
 
-	const PATH_FILE = "photo/source/";
+	const FOLDER = "source";
+	const PATH_FILE = "photo/".self::FOLDER."/";
 
     /**
      * @ORM\Id
@@ -51,6 +52,12 @@ class Source
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $photo;
+	
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\FileManagement")
+     */
+    protected $fileManagement;
+
 	/**
      * @ORM\ManyToOne(targetEntity="App\Entity\Language")
      */
@@ -228,5 +235,15 @@ class Source
 	public function getFictionalCharacters()
 	{
 		return $this->fictionalCharacters;
+	}
+	
+	public function getFileManagement()
+	{
+		return $this->fileManagement;
+	}
+	
+	public function setFileManagement($fileManagement)
+	{
+		$this->fileManagement = $fileManagement;
 	}
 }

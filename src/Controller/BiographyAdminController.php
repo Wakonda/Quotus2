@@ -100,12 +100,6 @@ class BiographyAdminController extends AbstractController
 		if($form->isValid())
 		{
 			$entityManager = $this->getDoctrine()->getManager();
-
-			if(!empty($title = $entity->getPhoto()["title"]) and !empty($content = $entity->getPhoto()["content"]))
-				file_put_contents(Biography::PATH_FILE.$title, $content);
-			
-			$entity->setPhoto($title);
-			
 			$entityManager->persist($entity);
 			$entityManager->flush();
 
@@ -139,8 +133,7 @@ class BiographyAdminController extends AbstractController
 		
 		$locale = $request->request->get($this->formName)["language"];
 		$language = $entityManager->getRepository(Language::class)->find($locale);
-		
-		$currentImage = $entity->getPhoto();
+
 		$form = $this->genericCreateForm($language->getAbbreviation(), $entity);
 		$form->handleRequest($request);
 		
@@ -148,14 +141,6 @@ class BiographyAdminController extends AbstractController
 		
 		if($form->isValid())
 		{
-			if(!empty($title = $entity->getPhoto()["title"]) and !empty($content = $entity->getPhoto()["content"])) {
-				file_put_contents(Biography::PATH_FILE.$title, $content);
-				$title = $entity->getPhoto()["title"];
-			}
-			else
-				$title = $currentImage;
-
-			$entity->setPhoto($title);
 			$entityManager->persist($entity);
 			$entityManager->flush();
 

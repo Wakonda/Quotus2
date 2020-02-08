@@ -15,8 +15,9 @@ class Biography
 	
 	const AUTHOR_CANONICAL = "biography.type.Author";
 	const FICTIONAL_CHARACTER_CANONICAL = "biography.type.FictionalCharacter";
-	
-	const PATH_FILE = "photo/biography/";
+
+	const FOLDER = "biography";
+	const PATH_FILE = "photo/".self::FOLDER."/";
 
     /**
      * @ORM\Id
@@ -99,6 +100,11 @@ class Biography
      * @ORM\ManyToMany(targetEntity="App\Entity\Source", mappedBy="fictionalCharacters")
      */
     private $artworks;
+	
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\FileManagement")
+     */
+    protected $fileManagement;
 	
 	public function getTypeCanonical()
 	{
@@ -268,5 +274,15 @@ class Biography
 	public function setType($type)
 	{
 		$this->type = $type;
+	}
+	
+	public function getFileManagement()
+	{
+		return $this->fileManagement;
+	}
+	
+	public function setFileManagement($fileManagement)
+	{
+		$this->fileManagement = $fileManagement;
 	}
 }

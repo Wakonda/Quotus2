@@ -258,7 +258,7 @@ class IndexController extends AbstractController
 		{
 			$row = array();
 			
-			$img = $gf->adaptImageSize("photo/source/".$entity['source_photo']);
+			$img = $gf->adaptImageSize(Source::PATH_FILE.$entity['source_photo']);
 
 			$show = $this->generateUrl('source', array('id' => $entity['source_id'], 'slug' => $entity['source_slug']));
 			$row[] = "<img src='".$img."' alt='".$entity['source_photo']."'>";
@@ -371,7 +371,7 @@ class IndexController extends AbstractController
 		{
 			$row = array();
 			
-			$img = $gf->adaptImageSize("photo/biography/".$entity['biography_photo']);
+			$img = $gf->adaptImageSize(Biography::PATH_FILE.$entity['biography_photo']);
 
 			$show = $this->generateUrl('author', array('id' => $entity['biography_id'], 'slug' => $entity['biography_slug']));
 			$row[] = "<img src='".$img."' alt='".$entity['biography_photo']."'>";
@@ -485,7 +485,7 @@ class IndexController extends AbstractController
 		{
 			$row = array();
 			
-			$img = $gf->adaptImageSize("photo/biography/".$entity['biography_photo']);
+			$img = $gf->adaptImageSize(Biography::PATH_FILE.$entity['biography_photo']);
 
 			$show = $this->generateUrl('fictionalcharacter', array('id' => $entity['biography_id'], 'slug' => $entity['biography_slug']));
 			$row[] = "<img src='".$img."' alt='".$entity['biography_photo']."'>";

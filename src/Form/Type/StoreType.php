@@ -28,16 +28,17 @@ class StoreType extends AbstractType
                 'constraints' => new Assert\NotBlank(), "label" => "admin.store.Title"
             ))
             ->add('biography', BiographySelectorType::class, array(
-                'label' => 'admin.store.Biography'
+                'label' => 'admin.store.Biography', "required" => false
             ))
 			->add('newBiography', HiddenType::class, array("mapped" => false))
             ->add('text', TextareaType::class, array( 'attr' => array('class' => 'redactor'), 
-                'constraints' => new Assert\NotBlank(), "label" => "admin.store.Text"
+                'required' => false, "label" => "admin.store.Text"
             ))
-			->add('photo', FileSelectorType::class, array("label" => "admin.store.Image", "required" => true, "current_file" => $builder->getData()->getFlag(), "path_file" => Store::PATH_FILE))
-			->add('amazonCode', TextType::class, array(
-                'constraints' => new Assert\NotBlank(), "label" => "admin.store.ProductCode", 'attr' => array('class' => 'redactor')
-            ))
+			->add('embedCode', TextareaType::class, array('constraints' => new Assert\NotBlank(), "label" => "admin.store.EmbedCode", "required" => true))
+			// ->add('photo', FileSelectorType::class, array("label" => "admin.store.Image", "required" => true, "current_file" => $builder->getData()->getPhoto(), "path_file" => Store::PATH_FILE))
+			// ->add('amazonCode', TextType::class, array(
+                // 'constraints' => new Assert\NotBlank(), "label" => "admin.store.ProductCode", 'attr' => array('class' => 'redactor')
+            // ))
 			->add('language', EntityType::class, array(
 				'label' => 'admin.form.Language',
 				'class' => Language::class,

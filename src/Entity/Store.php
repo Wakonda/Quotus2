@@ -10,7 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Store
 {
-	const PATH_FILE = "photo/store/";
+	const FOLDER = "store";
+	const PATH_FILE = "photo/".self::FOLDER."/";
 
     /**
      * @ORM\Id
@@ -45,7 +46,12 @@ class Store
 	protected $language;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
+     */
+    protected $embedCode;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $photo;
 
@@ -160,6 +166,16 @@ class Store
     public function setPhoto($photo)
     {
         $this->photo = $photo;
+    }
+
+    public function getEmbedCode()
+    {
+        return $this->embedCode;
+    }
+
+    public function setEmbedCode($embedCode)
+    {
+        $this->embedCode = $embedCode;
     }
 
     public function getSlug()

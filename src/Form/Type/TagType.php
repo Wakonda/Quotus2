@@ -26,7 +26,6 @@ class TagType extends AbstractType
             ->add('title', TextType::class, array(
                 'constraints' => new Assert\NotBlank(), "label" => "admin.tag.Title"
             ))
-			->add('photo', FileSelectorType::class, array("label" => "admin.tag.Photo", "required" => true, "current_file" => $builder->getData()->getFlag(), "path_file" => Tag::PATH_FILE))
 			->add('internationalName', TextType::class, array(
                 'constraints' => new Assert\NotBlank(), "label" => "admin.tag.InternationalName", 'attr' => array('class' => 'redactor')
             ))
@@ -41,6 +40,7 @@ class TagType extends AbstractType
 				'expanded' => false,
 				'placeholder' => 'main.field.ChooseAnOption'
 			))
+			->add('fileManagement', FileManagementSelectorType::class, ["label" => "admin.tag.Photo", "required" => true, "folder" => Tag::FOLDER])
             ->add('save', SubmitType::class, array('label' => 'admin.main.Save', 'attr' => array('class' => 'btn btn-success')))
 			;
     }

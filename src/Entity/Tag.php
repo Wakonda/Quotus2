@@ -12,7 +12,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Tag
 {
-	const PATH_FILE = "photo/tag/";
+	const FOLDER = "tag";
+	const PATH_FILE = "photo/".self::FOLDER."/";
 
     /**
      * @ORM\Id
@@ -45,6 +46,11 @@ class Tag
 	 * @ORM\Column(name="internationalName", type="string", length=255)
 	 */
 	private $internationalName;
+	
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\FileManagement")
+     */
+    protected $fileManagement;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -141,5 +147,15 @@ class Tag
 	public function getQuotes()
 	{
 		return $this->quotes;
+	}
+	
+	public function getFileManagement()
+	{
+		return $this->fileManagement;
+	}
+	
+	public function setFileManagement($fileManagement)
+	{
+		$this->fileManagement = $fileManagement;
 	}
 }

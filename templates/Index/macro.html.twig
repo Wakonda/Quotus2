@@ -49,3 +49,28 @@
 	});
 	</script>
 {% endmacro %}
+
+{% macro light_redactor() %}
+	<script src="{{ asset('js/tinymce/js/tinymce/tinymce.min.js') }}" type="text/javascript"></script>
+	<script type="text/javascript">
+	tinymce.init({
+		selector:'.redactor',
+		height: 200,
+		menubar: false,
+		language: "fr_FR",
+		statusbar: false,
+        force_br_newlines : true,
+        force_p_newlines : false,
+        forced_root_block : '',
+		plugins: [
+			'lists link charmap'
+		],
+		toolbar: 'bold italic underline | link | undo redo',
+		setup: function (editor) {
+			editor.on('change', function () {
+				tinymce.triggerSave();
+			});
+		}
+	});
+	</script>
+{% endmacro %}

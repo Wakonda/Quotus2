@@ -20,7 +20,7 @@
 				$(input[0]).addClass('combobox full_width form-control').attr("type", "text").val("");
 				$(".container_{{ form.vars['id'] }}_biography").parent().append(input[0]);
 				$(".container_{{ form.vars['id'] }}_biography").remove();
-				cb = setComboboxNew('{{ path("poemadmin_getbiographiesbyajax") }}?locale=' + $(this).val(), 'biography', "#{{ form.vars['id'] }}_biography");
+				cb = setComboboxNew('{{ path("quoteadmin_getbiographiesbyajax") }}?locale=' + $(this).val(), 'biography', "#{{ form.vars['id'] }}_biography");
 			});
 			
 			$("#{{ form.vars.id }}").submit(function() {

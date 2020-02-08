@@ -107,12 +107,6 @@ class SourceAdminController extends AbstractController
 		if($form->isValid())
 		{
 			$entityManager->persist($entity);
-			
-			if($entity->getPhoto() != null and (!empty($entity->getPhoto()["title"]) or !empty($entity->getPhoto()["content"]))) {
-				file_put_contents(Source::PATH_FILE.$entity->getPhoto()["title"], $entity->getPhoto()["content"]);
-				$entity->setPhoto($entity->getPhoto()["title"]);
-			}
-			
 			$entityManager->flush();
 
 			$redirect = $this->generateUrl('sourceadmin_show', array('id' => $entity->getId()));
@@ -147,25 +141,14 @@ class SourceAdminController extends AbstractController
 		
 		$locale = $request->request->get($this->formName)["language"];
 		$language = $entityManager->getRepository(Language::class)->find($locale);
-		
-		$currentImage = $entity->getPhoto();
+
 		$form = $this->genericCreateForm($language->getAbbreviation(), $entity);
 		$form->handleRequest($request);
 		
 		$this->checkForDoubloon($translator, $entity, $form);
-		
+
 		if($form->isValid())
 		{
-			if(!is_null($entity->getPhoto()) and (!empty($entity->getPhoto()["title"]) or !empty($entity->getPhoto()["content"])))
-			{
-				file_put_contents(Source::PATH_FILE.$entity->getPhoto()["title"], $entity->getPhoto()["content"]);
-				$title = $entity->getPhoto()["title"];
-			}
-			else
-				$title = $currentImage;
-
-			$entity->setPhoto($title);
-
 			$entityManager->persist($entity);
 			$entityManager->flush();
 

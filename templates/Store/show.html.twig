@@ -15,11 +15,15 @@
 		</tr>
 		<tr>
 			<th>{{ 'admin.store.Image'|trans }}</th>
-			<td><p class="text-center">{{ ("photo/store/"~entity.photo)|max_size_image() }}</p></td>
+			<td>{% if entity.photo is not empty %}<p class="text-center">{{ ("photo/store/"~entity.photo)|max_size_image() }}</p>{% endif %}</td>
+		</tr>
+		<tr>
+			<th>{{ 'admin.store.EmbedCode'|trans }}</th>
+			<td>{{ entity.embedCode|raw }}</td>
 		</tr>
 		<tr>
 			<th>{{ "admin.store.Biography"|trans }}</th>
-			<td><a href="{{ path('biographyadmin_show', {'id': entity.biography.id}) }}">{{ entity.biography.title }}</a> {% if entity.biography.text is empty %}<a href="{{ path('biographyadmin_edit', {'id': entity.biography.id}) }}" class="btn btn-info"><i class="fas fa-edit fa-lg"></i></a>{% endif %}</td>
+			<td>{% if entity.biography is not empty %}<a href="{{ path('biographyadmin_show', {'id': entity.biography.id}) }}">{{ entity.biography.title }}</a> {% if entity.biography.text is empty %}<a href="{{ path('biographyadmin_edit', {'id': entity.biography.id}) }}" class="btn btn-info"><i class="fas fa-edit fa-lg"></i></a>{% endif %}{% else %}{{ "store.index.UnknownAuthor"|trans }}{% endif %}</td>
 		</tr>
 		<tr>
 			<th>{{ "admin.store.ProductCode"|trans }}</th>

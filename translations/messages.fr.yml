@@ -88,11 +88,22 @@ store:
     index:
         Store: "Boutique"
         Search: "Rechercher"
+        MoreInformations: "Plus d'infos"
+        UnknownAuthor: "Auteur inconnu"
+        NoProductFound: "Aucun produit trouvé"
     author:
         Title: "Titre"
         Action: "Action"
     read:
         Abstract: "Résumé"
+fileManagement:
+    index:
+        FileManager: "Gestionnaire de fichiers"
+    form:
+        Description: "Description"
+        Photo: "Photo"
+        Download: "Télécharger"
+        Search: "Rechercher"
 yourQuotes:
     index:
         YourQuotes: "Vos citations"
@@ -405,6 +416,7 @@ admin:
         Text: "Texte"
         Image: "Image"
         Biography: "Biographie"
+        EmbedCode: "Code d'intégration"
     country:
         Title: "Titre"
         InternationalName: "Nom international"

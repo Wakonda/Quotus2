@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		{{ encore_entry_link_tags('app') }}
+		{{ encore_entry_script_tags('app') }}
+		
+		<style>
+			body {
+				background: white !important;
+			}
+		</style>
+	</head>
+	<body>
+		{% import "Index/macro.html.twig" as macro %}
+		{{ macro.light_redactor() }}
+		<div id="media_licence_container" class="bg-light border">
+			<nav>
+				<div class="nav nav-pills nav-fill border-bottom" id="nav-tab" role="tablist">
+					<a class="nav-item nav-link rounded-0 active" id="nav-download-tab" data-toggle="tab" href="#nav-download" role="tab" aria-controls="nav-download" aria-selected="false">{{ "fileManagement.form.Download"|trans }}</a>
+					<a class="nav-item nav-link rounded-0" id="nav-search-tab" data-toggle="tab" href="#nav-search" role="tab" aria-controls="nav-search" aria-selected="true">{{ "fileManagement.form.Search"|trans }}</a>
+				</div>
+			</nav>
+			<div class="tab-content p-3" id="nav-tabContent">
+				<div class="tab-pane fade show active" id="nav-download" role="tabpanel" aria-labelledby="nav-download-tab">
+					{% form_theme form 'Form/fields.html.twig' %}
+					{{ form_start(form, {'method' : 'post', 'attr': {'id': 'image_licence', 'novalidate': 'novalidate'} }) }}
+					<div class="form-group row">
+						{{ form_label(form.description, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+						<div class="col-sm-10">
+							{{ form_errors(form.description) }}{{ form_widget(form.description) }}
+						</div>
+					</div>
+					<div class="form-group row">
+						{{ form_label(form.photo, null, {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+						<div class="col-sm-10">
+							{{ form_errors(form.photo) }}{{ form_row(form.photo, {'attr':{'class':'form-control'}}) }}
+						</div>
+					</div>
+					<div class="text-right">{{ form_widget(form.save, {'icon': 'fa-save'}) }}</div>
+					{{ form_end(form) }}
+				</div>
+				<div class="tab-pane fade" id="nav-search" role="tabpanel" aria-labelledby="nav-search-tab"></div>
+			</div>
+			<script>
+				$(function() {
+					{% if entity.id is not empty %}
+						$("#{{ form.photo.vars.id }} .link").click();
+						$("#{{ form.photo.name.vars.id }}").val("{{ entity.photo }}");
+						$('#nav-download-tab').tab('show');
+					{% endif %}
+					$('#image_licence').on('submit', function(e) {
+						e.preventDefault();
+
+						if($("#{{ form.photo.vars.id }} .link").hasClass("active")) {
+							var formData = $(this).serialize();
+							var contentTypeValue = 'application/x-www-form-urlencoded; charset=UTF-8';
+						} else {
+							var formData = new FormData(this);
+							var contentTypeValue = false;
+						}
+
+						$.ajax({
+							type:'POST',
+							url: '{{ path("filemanagementadmin_uploadmedia", { idForm: idForm, folder: folder, id: entity.id }) }}',
+							data:formData,
+							cache:false,
+							contentType: contentTypeValue,
+							processData: false,
+							success:function(data){
+								if(data.state == "success") {
+									$('#{{ idForm }}', window.parent.document).val(data.id);
+									$('#{{ idForm }}_filename', window.parent.document).val(data.filename);
+									tinymce.get("{{ form.description.vars.id }}").setContent('');
+									$("#{{ form.photo.name.vars.id }}").val("");
+									window.parent.closeModal();
+								}
+								else
+									$("#media_licence_container").html(data.content);
+							},
+							error: function(data){
+								console.log("error");
+								console.log(data);
+							}
+						});
+					});
+					
+					$(document).on("click", ".next-page", function() {
+						pagination($(this).data("page"));
+					});
+					
+					$(document).on("click", ".previous-page", function() {
+						pagination($(this).data("page"));
+					});
+					
+					$(document).on("click", "#nav-search img", function() {
+						$("#{{ form.photo.vars.id }} .link").click();
+						$("#{{ form.photo.name.vars.id }}").val($(this).attr("src").replace(/^.*[\\\/]/, ''));
+						$('#nav-download-tab').tab('show');
+					});
+					
+					pagination(1);
+				
+					function pagination(page) {
+						$.ajax({
+							type:'POST',
+							url: '{{ path("filemanagementadmin_loadmedia", {folder: folder}) }}',
+							data: {'page': page },
+							beforeSend: function(){
+								$("#nav-search").html('<div class="text-center text-primary"><i class="fas fa-spinner fa-pulse fa-3x"></i></div>');
+							},
+							success:function(data){
+								$("#nav-search").html(data);
+							},
+							error: function(data){
+								console.log("error");
+								console.log(data);
+							}
+						});
+					}
+				});
+			</script>
+		</div>
+	</body>
+</html>

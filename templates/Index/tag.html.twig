@@ -36,7 +36,7 @@
 {% block main_title %}{{ entity.title }}{% endblock %}
 
 {% block main_content %}
-	<p class="text-center">{{ ("photo/tag/"~entity.photo)|max_size_image() }}</p>
+	{{ display_file(entity) }}
 	<br>
 	<table class="index_directories table table-striped table-bordered dt-responsive">
 		<thead>
