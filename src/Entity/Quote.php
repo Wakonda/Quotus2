@@ -18,6 +18,10 @@ class Quote
 	const PUBLISHED_STATE = 0;
 	const DRAFT_STATE = 1;
 	const DELETE_STATE = 2;
+
+	const FOLDER = "quote";
+	const PATH_FILE = "photo/".self::FOLDER."/";
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

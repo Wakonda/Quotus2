@@ -613,7 +613,7 @@ class IndexController extends AbstractController
 
 	public function downloadImageAction($fileName)
 	{
-		$response = new BinaryFileResponse('photo/quote/'.$fileName);
+		$response = new BinaryFileResponse(Quote::PATH_FILE.$fileName);
 		$response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $fileName);
 		return $response;
 	}

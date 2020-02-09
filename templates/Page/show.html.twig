@@ -19,7 +19,7 @@
 		</tr>
 		<tr>
 			<th>{{ 'admin.page.Image'|trans }}</th>
-			<td><p class="text-center">{{ ("photo/page/"~entity.photo)|max_size_image() }}</p></td>
+			<td><p class="text-center">{{ (constant('\\App\\Entity\\Page::PATH_FILE')~entity.photo)|max_size_image() }}</p></td>
 		</tr>
 		<tr>
 			<th>{{ "admin.form.Language"|trans }}</th>

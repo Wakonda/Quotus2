@@ -19,7 +19,7 @@
 		</tr>
 		<tr>
 			<th>{{ 'admin.source.Photo'|trans }}</th>
-			<td>{% if entity.fileManagement is not empty %}<p class="text-center">{{ ("photo/photo/"~entity.fileManagement.photo)|max_size_image() }}</p>{% endif %}</td>
+			<td>{% if entity.fileManagement is not empty %}<p class="text-center">{{ (constant('\\App\\Entity\\Source::PATH_FILE')~entity.fileManagement.photo)|max_size_image() }}</p>{% endif %}</td>
 		</tr>
 		<tr>
 			<th>{{ "admin.source.FictionalCharacters"|trans }}</th>

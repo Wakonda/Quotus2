@@ -49,7 +49,7 @@
 {% endblock %}
 
 {% block main_content %}
-	<p class="text-center">{{ ("photo/biography/"~entity.photo)|max_size_image() }}</p>
+	<p class="text-center">{{ (constant('\\App\\Entity\\Biography::PATH_FILE')~entity.photo)|max_size_image() }}</p>
 	<br>
 	<p>{{ entity.text|raw }}</p>
 	<table class="show">
@@ -83,7 +83,7 @@
 		{% endif %}
 		
 		{% if entity.country is not empty %}
-			<tr><th><span class="font-weight-bold">{{ 'fictionalCharacter.field.Nationality'|trans }} : </span></th><td><img class="flag" src="{{ asset('photo/country/'~entity.country.flag) }}" /> {{ entity.country.title }}</td></tr>
+			<tr><th><span class="font-weight-bold">{{ 'fictionalCharacter.field.Nationality'|trans }} : </span></th><td><img class="flag" src="{{ asset(constant('\\App\\Entity\\Country::PATH_FILE')~entity.country.flag) }}" /> {{ entity.country.title }}</td></tr>
 		{% endif %}
 	</table>
 	<hr>

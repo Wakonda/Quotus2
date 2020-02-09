@@ -155,9 +155,9 @@ class PageAdminController extends AbstractController
 	public function uploadImageMCEAction(Request $request)
 	{
 		$file = $request->files->get('image');
-		$file->move('photo/page', $file->getClientOriginalName());
+		$file->move(Page::PATH_FILE, $file->getClientOriginalName());
 		
-		$path = $request->getBaseUrl()."/photo/page/".$file->getClientOriginalName();
+		$path = $request->getBaseUrl()."/".Page::PATH_FILE.$file->getClientOriginalName();
 		
 		return new Response(sprintf("<script>top.$('.mce-btn.mce-open').parent().find('.mce-textbox').val('%s');</script>", $path));
 	}

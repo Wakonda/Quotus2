@@ -50,7 +50,7 @@
 {% if entity.avatar is null %}
 	<img src="{{ entity.gravatar }}" alt="" id="gravatar" />
 {% else %}
-	{{ ("photo/user/"~entity.avatar)|max_size_image() }}
+	{{ (constant('\\App\\Entity\\User::PATH_FILE')~entity.avatar)|max_size_image() }}
 {% endif %}
 </p>
 {% form_theme form 'Form/fields.html.twig' %}

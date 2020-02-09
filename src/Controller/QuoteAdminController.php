@@ -436,7 +436,7 @@ class QuoteAdminController extends AbstractController
 		if(!empty($imageId)) {
 			$quoteImage = $entityManager->getRepository(QuoteImage::class)->find($imageId);
 			
-			$media = $connection->upload('media/upload', array('media' => $request->getUriForPath('/photo/quote/'.$quoteImage->getImage())));
+			$media = $connection->upload('media/upload', array('media' => $request->getUriForPath('/'.Quote::PATH_FILE.$quoteImage->getImage())));
 			$parameters['media_ids'] = implode(',', array($media->media_id_string));
 		}
 
@@ -478,7 +478,7 @@ class QuoteAdminController extends AbstractController
 			return $this->redirect($this->generateUrl("quoteadmin_show", array("id" => $id)));
 		}
 
-		$bot->pins->create($request->getUriForPath('/photo/quote/'.$quoteImage->getImage()), $boards[0]['id'], $request->request->get("pinterest_area"), $this->generateUrl("read", ["id" => $entity->getId(), "slug" => $entity->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL));
+		$bot->pins->create($request->getUriForPath('/'.Quote::PATH_FILE.$quoteImage->getImage()), $boards[0]['id'], $request->request->get("pinterest_area"), $this->generateUrl("read", ["id" => $entity->getId(), "slug" => $entity->getSlug()], UrlGeneratorInterface::ABSOLUTE_URL));
 		
 		if(empty($bot->getLastError())) {
 			$session->getFlashBag()->add('message', "Pinterest - ".$translator->trans("admin.index.SentSuccessfully"));
@@ -558,7 +558,7 @@ class QuoteAdminController extends AbstractController
 
 				$imageGenerator->generate($start_x, $start_y, $widthText);
 
-				imagepng($image, "photo/quote/".$fileName);
+				imagepng($image, Quote::PATH_FILE.$fileName);
 				imagedestroy($image);
 			}
 			else
@@ -596,7 +596,7 @@ class QuoteAdminController extends AbstractController
 					'y' => $gutter
 				));
 
-				imagepng($image->getResource(), "photo/quote/".$fileName);
+				imagepng($image->getResource(), Quote::PATH_FILE.$fileName);
 				imagedestroy($image->getResource());
 				fclose($tmp);
 			}
@@ -629,7 +629,7 @@ class QuoteAdminController extends AbstractController
 		$entityManager->flush();
 		
 		$filesystem = new Filesystem();
-		$filesystem->remove("photo/quote/".$fileName);
+		$filesystem->remove(Quote::PATH_FILE.$fileName);
 		
 		$redirect = $this->generateUrl('quoteadmin_show', array('id' => $entity->getId()));
 

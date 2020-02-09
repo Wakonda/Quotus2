@@ -15,7 +15,7 @@
 		</tr>
 		<tr>
 			<th>{{ "admin.country.Flag"|trans }}</th>
-			<td><img src="{{ asset('photo/country/'~entity.flag) }}" alt="" /></td>
+			<td><img src="{{ asset(constant('\\App\\Entity\\Country::PATH_FILE')~entity.flag) }}" alt="" /></td>
 		</tr>
 		<tr>
 			<th>{{ "admin.form.Language"|trans }}</th>

@@ -54,7 +54,7 @@ class QuoteImageAdminController extends AbstractController
 		foreach($entities as $entity)
 		{
 			$row = array();
-			$row[] = "<img class='mx-auto d-block' src='/photo/quote/".$entity->getImage()."'>";
+			$row[] = "<img class='mx-auto d-block' src='/".Quote::PATH_FILE.$entity->getImage()."'>";
 			
 			$socialNetworkArray = [];
 			

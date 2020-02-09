@@ -60,7 +60,7 @@
 		{% set ri = random_image(random) %}
 		{% if ri is not null %}
 			<div class="text-center">
-				<img src="{{ asset('photo/quote/'~ri) }}" class="text-center" alt="">
+				<img src="{{ asset(constant('\\App\\Entity\\Quote::PATH_FILE')~ri) }}" class="text-center" alt="">
 			</div>
 		{% else %}
 			<div>

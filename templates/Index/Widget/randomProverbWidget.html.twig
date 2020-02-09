@@ -50,7 +50,7 @@
 	<body onclick="parent.location='https://proverbius.wakonda.guru/';">
 		<blockquote>
 		{{ proverb.text|raw }}
-		<p class="country"><img id="flag_title" class="flag" src="{{ asset('photo/country/'~proverb.country.flag) }}" width="20" /> {{ "widget.random.Proverb"|trans }} - {{ proverb.country.title }}</p>
+		<p class="country"><img id="flag_title" class="flag" src="{{ asset(constant('\\App\\Entity\\Country::PATH_FILE')~proverb.country.flag) }}" width="20" /> {{ "widget.random.Proverb"|trans }} - {{ proverb.country.title }}</p>
 		</blockquote>
 	</body>
 </html>

@@ -15,7 +15,7 @@
 		</tr>
 		<tr>
 			<th>{{ 'admin.store.Image'|trans }}</th>
-			<td>{% if entity.photo is not empty %}<p class="text-center">{{ ("photo/store/"~entity.photo)|max_size_image() }}</p>{% endif %}</td>
+			<td>{% if entity.photo is not empty %}<p class="text-center">{{ (constant('\\App\\Entity\\Store::PATH_FILE')~entity.photo)|max_size_image() }}</p>{% endif %}</td>
 		</tr>
 		<tr>
 			<th>{{ 'admin.store.EmbedCode'|trans }}</th>

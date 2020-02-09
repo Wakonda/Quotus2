@@ -98,7 +98,7 @@ class UserController extends AbstractController
 			if(!is_null($entity->getAvatar()))
 			{
 				$image = uniqid()."_avatar.png";
-				$entity->getAvatar()->move("photo/user/", $image);
+				$entity->getAvatar()->move(User::PATH_FILE, $image);
 				$entity->setAvatar($image);
 			}
 
@@ -169,9 +169,9 @@ class UserController extends AbstractController
 		{
 			if(!is_null($entity->getAvatar()))
 			{
-				unlink("photo/user/".$current_avatar);
+				unlink(User::PATH_FILE.$current_avatar);
 				$image = uniqid()."_avatar.png";
-				$entity->getAvatar()->move("photo/user/", $image);
+				$entity->getAvatar()->move(User::PATH_FILE, $image);
 				$entity->setAvatar($image);
 			}
 			else

@@ -43,7 +43,7 @@
 				{% if entity.quoteImages is not empty %}
 					{% for quoteImage in entity.quoteImages %}
 						<div>
-							{{ ("photo/quote/"~quoteImage.image)|max_size_image() }}
+							{{ (constant('\\App\\Entity\\Quote::PATH_FILE')~quoteImage.image)|max_size_image() }}
 							&nbsp;
 							<a class="btn btn-danger" href="{{ path('quoteadmin_remove_image', {'id' : entity.id, 'quoteImageId': quoteImage.id}) }}"><i class="fas fa-trash" aria-hidden="true"></i></a>
 						</div>
@@ -116,7 +116,7 @@
 					<label for="addImage"> <input type="checkbox" id="addImage"> {{ 'admin.socialNetwork.AddAnImage'|trans }}</label>
 					<div class="row d-none mb-3" id="image_container">
 						{% for quoteImage in entity.quoteImages %}
-							<div class="col-md-4 mb-10"><div class="thumbnail" role="button"><img src="{{ absolute_url(asset('photo/quote/'~quoteImage.image)) }}" data-id="{{ quoteImage.id }}"></div></div>
+							<div class="col-md-4 mb-10"><div class="thumbnail" role="button"><img src="{{ absolute_url(asset(constant('\\App\\Entity\\Quote::PATH_FILE')~quoteImage.image)) }}" data-id="{{ quoteImage.id }}"></div></div>
 						{% endfor %}
 					</div>
 					<input type="hidden" name="image_id_tweet" id="image_tweet">
@@ -140,7 +140,7 @@
 				<form action="{{ path('quoteadmin_pinterest', {'id': entity.id}) }}" method="post">
 					<div class="row mb-3">
 						{% for quoteImage in entity.quoteImages %}
-							<div class="col-md-4 mb-10"><div class="thumbnail" role="button"><img src="{{ absolute_url(asset('photo/quote/'~quoteImage.image)) }}" data-id="{{ quoteImage.id }}"></div></div>
+							<div class="col-md-4 mb-10"><div class="thumbnail" role="button"><img src="{{ absolute_url(asset(constant('\\App\\Entity\\Quote::PATH_FILE')~quoteImage.image)) }}" data-id="{{ quoteImage.id }}"></div></div>
 						{% endfor %}
 					</div>
 					<input type="hidden" name="image_id_pinterest" id="image_pinterest">
@@ -163,7 +163,7 @@
 				<form action="{{ path('quoteadmin_facebook', {'id': entity.id}) }}" method="post">
 					<div class="row mb-3">
 						{% for quoteImage in entity.quoteImages %}
-							<div class="col-md-4 mb-10"><div class="thumbnail" role="button"><img src="{{ absolute_url(asset('photo/quote/'~quoteImage.image)) }}" data-id="{{ quoteImage.id }}"></div></div>
+							<div class="col-md-4 mb-10"><div class="thumbnail" role="button"><img src="{{ absolute_url(asset(constant('\\App\\Entity\\Quote::PATH_FILE')~quoteImage.image)) }}" data-id="{{ quoteImage.id }}"></div></div>
 						{% endfor %}
 					</div>
 					<input type="hidden" name="image_id_facebook" id="image_facebook">

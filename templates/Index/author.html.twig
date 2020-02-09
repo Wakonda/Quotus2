@@ -83,7 +83,7 @@
 		{% endif %}
 		
 		{% if entity.country is not empty %}
-			<tr><th><span class="font-weight-bold">{{ 'biography.field.Nationality'|trans }} : </span></th><td><img class="flag" src="{{ asset('photo/country/'~entity.country.flag) }}" /> {{ entity.country.title }}</td></tr>
+			<tr><th><span class="font-weight-bold">{{ 'biography.field.Nationality'|trans }} : </span></th><td><img class="flag" src="{{ asset(constant('\\App\\Entity\\Country::PATH_FILE')~entity.country.flag) }}" /> {{ entity.country.title }}</td></tr>
 		{% endif %}
 	</table>
 	<hr>
@@ -110,7 +110,7 @@
 		<tbody>
 			{% for store in stores %}
 			<tr>
-				<td><p class="text-center font-weight-bold">{{ store.title }}</p>{% if store.photo is not empty %}<p class="text-center">{{ ("photo/store/"~store.photo)|max_size_image() }}</p>{% endif %}</td>
+				<td><p class="text-center font-weight-bold">{{ store.title }}</p>{% if store.photo is not empty %}<p class="text-center">{{ (constant('\\App\\Entity\\Store::PATH_FILE')~store.photo)|max_size_image() }}</p>{% endif %}</td>
 				<td>
 				    <a href="{{ path('read_store', {'id': store.id, 'slug': store.slug}) }}" class="btn btn-info"><i class="fas fa-plus" aria-hidden="true"></i></a>
 				    <a href="{{ store.getExternalStoreLink() }}" class="btn btn-success" target="_blank"><i class="fas fa-shopping-basket" aria-hidden="true"></i></a>

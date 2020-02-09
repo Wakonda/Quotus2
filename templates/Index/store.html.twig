@@ -57,7 +57,7 @@
 		{% for entity in entities %}
             <div class="col-lg-4 col-md-6 mb-4">
               <div class="card h-100">
-			    {% if entity.photo is not empty %}<img src="{{ asset('photo/store/'~entity.photo) }}" class="card-img-top" alt="{{ entity.title }}">{% endif %}
+			    {% if entity.photo is not empty %}<img src="{{ asset(constant('\\App\\Entity\\Store::PATH_FILE')~entity.photo) }}" class="card-img-top" alt="{{ entity.title }}">{% endif %}
                 <div class="card-body">
                   <h4 class="card-title">
                     <a href="{{ path('read_store', {'id': entity.id, 'slug': entity.slug}) }}">{{ entity.title }}</a>

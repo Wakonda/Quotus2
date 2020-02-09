@@ -84,7 +84,7 @@ class QuotusExtension extends AbstractExtension
 		return '<img src="'.$basePath.$img.'" alt="" style="max-width: '.$width.'px;" />';
 	}
 	
-	public function dateLetter($year, $month, $day, $locale)
+	public function dateBiographyLetter($year, $month, $day, $locale)
 	{
 		list($arrayBCYear, $arrayMonth) = $this->formatDateByLocale();
 		$month = $arrayMonth[$locale]["months"][$month - 1];

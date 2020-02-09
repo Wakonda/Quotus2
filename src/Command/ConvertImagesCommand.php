@@ -38,12 +38,12 @@ class ConvertImagesCommand extends Command
 		
 		foreach($entities as $entity) {
 			if(empty($entity->getFileManagement())) {
-				if(empty($entity->getImage()))
+				if(empty($entity->getPhoto()))
 					continue;
 
 				$fm = new FileManagement();
 				
-				$fm->setPhoto($entity->getImage());
+				$fm->setPhoto($entity->getPhoto());
 				$fm->setFolder("source");
 				
 				$entity->setFileManagement($fm);
