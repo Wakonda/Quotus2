@@ -27,25 +27,12 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class UserController extends AbstractController
 {
-    public function loginAction(Request $request, AuthenticationUtils $authenticationUtils, SessionInterface $session, TranslatorInterface $translator)
+    public function loginAction(Request $request, AuthenticationUtils $authenticationUtils)
     {
-		if($request->query->get("t") != null)
-		{
-			$entityManager = $this->getDoctrine()->getManager();
-			$entity = $entityManager->getRepository(User::class)->findOneByToken($request->query->get("t"));
-			
-			$now = new \Datetime();
-
-			if($entity->getExpiredAt() > $now)
-			{
-				$session->getFlashBag()->add('confirm_login', $translator->trans('user.login.CongratulationAccountActivated', ['%username%' => $entity->getUsername()]));
-				$entity->setEnabled(true);
-				$entityManager->persist($entity);
-				$entityManager->flush();
-			}
-			else
-				$session->getFlashBag()->add('expired_login', $translator->trans('user.login.AccountCannotBeActivated', ['%username%' => $entity->getUsername()]));
-		}
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
 
 		return $this->render('User/login.html.twig', array(
 				'error'         => $authenticationUtils->getLastAuthenticationError(),

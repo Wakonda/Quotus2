@@ -36,7 +36,7 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class IndexController extends AbstractController
 {
-    public function indexAction(Request $request, \Swift_Mailer $mailer)
+    public function indexAction(Request $request)
     {
 		$entityManager = $this->getDoctrine()->getManager();
 

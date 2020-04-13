@@ -31,7 +31,7 @@ class PageRepository extends ServiceEntityRepository implements iRepository
 	{
 		$qb = $this->createQueryBuilder("pa");
 
-		$aColumns = array( 'pa.id', 'pa.title', 'pa.id');
+		$aColumns = array('pa.title', 'pa.id');
 
 		if(!empty($sortDirColumn))
 		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);

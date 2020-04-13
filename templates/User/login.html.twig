@@ -41,6 +41,7 @@
 
 			<input type="checkbox" id="remember_me" name="_remember_me" value="on" />
 			<label for="remember_me">{{ 'user.login.RememberMe'|trans }}</label>
+			<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 			<br>
 			<button type="submit" class="btn btn-info"><i class="fas fa-sign-in-alt"></i> {{ 'user.login.LogIn'|trans }}</button>
 			<a href="{{ path('user_forgottenpassword') }}" alt="">{{ 'user.login.ForgottenPassword'|trans }}</a>
