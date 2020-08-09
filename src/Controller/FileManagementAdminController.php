@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\FileManagement;
 use App\Form\Type\FileManagementType;
+use App\Service\GenericFunction;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,12 +60,16 @@ class FileManagementAdminController extends AbstractController
 			$entityManager = $this->getDoctrine()->getManager();
 			
 			if(isset($request->request->get($form->getName())["photo"]) and isset($request->request->get($form->getName())["photo"]["name"]) and !empty($request->request->get($form->getName())["photo"]["name"]))
-				$title = $request->request->get($form->getName())["photo"]["name"];
-			else {
+			{
+				$gf = new GenericFunction();
+				$data = $gf->getContentURL($request->request->get($form->getName())["photo"]["name"]);
+				$title = basename($request->request->get($form->getName())["photo"]["name"]);
+				file_put_contents("photo/".$entity->getFolder()."/".$title, $data);
+			} else {
 				if(!empty($title = $form->get('photo')->getData()["title"]) and !empty($content = $form->get('photo')->getData()["content"]))
 					file_put_contents("photo/".$entity->getFolder()."/".$title, $content);
 			}
-			
+
 			$entity->setPhoto($title);
 			
 			$entityManager->persist($entity);
