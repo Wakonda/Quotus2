@@ -109,7 +109,7 @@ class UserController extends AbstractController
 			$body = $this->renderView('User/confirmationInscription_mail.html.twig', array("entity" => $entity));
 
 			$message = (new \Swift_Message('Quotus - '.$translator->trans('user.createAccount.Registration')))
-				->setFrom('amatukami66@gmail.com', "Quotus")
+				->setFrom('quotus@wakonda.guru', "Quotus")
 				->setTo($entity->getEmail())
 				->setBody($body, 'text/html');
 		
@@ -252,7 +252,7 @@ class UserController extends AbstractController
 		$body = $this->renderView('User/forgottenpassword_mail.html.twig', array("entity" => $entity, "temporaryPassword" => $temporaryPassword));
 
 		$message = (new \Swift_Message("Quotus - ".$translator->trans('forgottenPassword.index.ForgotYourPassword')))
-			->setFrom('amatukami66@gmail.com', "Quotus")
+			->setFrom('quotus@wakonda.guru', "Quotus")
 			->setTo($entity->getEmail())
 			->setBody($body, 'text/html');
 	

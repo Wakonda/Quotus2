@@ -42,7 +42,7 @@ class SendController extends AbstractController
 			));
 
 			$message = (new \Swift_Message($data->subject))
-				->setFrom('amatukami66@gmail.com', "Quotus")
+				->setFrom('quotus@wakonda.guru', "Quotus")
 				->setTo($data->recipientMail)
 				->setBody($content, 'text/html');
 		

@@ -158,23 +158,6 @@
 					
 					<nav class="sidebar">
 						<h1>{{ 'menu.left.HelpUs'|trans }}</h1>
-						{% if app.request.locale == "it" %}
-						<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" class="text-center">
-							<input type="hidden" name="cmd" value="_donations" />
-							<input type="hidden" name="business" value="5XXNV9Q7AGB2E" />
-							<input type="hidden" name="currency_code" value="EUR" />
-							<input type="image" src="https://www.paypalobjects.com/it_IT/IT/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
-							<img alt="" border="0" src="https://www.paypal.com/it_IT/i/scr/pixel.gif" width="1" height="1" />
-						</form>
-						{% elseif app.request.locale == "pt" %}
-						<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" class="text-center">
-							<input type="hidden" name="cmd" value="_donations" />
-							<input type="hidden" name="business" value="5XXNV9Q7AGB2E" />
-							<input type="hidden" name="currency_code" value="EUR" />
-							<input type="image" src="https://www.paypalobjects.com/pt_PT/PT/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
-							<img alt="" border="0" src="https://www.paypal.com/pt_PT/i/scr/pixel.gif" width="1" height="1" />
-						</form>
-						{% else %}
 						<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" class="text-center">
 							<input type="hidden" name="cmd" value="_donations" />
 							<input type="hidden" name="business" value="5XXNV9Q7AGB2E" />
@@ -182,7 +165,10 @@
 							<input type="image" src="https://www.paypalobjects.com/fr_FR/FR/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
 							<img alt="" border="0" src="https://www.paypal.com/fr_FR/i/scr/pixel.gif" width="1" height="1" />
 						</form>
-						{% endif %}
+
+						<div class="text-center">
+							<button onclick="window.open('https://wakonda.guru/help_us#make-donation');" target="_blank" class="btn btn-sm btn-warning mt-3"><i class="fab fa-bitcoin" aria-hidden="true"></i> Bitcoin</button>
+						</div>
 					</nav>
 					
 					<nav class="sidebar">
