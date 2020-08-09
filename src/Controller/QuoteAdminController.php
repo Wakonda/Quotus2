@@ -28,6 +28,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
+use seregazhuk\PinterestBot\Factories\PinterestBot;
 
 require __DIR__.'/../../vendor/simple_html_dom.php';
 
@@ -420,10 +421,10 @@ class QuoteAdminController extends AbstractController
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Quote::class)->find($id);
 
-		$consumer_key = getenv("TWITTER_CONSUMER_KEY");
-		$consumer_secret = getenv("TWITTER_CONSUMER_SECRET");
-		$access_token = getenv("TWITTER_ACCESS_TOKEN");
-		$access_token_secret = getenv("TWITTER_ACCESS_TOKEN_SECRET");
+		$consumer_key = $_ENV["TWITTER_CONSUMER_KEY"];
+		$consumer_secret = $_ENV["TWITTER_CONSUMER_SECRET"];
+		$access_token = $_ENV["TWITTER_ACCESS_TOKEN"];
+		$access_token_secret = $_ENV["TWITTER_ACCESS_TOKEN_SECRET"];
 
 		$connection = new TwitterOAuth($consumer_key, $consumer_secret, $access_token, $access_token_secret);
 
@@ -435,8 +436,7 @@ class QuoteAdminController extends AbstractController
 
 		if(!empty($imageId)) {
 			$quoteImage = $entityManager->getRepository(QuoteImage::class)->find($imageId);
-			
-			$media = $connection->upload('media/upload', array('media' => $request->getUriForPath('/'.Quote::PATH_FILE.$quoteImage->getImage())));
+			$media = $connection->upload('media/upload', array('media' => Quote::PATH_FILE.$quoteImage->getImage()));
 			$parameters['media_ids'] = implode(',', array($media->media_id_string));
 		}
 
@@ -460,17 +460,25 @@ class QuoteAdminController extends AbstractController
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Quote::class)->find($id);
 		
-		$mail = getenv("PINTEREST_MAIL");
-		$pwd = getenv("PINTEREST_PASSWORD");
-		$username = getenv("PINTEREST_USERNAME");
+		$mail = $_ENV["PINTEREST_MAIL"];
+		$pwd = $_ENV["PINTEREST_PASSWORD"];
+		$username = $_ENV["PINTEREST_USERNAME"];
 
 		$bot = PinterestBot::create();
 		$bot->auth->login($mail, $pwd);
 		
 		$boards = $bot->boards->forUser($username);
 		
-		$imageId = $request->request->get('image_id_pinterest');
+		$i = 0;
+
+		foreach($boards as $board) {
+			if($pinterestBoards[$board["name"]] == $entity->getLanguage()->getAbbreviation()) {
+				break;
+			}
+			$i++;
+		}
 		
+		$imageId = $request->request->get('image_id_pinterest');
 		$quoteImage = $entityManager->getRepository(QuoteImage::class)->find($imageId);
 		
 		if(empty($quoteImage)) {
