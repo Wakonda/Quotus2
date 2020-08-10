@@ -1,6 +1,6 @@
 # Quotus
 
-[Quotus](https://quotus.wakonda.guru) is a website written with the framework Symfony 4. Our goal is to bring together all quotes from famous authors or from fictional characters.
+[Quotus](https://quotus.wakonda.guru) is a website written with the framework Symfony 5. Our goal is to bring together all quotes from famous authors or from fictional characters.
 
 ## Requirements
 
