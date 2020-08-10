@@ -16,6 +16,6 @@ The best way to install Quotus is to use Composer (you can follow the instrustio
 
 To get started, run simply the following command to start PHP server:
 
-`php bin/console server:run`
+`symfony server:start`
 
 Now, you can visit the link `http://localhost:8000` to see the welcome page.
