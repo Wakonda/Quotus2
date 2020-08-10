@@ -72,7 +72,7 @@
 			<th><span class="font-weight-bold">{{ 'biography.field.DeathDate'|trans }} : </span></th>
 			<td>
 			{% if entity.dayDeath is not null and entity.monthDeath is not null and entity.yearDeath is not null %}
-				{{ date_biography_letter(entity.yearDeath, entity.dayDeath, entity.monthDeath, app.request.locale) }}
+				{{ date_biography_letter(entity.yearDeath, entity.monthDeath, entity.dayDeath, app.request.locale) }}
 			{% elseif entity.monthDeath is not null and entity.yearDeath is not null %}
 				{{ text_month(entity.yearDeath, entity.monthDeath, app.request.locale) }}
 			{% else %}
