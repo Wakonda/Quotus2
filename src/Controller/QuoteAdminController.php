@@ -595,7 +595,8 @@ class QuoteAdminController extends AbstractController
 				$image->setStrokeWidth(1);
 				$image->setStrokeColor($strokeColor);
 				$gutter = 50;
-				$image->rectangle($gutter, $gutter, $image->getWidth() - $gutter * 2, $image->getHeight() - $gutter * 2, $rectangleColor, 0.5);
+				$fontSizeAuthor = 20;
+				$image->rectangle($gutter, $gutter, $image->getWidth() - $gutter * 2, $image->getHeight() - $gutter * 2 + $fontSizeAuthor, $rectangleColor, 0.5);
 				$image->textBox("“".html_entity_decode($text)."”", array(
 					'width' => $image->getWidth() - $gutter * 2,
 					'height' => $image->getHeight() - $gutter * 2,
@@ -603,6 +604,8 @@ class QuoteAdminController extends AbstractController
 					'x' => $gutter,
 					'y' => $gutter
 				));
+				
+				$image->textBox($entity->getAuthor(), array('width' => $image->getWidth() - $gutter * 2, 'fontSize' => $fontSizeAuthor, 'x' => $gutter, 'y' => ($image->getHeight() - $gutter * 2) + $fontSizeAuthor * 2));
 
 				imagepng($image->getResource(), Quote::PATH_FILE.$fileName);
 				imagedestroy($image->getResource());
