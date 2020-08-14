@@ -6,6 +6,7 @@ $facebook-color: #3b5998;
 $linkedin-color: #0e76a8;
 $pinterest-color: #b31217;
 $instagram-color: #DD2A7B;
+$github-color: #211F1F;
 
 @font-face {
 	font-family: "MagnetoBoldA";
@@ -838,6 +839,10 @@ div.social_network_container {
 
 .social-media-icons a.instagram {
 	color: $instagram-color;
+}
+
+.social-media-icons a.github {
+	color: $github-color;
 }
 
 a.social-network:hover {
