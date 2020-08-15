@@ -129,6 +129,11 @@ class Biography
 		return $this->title;
 	}
 
+	public function __construct()
+	{
+		$this->type = self::AUTHOR;
+	}
+
     public function getId()
     {
         return $this->id;

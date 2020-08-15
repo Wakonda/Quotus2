@@ -9,7 +9,7 @@
 	{% if entity.photo is not empty %}
 		<p class="text-center">{{ (constant('\\App\\Entity\\Store::PATH_FILE')~entity.photo)|max_size_image() }}</p>
 	{% else %}
-		<div class="center-iframe">
+		<div class="container-store-product center-iframe text-center">
 		{{ entity.embedCode|raw }}
 		</div>
 	{% endif %}
@@ -17,7 +17,7 @@
 	{% if entity.amazonCode %}
 		<br>
 		<div class="text-center">
-			<a href="{{ entity.getExternalStoreLink() }}" class="btn btn-success" target="_blank"><i class="fas fa-shopping-basket" aria-hidden="true"></i></a>
+			<a href="{{ entity.externalStoreLink }}" class="btn btn-dark" target="_blank"><span class="text-warning"><i class="fas fa-shopping-cart"></i> {{ "store.index.Buy"|trans }}</span></a>
 		</div>
 	{% endif %}
 	
@@ -31,13 +31,13 @@
 	<hr>
 	<p>
 	{% if entity.biography is not empty %}
-		<a href="{{ path('author', {'id' : entity.biography.id, 'slug' : entity.biography.slug }) }}" alt="">{{ entity.biography.title }}</a>
+		<a href="{{ path('author', {'id' : entity.biography.id, 'slug' : entity.biography.slug }) }}" alt="" class="font-weight-bold">{{ entity.biography.title }}</a>
 		{% if entity.biography.country is not empty %}
 		-
 		<a href="{{ path('country', {'id' : entity.biography.country.id, 'slug' : entity.biography.country.slug }) }}" alt=""><img class="flag" src="{{ asset(constant('\\App\\Entity\\Country::PATH_FILE')~entity.biography.country.flag) }}" alt="" height="8" /></a>
 		{% endif %}
 	{% else %}
-		{{ "store.index.UnknownAuthor"|trans }}
+		<span class="font-weight-bold">{{ "store.index.UnknownAuthor"|trans }}</span>
 	{% endif %}
 	</p>
 {% endblock %}

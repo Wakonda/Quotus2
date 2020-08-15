@@ -15,17 +15,17 @@
 	<script type="text/javascript">
 		$(function()
 		{
-			var cb = null;
 			$("select#{{ form.language.vars.id }}").change(function() {
 				var input = $(".container_{{ form.vars['id'] }}_biography > .input-group > input[type='hidden']");
 				$(input[0]).addClass('combobox full_width form-control').attr("type", "text").val("");
 				$(".container_{{ form.vars['id'] }}_biography").parent().append(input[0]);
 				$(".container_{{ form.vars['id'] }}_biography").remove();
-				cb = setComboboxNew('{{ path("quoteadmin_getbiographiesbyajax") }}?locale=' + $(this).val(), 'biography', "#{{ form.vars['id'] }}_biography");
+				setComboboxEdit('{{ path("quoteadmin_getbiographiesbyajax") }}?locale=' + $(this).val(), 'biography', "#{{ form.biography.vars.id }}", "{{ form.biography.vars.value }}");
 			});
 			
 			$("#{{ form.vars.id }}").submit(function() {
-				$("#{{ form.newBiography.vars.id }}").val(cb.val());
+				if($("#{{ form.biography.vars.id }}_primary_key").val() != "" && $("#{{ form.biography.vars.id }}").val() == "")
+					$("#{{ form.newBiography.vars.id }}").val($("#{{ form.biography.vars.id }}_primary_key").val());
 			});
 			
 			$("select#{{ form.language.vars.id }}").change();
@@ -36,7 +36,7 @@
 {% block main_content %}
 {% form_theme form 'Form/fields.html.twig' %}
 
-{{ form_start(form, {'method' : 'post', 'action' : path('storeadmin_update', {'id' : entity.id }), 'attr': {'novalidate': 'novalidate'} }) }}
+{{ form_start(form, {'method' : 'post', 'action' : path('storeadmin_update', {'id' : entity.id }), 'attr': {'id': form.vars.id, 'novalidate': 'novalidate'} }) }}
 	{% include "Store/_form.html.twig" with {'form' : form} %}
 {{ form_end(form) }}
 

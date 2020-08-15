@@ -675,27 +675,58 @@ class QuoteAdminController extends AbstractController
 	public function getBiographiesByAjaxAction(Request $request)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
-		$source = $request->query->get("source", null);
 		$locale = $request->query->get("locale", null);
+		
+		
+		$rsp = new Response();
+		$rsp->headers->set('Content-Type', 'application/json');
+		
+		if($request->query->has("pkey_val")) {
+			$pkeyVal = $request->query->has("pkey_val");
+			
+			if(empty($pkeyVal))
+			{
+				$rsp->setContent([]);
+				return $rsp;
+			}
+
+			$parameters = array("pkey_val" => $request->query->get("pkey_val"));
+			$response =  $entityManager->getRepository(Biography::class)->getDatasCombobox($parameters, $locale);
+
+			$resObj = new \stdClass();
+			$resObj->id = $response["id"];
+			$resObj->name = $response["title"];
+
+			$rsp->setContent(json_encode($resObj));
+			return $rsp;
+		}
+		
+		$source = $request->query->get("source", null);
 		$query = $request->query->get("q", null);
 		
 		$datas =  $entityManager->getRepository(Biography::class)->getDatasSelect(null, $locale, $query, $source);
+		$count =  $entityManager->getRepository(Biography::class)->getDatasSelect(null, $locale, $query, $source, true);
 		
-		$res = [];
+		$results = array();
 		
 		foreach($datas as $data)
 		{
-			$row = [];
+			$obj = new \stdClass();
+			$obj->id = $data->getId();
+			$obj->name = $data->getTitle();
 			
-			$row["id"] = $data->getId();
-			$row["text"] = $data->getTitle();
-			
-			$res["results"][] = $row;
+			$results[] = $obj;
 		}
+
+		$rsp = new Response();
+		$rsp->headers->set('Content-Type', 'application/json');
 		
-		$response = new Response(json_encode($res));
-		$response->headers->set('Content-Type', 'application/json');
-		return $response;
+		$resObj = new \stdClass();
+		$resObj->result = $results;
+		$resObj->cnt_whole = $count;
+
+		$rsp->setContent(json_encode($resObj));
+		return $rsp;
 	}
 
 	private function genericCreateForm($locale, $entity)

@@ -35,12 +35,15 @@
 							<span><i class="fas fa-chevron-circle-right"></i> <span class="font-weight-bold">{% if entity.biography is not empty %}{{ entity.biography.title }}{% else %}{{ "store.index.UnknownAuthor"|trans }}{% endif %}</span></span><br>
 						</div>
 						<hr>
-						<div class="center-iframe">
+						<div class="center-iframe text-center">
 							{{ entity.embedCode|raw }}
 						</div>
 					</div>
 					<div class="card-footer text-muted">
-						<span class="float-right"><a href="{{ path('read_store', {'id': entity.id, 'slug': entity.slug}) }}"><i class="fas fa-plus" aria-hidden="true"></i> {{ "store.index.MoreInformations"|trans }}</a></span>
+						{% if entity.amazonCode %}
+							<a href="{{ entity.externalStoreLink }}" class="float-left btn btn-dark" target="_blank"><span class="text-warning"><i class="fas fa-shopping-cart"></i> {{ "store.index.Buy"|trans }}</span></a>
+						{% endif %}
+						<span class="float-right btn"><a href="{{ path('read_store', {'id': entity.id, 'slug': entity.slug}) }}" class="text-info"><i class="fas fa-plus" aria-hidden="true"></i> {{ "store.index.MoreInformations"|trans }}</a></span>
 					</div>
 				</div>
 			</div>

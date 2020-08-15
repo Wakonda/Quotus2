@@ -74,7 +74,7 @@ class BiographyRepository extends ServiceEntityRepository implements iRepository
 		return $qb;
 	}
 	
-	public function getDatasSelect($type, $locale, $query, $source)
+	public function getDatasSelect($type, $locale, $query, $source, $count = false)
 	{
 		$qb = $this->createQueryBuilder("pf");
 		
@@ -101,9 +101,6 @@ class BiographyRepository extends ServiceEntityRepository implements iRepository
 		      ->setParameter("source", $source);
 			
 		}
-		
-		$qb->orderBy("pf.title", "ASC")
-		   ->setMaxResults(15);
 		   
 		if(!empty($query))
 		{
@@ -111,6 +108,12 @@ class BiographyRepository extends ServiceEntityRepository implements iRepository
 			$qb->andWhere("pf.title LIKE :query")
 			   ->setParameter("query", $query);
 		}
+		
+		if($count)
+			return $qb->select("COUNT(pf)")->getQuery()->getSingleScalarResult();
+		
+		$qb->orderBy("pf.title", "ASC")
+		   ->setMaxResults(15);
 
 		return $qb->getQuery()->getResult();
 	}

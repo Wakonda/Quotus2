@@ -849,6 +849,10 @@ a.social-network:hover {
 	filter: brightness(85%);
 }
 
+.container-store-product > a > img {
+	width: 50% important!;
+}
+
 a.btn.facebook {
 	background-color: 	$facebook-color;
 	border-color: 	$facebook-color;
