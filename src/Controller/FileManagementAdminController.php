@@ -62,8 +62,8 @@ class FileManagementAdminController extends AbstractController
 			if(isset($request->request->get($form->getName())["photo"]) and isset($request->request->get($form->getName())["photo"]["name"]) and !empty($request->request->get($form->getName())["photo"]["name"]))
 			{
 				$gf = new GenericFunction();
-				$data = $gf->getContentURL($request->request->get($form->getName())["photo"]["name"]);
-				$title = basename($request->request->get($form->getName())["photo"]["name"]);
+				$data = $gf->getContentURL(urldecode($request->request->get($form->getName())["photo"]["name"]));
+				$title = basename(urldecode($request->request->get($form->getName())["photo"]["name"]));
 				file_put_contents("photo/".$entity->getFolder()."/".$title, $data);
 			} else {
 				if(!empty($title = $form->get('photo')->getData()["title"]) and !empty($content = $form->get('photo')->getData()["content"]))
@@ -92,7 +92,7 @@ class FileManagementAdminController extends AbstractController
 		$page = $request->request->get("page");
 		
 		$entityManager = $this->getDoctrine()->getManager();
-		$entities = $entityManager->getRepository(FileManagement::class)->loadAjax($folder, $page, 1);
+		$entities = $entityManager->getRepository(FileManagement::class)->loadAjax($folder, $page, 10);
 		$total = $entityManager->getRepository(FileManagement::class)->count([]);
 		
 		return $this->render('FileManagement/loadMedia.html.twig', ["entities" => $entities, "page" => $page, "total" => $total, "folder" => $folder]);

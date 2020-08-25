@@ -676,13 +676,13 @@ class QuoteAdminController extends AbstractController
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$locale = $request->query->get("locale", null);
-		
+		$type = $request->query->get("type", null);
 		
 		$rsp = new Response();
 		$rsp->headers->set('Content-Type', 'application/json');
 		
 		if($request->query->has("pkey_val")) {
-			$pkeyVal = $request->query->has("pkey_val");
+			$pkeyVal = $request->query->get("pkey_val");
 			
 			if(empty($pkeyVal))
 			{
@@ -702,7 +702,7 @@ class QuoteAdminController extends AbstractController
 		}
 		
 		$source = $request->query->get("source", null);
-		$query = $request->query->get("q", null);
+		$query = $request->query->get($type == "combobox" ? "q_word" : "q", null);
 		
 		$datas =  $entityManager->getRepository(Biography::class)->getDatasSelect(null, $locale, $query, $source);
 		$count =  $entityManager->getRepository(Biography::class)->getDatasSelect(null, $locale, $query, $source, true);
@@ -713,7 +713,11 @@ class QuoteAdminController extends AbstractController
 		{
 			$obj = new \stdClass();
 			$obj->id = $data->getId();
-			$obj->name = $data->getTitle();
+			
+			if($type != "combobox")
+				$obj->text = $data->getTitle();
+			else
+				$obj->name = $data->getTitle();
 			
 			$results[] = $obj;
 		}
@@ -722,8 +726,12 @@ class QuoteAdminController extends AbstractController
 		$rsp->headers->set('Content-Type', 'application/json');
 		
 		$resObj = new \stdClass();
-		$resObj->result = $results;
-		$resObj->cnt_whole = $count;
+		
+		if($type == "combobox") {
+			$resObj->result = $results;
+			$resObj->cnt_whole = $count;
+		} else
+			$resObj->results = $results;
 
 		$rsp->setContent(json_encode($resObj));
 		return $rsp;

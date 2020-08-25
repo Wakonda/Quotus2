@@ -104,6 +104,7 @@ class BiographyRepository extends ServiceEntityRepository implements iRepository
 		   
 		if(!empty($query))
 		{
+			$query = is_array($query) ? "%".$query[0]."%" : "%".$query."%";
 			$query = "%".$query."%";
 			$qb->andWhere("pf.title LIKE :query")
 			   ->setParameter("query", $query);
