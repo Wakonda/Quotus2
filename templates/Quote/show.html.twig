@@ -180,6 +180,7 @@
 	 | 
 	<a href="{{ path('quoteadmin_new', {'biographyId' : entity.biography.id}) }}">
 		{{ 'admin.quote.ForSameBiography'|trans }}
+	</a>
 	{% if entity.source %}
 		 | 
 		<a href="{{ path('quoteadmin_new', {'biographyId' : 0, 'sourceId' : entity.source.id}) }}">
