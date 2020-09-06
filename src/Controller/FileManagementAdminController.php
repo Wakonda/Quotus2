@@ -63,7 +63,7 @@ class FileManagementAdminController extends AbstractController
 			{
 				$gf = new GenericFunction();
 				$data = $gf->getContentURL(urldecode($request->request->get($form->getName())["photo"]["name"]));
-				$title = basename(urldecode($request->request->get($form->getName())["photo"]["name"]));
+				$title = urldecode(basename($request->request->get($form->getName())["photo"]["name"]));
 				file_put_contents("photo/".$entity->getFolder()."/".$title, $data);
 			} else {
 				if(!empty($title = $form->get('photo')->getData()["title"]) and !empty($content = $form->get('photo')->getData()["content"]))
