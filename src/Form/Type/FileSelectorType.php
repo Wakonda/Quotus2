@@ -2,7 +2,6 @@
 
 namespace App\Form\Type;
 
-use App\Form\DataTransformer\BiographyTransformer;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
