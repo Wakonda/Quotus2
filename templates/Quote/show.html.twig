@@ -144,7 +144,7 @@
 						{% endfor %}
 					</div>
 					<input type="hidden" name="image_id_pinterest" id="image_pinterest">
-					<textarea id="pinterest_area" name="pinterest_area" rows="3" cols="70" class="form-control">{{ entity.text|raw }}</textarea>
+					<textarea id="pinterest_area" name="pinterest_area" rows="3" cols="70" class="form-control">{{ entity.text|raw }} #{{ ('admin.index.Quote'|trans)|lower }}</textarea>
 					<br>
 					<input value="{{ 'admin.socialNetwork.Send'|trans }}" id="tweet" type="submit" class="btn btn-outline-secondary">
 				</form>
