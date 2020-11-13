@@ -16,7 +16,6 @@ use App\Form\Type\QuoteUserType;
 use App\Form\Type\IndexSearchType;
 use App\Service\Captcha;
 use App\Service\Gravatar;
-use App\Service\Pagination;
 use App\Service\GenericFunction;
 
 use App\Entity\Country;
@@ -147,14 +146,14 @@ class IndexController extends AbstractController
 		return $response;
 	}
 
-	public function byImagesAction(Request $request, PaginatorInterface $paginator)
+	public function byImagesAction(Request $request, PaginatorInterface $paginator, $page)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$query = $entityManager->getRepository(QuoteImage::class)->getPaginator($request->getLocale());
 
 		$pagination = $paginator->paginate(
 			$query, /* query NOT result */
-			$request->query->getInt('page', 1), /*page number*/
+			$page, /*page number*/
 			10 /*limit per page*/
 		);
 		
@@ -620,23 +619,19 @@ class IndexController extends AbstractController
 
     public function storeAction(Request $request, Pagination $pagination, $page)
     {
-		$em = $this->getDoctrine()->getManager();
+		$entityManager = $this->getDoctrine()->getManager();
+		$querySearch = $request->request->get("query", null);
+		$query = $entityManager->getRepository(Store::class)->getProducts($querySearch, $request->getLocale());
 
-		$query = $request->request->get("query", null);
-		$page = (empty(intval($page))) ? 1 : $page;
-		$nbMessageByPage = 12;
-		
-		$entities = $em->getRepository(Store::class)->getProducts($nbMessageByPage, $page, $query, $request->getLocale());
-		$totalEntities = $em->getRepository(Store::class)->getProducts(0, 0, $query, $request->getLocale(), true);
-		
-		$links = $pagination->setPagination(['url' => 'store'], $page, $totalEntities, $nbMessageByPage);
+		$pagination = $paginator->paginate(
+			$query, /* query NOT result */
+			$page, /*page number*/
+			10 /*limit per page*/
+		);
 
-		return $this->render('Index/store.html.twig', array(
-			'entities' => $entities,
-			'page' => $page,
-			'query' => $query,
-			'links' => $links
-		));
+		$pagination->setCustomParameters(['align' => 'center']);
+		
+		return $this->render('Index/store.html.twig', ['pagination' => $pagination, "query" => $querySearch]);
     }
 
 	public function readStoreAction($id)

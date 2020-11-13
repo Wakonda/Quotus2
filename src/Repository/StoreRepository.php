@@ -60,7 +60,7 @@ class StoreRepository extends ServiceEntityRepository implements iRepository
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 
-	public function getProducts($nbrMessageParPage, $page, $query, $locale, $count = false)
+	public function getProducts($query, $locale)
 	{
 		$qb = $this->createQueryBuilder('o');
 
@@ -75,21 +75,9 @@ class StoreRepository extends ServiceEntityRepository implements iRepository
 
 		$qb->join("o.language", "l")
 		   ->andWhere("l.abbreviation = :locale")
-		   ->setParameter("locale", $locale);
-		   
-		if($count) {
-			$qb	->select('COUNT(o)');
-			
-			return $qb->getQuery()->getSingleScalarResult();
-		}
-		
-		$firstMessageDisplaying = ($page - 1) * $nbrMessageParPage;
+		   ->setParameter("locale", $locale)
+		   ->orderBy('o.id', 'DESC');
 
-		$qb
-			->orderBy('o.id', 'DESC')
-			->setFirstResult($firstMessageDisplaying)
-			->setMaxResults($nbrMessageParPage);
-
-		return $qb->getQuery()->getResult();
+		return $qb->getQuery();
 	}
 }

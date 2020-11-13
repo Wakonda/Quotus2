@@ -54,8 +54,10 @@ read_store:
         slug: null
 
 byimages:
-    path: /byimages
+    path: /byimages/{page}
     controller: App\Controller\IndexController::byImagesAction
+    defaults:
+        page: 1
 
 bysources:
     path: /bysources
