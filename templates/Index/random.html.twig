@@ -1,0 +1,52 @@
+<div id="random_container">
+	<h2>{{ 'main.index.Randomly'|trans }}{% if random is not null %} <a href="{{ path('read', {'id' : random.id, 'slug' : random.slug}) }}" class="btn btn-primary btn-sm"><i class="fas fa-info fa-fw" aria-hidden="true"></i></a> <button class="btn btn-warning btn-sm" id="generate_random"><i class="fas fa-sync fa-fw"></i></a>{% endif %}</h2>
+	{% if random is not null %}
+		{% set ri = random_image(random) %}
+		{% if ri is not null %}
+			<div class="text-center">
+				<img src="{{ asset(constant('\\App\\Entity\\Quote::PATH_FILE')~ri) }}" class="text-center" alt="">
+			</div>
+		{% else %}
+			<div>
+				<blockquote>{{ random.text|raw }}</blockquote>
+			</div>
+		{% endif %}
+		<hr>
+		{% if random.biography.isFictionalCharacter %}
+		<p><b><a href="{{ path('fictionalcharacter', {'id': random.biography.id, 'slug': random.biography.slug}) }}">{{ random.biography.title }}</a></b>
+		{% else %}
+		<p><b><a href="{{ path('author', {'id': random.biography.id, 'slug': random.biography.slug}) }}">{{ random.biography.title }}</a></b>
+		{% endif %}
+		
+		{% if random.source is not empty %}
+			- <u><i><a href="{{ path('source', {'id': random.source.id, 'slug': random.source.slug}) }}">{{ random.source.title }}</a></i></u></p>
+		{% endif %}
+	{% else %}
+		<div class="alert alert-danger text-center" role="alert">{{ 'main.index.NoQuote'|trans }}</div>
+	{% endif %}
+
+	<script type="text/javascript">
+		$(function()
+		{
+			$("#generate_random").on("click", function() {
+				var svg = $("svg", this);
+				var button = $(this);
+
+				$.ajax({
+					type: "GET",
+					url: "{{ path('random') }}",
+					beforeSend: function(xhr)
+					{
+					console.log($(this))
+						button.attr("disabled", true);
+						svg.addClass("fa-spin");
+					},
+					success: function(data)
+					{
+						$("#random_container").html(data);
+					}
+				});
+			});
+		});
+	</script>
+</div>
