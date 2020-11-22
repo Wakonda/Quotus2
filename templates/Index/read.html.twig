@@ -186,13 +186,13 @@
 				<tbody>
 					<tr>
 						<td class="socialNetwork">
-							<a href="{{ path('read_pdf', {'id' : entity.id, 'slug' : entity.slug}) }}" class="btn btn-outline-secondary"><i class="fas fa-file-pdf fa-2x" aria-hidden="true"></i></a>
+							<a href="{{ path('read_pdf', {'id' : entity.id, 'slug' : entity.slug}) }}" class="btn btn-outline-secondary"><i class="fas fa-file-pdf fa-fw fa-2x" aria-hidden="true"></i></a>
 						</td>
 						<td class="socialNetwork">
-							<a id="print_page" href="#" class="btn btn-outline-secondary"><i class="fas fa-print fa-2x" aria-hidden="true"></i></a>
+							<a id="print_page" href="#" class="btn btn-outline-secondary"><i class="fas fa-print fa-fw fa-2x" aria-hidden="true"></i></a>
 						</td>
 						<td class="socialNetwork">
-							<a href="#" data-toggle="modal" data-target="#send_modal" class="btn btn-outline-secondary"><i class="fas fa-envelope fa-2x" aria-hidden="true"></i></a>
+							<a href="#" data-toggle="modal" data-target="#send_modal" class="btn btn-outline-secondary"><i class="fas fa-envelope fa-fw fa-2x" aria-hidden="true"></i></a>
 						</td>
 					</tr>
 				</tbody>
@@ -202,17 +202,19 @@
 			<table class="hidden_print">
 				<tbody>
 					<tr>
-						<td class="socialNetwork" id="twitter">
-							<a href="https://twitter.com/share" class="twitter-share-button" data-via="poeticus12" id="TwitterShareButton1">Tweet</a>
+						<td class="social-media-icons" id="twitter">
+							<a class="twitter" href="http://twitter.com/home?status={{ entity.text }} - {{ url('read', { id: entity.id, slug: entity.slug }) }}" rel="nofollow" target="_blank" title="Tweet This!"><i class="fab fa-twitter-square fa-2x"></i></a>
+							{#<a href="https://twitter.com/share" class="twitter-share-button" data-via="poeticus12" id="TwitterShareButton1">Tweet</a>
 							<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 							<script type="text/javascript">
 								var ValidMe=document.getElementById("TwitterShareButton1");
 								ValidMe.setAttribute("data-count","horizontal");
 								ValidMe.setAttribute("data-text", "{{ entity.text|html_entity_decode }}");
-							</script>
+							</script>#}
 						</td>
-						<td class="socialNetwork">
-							<div id="fb-root"></div>
+						<td class="social-media-icons">
+							<a class="facebook" href="http://www.facebook.com/share.php?v=4&amp;src=bm&amp;u={{ url('read', { id: entity.id, slug: entity.slug }) }}&amp;t={{ entity.text }}" onclick="window.open(this.href,&quot;sharer&quot;,&quot;toolbar=0,status=0,width=626,height=436&quot;); return false;" rel="nofollow" target="_blank" title="Share this on Facebook"><i class="fab fa-facebook-square fa-2x"></i></a>
+							{#<div id="fb-root"></div>
 							<script type="text/javascript">(function(d, s, id) {
 							  var js, fjs = d.getElementsByTagName(s)[0];
 							  if (d.getElementById(id)) return;
@@ -220,7 +222,7 @@
 							  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
 							  fjs.parentNode.insertBefore(js, fjs);
 							}(document, 'script', 'facebook-jssdk'));</script>
-							<div class="fb-like" data-send="true" data-layout="button_count" data-width="450" data-show-faces="true"></div>
+							<div class="fb-like" data-send="true" data-layout="button_count" data-width="450" data-show-faces="true"></div>#}
 						</td>
 					</tr>
 				</tbody>

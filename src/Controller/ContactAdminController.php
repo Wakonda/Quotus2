@@ -51,11 +51,12 @@ class ContactAdminController extends AbstractController
 			$row = array();
 			$row[] = $entity->getId();
 			$row[] = $entity->getSubject();
+			$row[] = $entity->getDateSending()->format("d/m/Y H:i");
 			
 			if($entity->getReadMessage() == 1)
-				$row[] = $translator->trans("admin.index.Yes");
+				$row[] = '<i class="fas fa-check text-success"></i>';
 			else
-				$row[] = $translator->trans("admin.index.No");
+				$row[] = '<i class="fas fa-times text-danger"></i>';
 			
 			$show = $this->generateUrl('contactadmin_show', array('id' => $entity->getId()));
 			

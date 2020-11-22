@@ -21,9 +21,9 @@
 			<th>{{ 'admin.table.ReadQuestion'|trans }}</th>
 			<td>
 				{% if entity.readMessage is null %}
-					{{ "admin.index.No"|trans }}
+					<i class="fas fa-times text-danger"></i>
 				{% else %}
-					{{ "admin.index.Yes"|trans }}
+					<i class="fas fa-check text-success"></i>
 				{% endif %}
 			</td>
 		</tr>

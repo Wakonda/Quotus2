@@ -17,7 +17,7 @@
 	{% if entity.amazonCode %}
 		<br>
 		<div class="text-center">
-			<a href="{{ entity.externalStoreLink }}" class="btn btn-dark" target="_blank"><span class="text-warning"><i class="fas fa-shopping-cart"></i> {{ "store.index.Buy"|trans }}</span></a>
+			<a href="{{ entity.externalStoreLink }}" rel="nofollow" class="btn btn-dark" target="_blank"><span class="text-warning"><i class="fas fa-shopping-cart"></i> {{ "store.index.Buy"|trans }}</span></a>
 		</div>
 	{% endif %}
 	

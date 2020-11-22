@@ -21,6 +21,7 @@
 					"sUrl": "{{ asset('js/DataTables/language/dataTables.'~app.request.locale) }}.txt"
 				}, 
 				"bFilter": true,
+				"order": [[ 2, "desc" ]],
 				"bInfo": true,
 				"bSort": true,
 				"bLengthChange": true,
@@ -39,6 +40,7 @@
 	<thead>
 		<th>Id</th>
 		<th>{{ 'admin.table.Subject'|trans }}</th>
+		<th>{{ 'admin.table.SendingDate'|trans }}</th>
 		<th>{{ 'admin.table.ReadQuestion'|trans }}</th>
 		<th>{{ 'admin.table.Action'|trans }}</th>
 	</thead>
