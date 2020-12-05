@@ -67,3 +67,39 @@
 	</div>
 	{{ form_rest(form) }}
 {{ form_end(form) }}
+
+<script>
+	$(function() {
+		$(document).on('submit', "form#send_form", function(event) {
+			event.preventDefault();
+			
+			var formValue = $(this).serialize();
+			
+			$.ajax({
+				url: "{{ path('send_go', {'id' : id}) }}",
+				type: "POST",
+				data: formValue,
+				success: function(res)
+				{
+					if(res.result == "error")
+					{
+						tinymce.remove('#{{ form.message.vars.id }}');
+						$("div#form_id_send").html(res.content);
+					}
+					else
+					{
+						$("form#send_form").find("input[type=text], textarea").val("");
+						tinyMCE.activeEditor.setContent('');
+						$('#send_modal').modal('hide');
+						$('html, body').animate({scrollTop:$('h1').position().top}, 'slow');
+						$('#send_result').html("{{ 'send.index.YourMessageHasBeenSentSuccessfully'|trans }}");
+						$('#send_result').removeClass("d-none");
+					}
+				},
+				complete: function() {
+					tinymce.init('#{{ form.message.vars.id }}');
+				}
+			});
+		});
+	});
+</script>
