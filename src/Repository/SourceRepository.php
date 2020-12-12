@@ -50,13 +50,18 @@ class SourceRepository extends ServiceEntityRepository implements iRepository
 		return $qb->getQuery()->getResult();
 	}
 	
-	public function getPoemByAuthors()
+	public function getSourceByAuthorsAndTitle($author, string $title)
 	{
 		$qb = $this->createQueryBuilder("pf");
 	
-		$qb->groupBy("pf.biography_id");
+		$qb->leftjoin("pf.authors", "author")
+		   ->where("author.id = :author")
+		   ->setParameter("author", $author)
+		   ->andWhere("pf.title = :title")
+		   ->setParameter("title", $title)
+		   ->setMaxResults(1);
 		   
-		return $qb->getQuery()->getResult();
+		return $qb->getQuery()->getOneOrNullResult();
 	}
 	
 	public function findAllForChoice($locale)
@@ -96,13 +101,17 @@ class SourceRepository extends ServiceEntityRepository implements iRepository
 		   ->where("pf.slug = :slug")
 		   ->setParameter('slug', $entity->getSlug())
 		   ->andWhere("la.id = :idLanguage")
-		   ->setParameter("idLanguage", $entity->getLanguage());
+		   ->setParameter("idLanguage", $entity->getLanguage())
+		   ->leftjoin("pf.authors", "a")
+		   ->andWhere("a.id IN (:authors)")
+		   ->setParameter("authors", $entity->getAuthors());
 
 		if($entity->getId() != null)
 		{
 			$qb->andWhere("pf.id != :id")
 			   ->setParameter("id", $entity->getId());
 		}
+
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 	

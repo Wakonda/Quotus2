@@ -335,7 +335,7 @@ class QuoteAdminController extends AbstractController
 								$save = false;
 							
 							$sourceTitle = html_entity_decode(current($pb->find(".auteurLien"))->plaintext, ENT_QUOTES);
-							$source = $entityManager->getRepository(Source::class)->findOneBy(["title" => $sourceTitle]);
+							$source = $entityManager->getRepository(Source::class)->getSourceByAuthorsAndTitle($entity->getBiography(), $sourceTitle);
 							
 							if(!empty($source))
 								$entityNew->setSource($source);
@@ -374,7 +374,7 @@ class QuoteAdminController extends AbstractController
 						$entityNew->setSource(null);
 
 						if(isset($div[1])) {
-							$source = $entityManager->getRepository(Source::class)->findOneBy(["title" => trim($div[1])]);
+							$source = $entityManager->getRepository(Source::class)->getSourceByAuthorsAndTitle($entity->getBiography(), trim($div[1]));
 							
 							if(!empty($source))
 								$entityNew->setSource($source);

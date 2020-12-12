@@ -4,32 +4,15 @@
 {% block main_title %}{{ 'menu.left.Admin'|trans }} - {{ 'admin.index.Store'|trans }}{% endblock %}
 
 {% block style_additional %}
-	<link rel="stylesheet" type="text/css" href="{{ asset('js/jquery.ajax-combobox-master/dist/jquery.ajax-combobox.css') }}" media="screen" />
+	<link rel="stylesheet" type="text/css" href="{{ asset('js/select2/dist/css/select2.min.css') }}" media="screen" />
 {% endblock %}
 {% block script_additional %}
-	<script src="{{ asset('js/jquery.ajax-combobox-master/dist/jquery.ajax-combobox.js') }}"></script>
-	<script src="{{ asset('js/combobox.js') }}"></script>
+	<script src="{{ asset('js/select2/dist/js/select2.full.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+	<script src="{{ asset('js/select2/dist/js/i18n/'~app.request.locale~'.js') }}" type="text/javascript"></script>
+	
 	{% import "Index/macro.html.twig" as macro %}
 	{{ macro.redactor() }}
-	<script type="text/javascript">
-		$(function()
-		{
-			var cb = null;
-			$("select#{{ form.language.vars.id }}").change(function() {
-				var input = $(".container_{{ form.vars['id'] }}_biography > .input-group > input[type='hidden']");
-				$(input[0]).addClass('combobox full_width form-control').attr("type", "text").val("");
-				$(".container_{{ form.vars['id'] }}_biography").parent().append(input[0]);
-				$(".container_{{ form.vars['id'] }}_biography").remove();
-				cb = setComboboxNew('{{ path("quoteadmin_getbiographiesbyajax") }}?locale=' + $(this).val() + "&type=combobox", 'biography', "#{{ form.vars['id'] }}_biography");
-			});
-			
-			$("#{{ form.vars.id }}").submit(function() {
-				$("#{{ form.newBiography.vars.id }}").val(cb.val());
-			});
-			
-			$("select#{{ form.language.vars.id }}").change();
-		});
-	</script>
 {% endblock %}
 
 {% block main_content %}

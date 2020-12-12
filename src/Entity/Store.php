@@ -60,6 +60,11 @@ class Store
      */
     protected $slug;
 
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Source")
+     */
+    protected $source;
+
 	private $partnerId = "activiparano-21";
 	
 	public function getExternalStoreLink()
@@ -187,5 +192,15 @@ class Store
     {
 		if(empty($this->slug))
 			$this->slug = GenericFunction::slugify($this->title);
+    }
+
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    public function setSource($source)
+    {
+        $this->source = $source;
     }
 }

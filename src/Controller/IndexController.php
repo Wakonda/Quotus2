@@ -287,8 +287,9 @@ class IndexController extends AbstractController
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Source::class)->find($id);
+		$stores = $entityManager->getRepository(Store::class)->findBy(["source" => $entity]);
 
-		return $this->render('Index/source.html.twig', array('entity' => $entity));
+		return $this->render('Index/source.html.twig', array('entity' => $entity, "stores" => $stores));
 	}
 
 	public function sourceDatatablesAction(Request $request, TranslatorInterface $translator, $sourceId)

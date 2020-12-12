@@ -50,15 +50,6 @@ class BiographyRepository extends ServiceEntityRepository implements iRepository
 		return $qb->getQuery()->getResult();
 	}
 	
-	public function getPoemByAuthors()
-	{
-		$qb = $this->createQueryBuilder("pf");
-	
-		$qb->groupBy("pf.biography_id");
-		   
-		return $qb->getQuery()->getResult();
-	}
-	
 	public function findAllForChoice($locale, $type)
 	{
 		$qb = $this->createQueryBuilder("pf");
