@@ -376,7 +376,7 @@ class QuoteRepository extends ServiceEntityRepository implements iRepository
 	{
 		$qb = $this->createQueryBuilder("pa");
 
-		$aColumns = array('pa.text', 'pa.id');
+		$aColumns = array('pa.text', 'so.title', 'pa.id');
 		
 		$qb->select("pa.text AS quote_text, so.id AS source_id, so.slug AS source_slug, so.title AS source_text, pa.id AS quote_id, pa.slug AS quote_slug")
 		   ->leftjoin("pa.biography", "co")
