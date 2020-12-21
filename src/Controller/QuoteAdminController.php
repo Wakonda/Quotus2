@@ -322,17 +322,10 @@ class QuoteAdminController extends AbstractController
 						$save = true;
 						$entityNew = clone $entity;
 						$q = current($pb->find("q"));
-						
-						if(!empty($q->find("a", 1)))
-							continue;
 
 						$text = html_entity_decode($q->plaintext, ENT_QUOTES);
 						
 						if($type == "personnage") {
-							$author = current($pb->find("character"))->plaintext;
-
-							if($entity->getBiography()->getTitle() != $author)
-								$save = false;
 							
 							$sourceTitle = html_entity_decode(current($pb->find(".auteurLien"))->plaintext, ENT_QUOTES);
 							$source = $entityManager->getRepository(Source::class)->getSourceByAuthorsAndTitle($entity->getBiography(), $sourceTitle);
@@ -342,11 +335,6 @@ class QuoteAdminController extends AbstractController
 							else
 								if(empty($sourceTitle))
 									$save = false;
-						} else {
-							$author = current($pb->find("cite"))->plaintext;
-
-							if($entity->getBiography()->getTitle() != $author)
-								$save = false;
 						}
 						
 						$entityNew->setText($text);
