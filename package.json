@@ -5,7 +5,7 @@
         "autoprefixer": "^9.7.3",
         "bootstrap": "^4.4.1",
         "jquery": "^3.4.1",
-        "node-sass": "^5.0.0",
+        "node-sass": "^7.0.0",
         "popper.js": "^1.16.0",
         "postcss-loader": "^3.0.0",
         "sass-loader": "7.0.1",
